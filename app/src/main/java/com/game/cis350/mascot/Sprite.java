@@ -1,5 +1,7 @@
 package com.game.cis350.mascot;
 
+import com.game.cis350.mascot.interfaces.DrawInterface;
+
 /**
  * This class is the basic class for objects that are drawn to the screen.
  * @author Reuben

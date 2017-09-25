@@ -1,11 +1,13 @@
-package com.game.cis350.mascot;
+package com.game.cis350.mascot.interfaces;
+
+import com.game.cis350.mascot.Collidable;
 
 /**
  * This interface provides guaranteed functionality for Collidable objects.
  * @author Reuben 9/20/2017
  */
 
-interface CollideInterface {
+public interface CollideInterface {
 
     /**
      * This method holds the logic for movement.

@@ -1,11 +1,11 @@
-package com.game.cis350.mascot;
+package com.game.cis350.mascot.interfaces;
 
 /**
  * This interface provides guaranteed functionality for Draw objects.
  * @author Reuben 9/20/2017.
  */
 
-interface DrawInterface {
+public interface DrawInterface {
 
     /**
      * This method updates the animation frame of the object
