@@ -2,11 +2,11 @@ package com.game.cis350.mascot;
 
 /**
  * This class is the basic class for objects that handle collision and movement.
- * @author Reuben
- * 9/20/2017
+ * @author Reuben 9/20/2017
  */
 
-public class Collidable extends Sprite implements DrawInterface, CollideInterface {
+class Collidable extends Sprite implements DrawInterface,
+        CollideInterface {
 
     /**
      * This method moves the object.
@@ -25,5 +25,6 @@ public class Collidable extends Sprite implements DrawInterface, CollideInterfac
     public boolean collideWith(final Collidable other) {
         return false;
     }
+
 
 }

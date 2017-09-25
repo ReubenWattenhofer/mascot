@@ -1,0 +1,5 @@
+Any third-party code or ideas used to create this project are appropriately credited in the code
+comments.  This file is for sharing information with teammates, not for citation.
+
+"MVP for Android: how to organize the presentation layer"
+https://antonioleiva.com/mvp-android/
