@@ -12,8 +12,4 @@ class PresenterInGameMenu implements IPresenterInGameMenu {
 
     }
 
-    @Override
-    public void pressedQuit() {
-
-    }
 }

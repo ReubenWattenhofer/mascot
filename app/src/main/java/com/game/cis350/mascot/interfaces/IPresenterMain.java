@@ -12,11 +12,6 @@ public interface IPresenterMain {
     void pressedPlay();
 
     /**
-     * This method handles the behavior when Quit is pressed.
-     */
-    void pressedQuit();
-
-    /**
      * This method handles the behavior when Options is pressed.
      */
     void pressedOptions();

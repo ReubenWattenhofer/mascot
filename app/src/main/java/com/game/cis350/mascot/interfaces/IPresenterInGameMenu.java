@@ -12,8 +12,4 @@ public interface IPresenterInGameMenu {
      */
     void pressedRestart();
 
-    /**
-     * This method handles the behavior when the quit option is selected.
-     */
-    void pressedQuit();
 }

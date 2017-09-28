@@ -28,11 +28,6 @@ public class PresenterMain implements IPresenterMain {
     }
 
     @Override
-    public void pressedQuit() {
-
-    }
-
-    @Override
     public void pressedOptions() {
 
     }
