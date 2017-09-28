@@ -5,7 +5,7 @@ package com.game.cis350.mascot.interfaces;
  * @author Reuben 9/25/2017
  */
 
-public interface MainPresenterInterface {
+public interface IPresenterMain {
     /**
      * This method handles the behavior when Play is pressed.
      */

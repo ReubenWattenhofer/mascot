@@ -5,7 +5,7 @@ package com.game.cis350.mascot.interfaces;
  * @author Reuben 9/20/2017.
  */
 
-public interface DrawInterface {
+public interface IDrawable {
 
     /**
      * This method updates the animation frame of the object

@@ -1,17 +1,18 @@
 package com.game.cis350.mascot;
 
-import com.game.cis350.mascot.interfaces.MainPresenterInterface;
+import com.game.cis350.mascot.interfaces.IPresenterMain;
+import com.game.cis350.mascot.interfaces.IViewMain;
 
 /**
  * This class handles the main menu logic.
  * @author Reuben 9/24/2017
  */
 
-public class PresenterMain implements MainPresenterInterface {
+public class PresenterMain implements IPresenterMain {
     /**
      * Uses the view to interact with it.
      */
-    private MainActivity view;
+    private IViewMain view;
 
     /**
      * Initializes the view.

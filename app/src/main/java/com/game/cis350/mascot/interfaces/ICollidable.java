@@ -7,7 +7,7 @@ import com.game.cis350.mascot.Collidable;
  * @author Reuben 9/20/2017
  */
 
-public interface CollideInterface {
+public interface ICollidable {
 
     /**
      * This method holds the logic for movement.

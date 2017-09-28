@@ -9,22 +9,23 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 //import android.support.v7.widget.Toolbar;
 //import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+//import android.view.Menu;
+//import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.game.cis350.mascot.interfaces.MainViewInterface;
+import com.game.cis350.mascot.interfaces.IPresenterMain;
+import com.game.cis350.mascot.interfaces.IViewMain;
 
 /**
  * This class is the main activity, and is the start point of the program.
  */
-public class MainActivity extends AppCompatActivity implements MainViewInterface {
+public class MainActivity extends AppCompatActivity implements IViewMain {
 
     /**
      * Handles the logic when stuff gets pressed/interacted with.
      */
-    private PresenterMain presenter;
+    private IPresenterMain presenter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

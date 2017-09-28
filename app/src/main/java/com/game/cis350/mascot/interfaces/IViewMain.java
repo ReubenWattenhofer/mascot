@@ -5,7 +5,7 @@ package com.game.cis350.mascot.interfaces;
  * @author Reuben 9/25/2017
  */
 
-public interface MainViewInterface {
+public interface IViewMain {
     /**
      * This method starts the game View.
      */

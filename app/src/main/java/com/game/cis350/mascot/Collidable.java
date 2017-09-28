@@ -1,15 +1,15 @@
 package com.game.cis350.mascot;
 
-import com.game.cis350.mascot.interfaces.CollideInterface;
-import com.game.cis350.mascot.interfaces.DrawInterface;
+import com.game.cis350.mascot.interfaces.ICollidable;
+import com.game.cis350.mascot.interfaces.IDrawable;
 
 /**
  * This class is the basic class for objects that handle collision and movement.
  * @author Reuben 9/20/2017
  */
 
-public class Collidable extends Sprite implements DrawInterface,
-        CollideInterface {
+public class Collidable extends Sprite implements IDrawable,
+        ICollidable {
 
     /**
      * This method moves the object.

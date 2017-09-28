@@ -1,6 +1,6 @@
 package com.game.cis350.mascot;
 
-import com.game.cis350.mascot.interfaces.DrawInterface;
+import com.game.cis350.mascot.interfaces.IDrawable;
 
 /**
  * This class is the basic class for objects that are drawn to the screen.
@@ -8,7 +8,7 @@ import com.game.cis350.mascot.interfaces.DrawInterface;
  * 9/20/2017
  */
 
-class Sprite implements DrawInterface {
+class Sprite implements IDrawable {
 
     /**
      * This method is responsible for drawing the sprite.
