@@ -1,4 +1,4 @@
-package com.game.cis350.mascot.interfaces;
+package com.game.cis350.mascot.interfaces.presenters;
 
 /**
  * This interface guarantees functionality for the in-game Presenter.
@@ -8,9 +8,9 @@ package com.game.cis350.mascot.interfaces;
 public interface IPresenterInGame {
 
     /**
-     * This method handles the behavior when the in-game menu is opened.
+     * This method handles the behavior when the restart option is selected.
      */
-    void pressedMenu();
+    void pressedRestart();
 
     /**
      * This method handles the behavior when "up" is pressed.

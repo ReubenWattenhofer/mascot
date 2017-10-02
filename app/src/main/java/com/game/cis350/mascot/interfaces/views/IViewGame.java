@@ -1,4 +1,4 @@
-package com.game.cis350.mascot.interfaces;
+package com.game.cis350.mascot.interfaces.views;
 
 /**
  * This interface guarantees functionality for the in-game View.

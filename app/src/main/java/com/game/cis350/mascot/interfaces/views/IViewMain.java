@@ -1,4 +1,4 @@
-package com.game.cis350.mascot.interfaces;
+package com.game.cis350.mascot.interfaces.views;
 
 /**
  * This interface guarantees functionality for the main menu View.
@@ -12,12 +12,13 @@ public interface IViewMain {
     void startGame();
 
     /**
-     * This method exits the program.
+     * This method displays the credits.
      */
-    void quitApp();
+    void showCredits();
 
     /**
-     * This method displays the options menu.
+     * This method closes the credits.
      */
-    void showOptions();
+    void closeCredits();
+
 }

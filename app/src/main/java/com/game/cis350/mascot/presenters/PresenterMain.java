@@ -1,7 +1,8 @@
-package com.game.cis350.mascot;
+package com.game.cis350.mascot.presenters;
 
-import com.game.cis350.mascot.interfaces.IPresenterMain;
-import com.game.cis350.mascot.interfaces.IViewMain;
+import com.game.cis350.mascot.interfaces.presenters.IPresenterMain;
+import com.game.cis350.mascot.interfaces.views.IViewMain;
+import com.game.cis350.mascot.views.MainActivity;
 
 /**
  * This class handles the main menu logic.
@@ -28,7 +29,12 @@ public class PresenterMain implements IPresenterMain {
     }
 
     @Override
-    public void pressedOptions() {
+    public void pressedCredits() {
+        view.showCredits();
+    }
 
+    @Override
+    public void pressedLeaveCredits() {
+        view.closeCredits();
     }
 }
