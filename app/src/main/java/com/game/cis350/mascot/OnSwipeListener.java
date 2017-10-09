@@ -14,7 +14,7 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
     private static final String TAG = "OnSwipeListener";
 
     @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+    public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX, final float velocityY) {
 
         // Grab two events located on the plane at e1=(x1, y1) and e2=(x2, y2)
         // Let e1 be the initial event
@@ -46,7 +46,7 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
     }
 
     /** Override this method. The Direction enum will tell you how the user swiped. */
-    public boolean onSwipe(Direction direction){
+    public boolean onSwipe(final Direction direction){
         return false;
     }
 
@@ -59,7 +59,7 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
      * @param y2 the y position of the second point
      * @return the direction
      */
-    public Direction getDirection(float x1, float y1, float x2, float y2){
+    public Direction getDirection(final float x1, final float y1, final float x2, final float y2){
         double angle = getAngle(x1, y1, x2, y2);
         return Direction.get(angle);
     }
@@ -76,10 +76,10 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
      * @param y2 the y position of the second point
      * @return the angle between two points
      */
-    public double getAngle(float x1, float y1, float x2, float y2) {
+    public double getAngle(final float x1, final float y1, final float x2, final float y2) {
 
-        double rad = Math.atan2(y1-y2,x2-x1) + Math.PI;
-        return (rad*180/Math.PI + 180)%360;
+        double rad = Math.atan2(y1 - y2, x2 - x1) + Math.PI;
+        return (rad * 180 / Math.PI + 180) % 360;
     }
 
 
@@ -101,21 +101,21 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
          * @param angle an angle from 0 to 360 - e
          * @return the direction of an angle
          */
-        public static Direction get(double angle){
-            if(inRange(angle, 45, 135)){
-                Log.d(TAG,"UP");
+        public static Direction get(final double angle) {
+            if (inRange(angle, 45, 135)){
+                Log.d(TAG, "UP");
                 return Direction.up;
             }
-            else if(inRange(angle, 0,45) || inRange(angle, 315, 360)){
-                Log.d(TAG,"RIGHT");
+            else if (inRange(angle, 0, 45) || inRange(angle, 315, 360)){
+                Log.d(TAG, "RIGHT");
                 return Direction.right;
             }
-            else if(inRange(angle, 225, 315)){
-                Log.d(TAG,"DOWN");
+            else if (inRange(angle, 225, 315)){
+                Log.d(TAG, "DOWN");
                 return Direction.down;
             }
             else{
-                Log.d(TAG,"LEFT");
+                Log.d(TAG, "LEFT");
                 return Direction.left;
             }
 
@@ -127,7 +127,7 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
          * @param end the final bound
          * @return returns true if the given angle is in the interval [init, end).
          */
-        private static boolean inRange(double angle, float init, float end){
+        private static boolean inRange(final double angle, final float init, final float end){
             return (angle >= init) && (angle < end);
         }
     }

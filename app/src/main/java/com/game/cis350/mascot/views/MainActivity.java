@@ -4,6 +4,7 @@ package com.game.cis350.mascot.views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 //import android.support.design.widget.FloatingActionButton;
@@ -57,6 +58,10 @@ public class MainActivity extends AppCompatActivity implements IViewMain {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //lock the screen to portrait mode
+        //credit https://stackoverflow.com/questions/2366706/how-to-lock-orientation-during-runtime
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         //initialize the main layout
         //credit to https://stackoverflow.com/questions/38987442/how-to-make-a-simple-android-popup-window

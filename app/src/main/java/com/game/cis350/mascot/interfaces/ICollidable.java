@@ -1,6 +1,6 @@
 package com.game.cis350.mascot.interfaces;
 
-import com.game.cis350.mascot.Collidable;
+import com.game.cis350.mascot.models.Collidable;
 
 /**
  * This interface provides guaranteed functionality for Collidable objects.

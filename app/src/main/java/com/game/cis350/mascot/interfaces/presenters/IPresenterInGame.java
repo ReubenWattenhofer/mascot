@@ -1,5 +1,7 @@
 package com.game.cis350.mascot.interfaces.presenters;
 
+import android.view.MotionEvent;
+
 /**
  * This interface guarantees functionality for the in-game Presenter.
  * @author Reuben 9/25/2017
@@ -13,23 +15,9 @@ public interface IPresenterInGame {
     void pressedRestart();
 
     /**
-     * This method handles the behavior when "up" is pressed.
+     * This method processes the user input.
+     * @param event determines what kind of input occurred
      */
-    void pressedUp();
-
-    /**
-     * This method handles the behavior when "down" is pressed.
-     */
-    void pressedDown();
-
-    /**
-     * This method handles the behavior when "left" is pressed.
-     */
-    void pressedLeft();
-
-    /**
-     * This method handles the behavior when "right" is pressed.
-     */
-    void pressedright();
+    void pressedScreen(MotionEvent event);
 
 }
