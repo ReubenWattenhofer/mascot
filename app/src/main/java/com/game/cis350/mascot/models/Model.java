@@ -20,7 +20,7 @@ public class Model implements IModel{
      */
     public Model() {
         ArrayList<String> images = new ArrayList<String>();
-        images.add("test");
+        images.add("louie");
         player = new Collidable(images, 0, 0);
     }
 
