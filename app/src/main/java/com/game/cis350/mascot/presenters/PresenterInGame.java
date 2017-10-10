@@ -24,10 +24,11 @@ import java.util.HashMap;
 
 /**
  * This class handles the in-game logic.
- * @author Reuben 9/25/2017
+ * @author Reuben, Ariel 10/9/2017
  */
 
-public class PresenterInGame implements IPresenterInGame {
+public class PresenterInGame implements IPresenterInGame, Runnable {
+
 
     /**
      * Uses the view to interact with it.
@@ -131,6 +132,13 @@ public class PresenterInGame implements IPresenterInGame {
     //thread within this presenter as soon as it is created, so it can control the automatic stuff
     //like sprite animation and AI movement.
 
+    /**
+     * This method creates a thread used to control automatic events (sprite animation, AI movement)
+     */
+    @Override
+    public void run() {
+
+    }
 
     /**
      * This method handles the behavior when "up" is pressed.
