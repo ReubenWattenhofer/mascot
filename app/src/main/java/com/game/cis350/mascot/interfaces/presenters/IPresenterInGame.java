@@ -20,4 +20,9 @@ public interface IPresenterInGame {
      */
     void pressedScreen(MotionEvent event);
 
+    /**
+     * This method handles cleanup when the presenter is destroyed.
+     */
+    void destroyed();
+
 }

@@ -27,7 +27,7 @@ import java.util.HashMap;
  * @author Reuben, Ariel 10/9/2017
  */
 
-public class PresenterInGame implements IPresenterInGame, Runnable {
+public class PresenterInGame implements IPresenterInGame {
 
 
     /**
@@ -46,8 +46,14 @@ public class PresenterInGame implements IPresenterInGame, Runnable {
     private IModel model;
 
     /**
+     * This is the thread that processes the automated game things, like AI and animation.
+     */
+    private PresenterGameThread gameThread;
+
+
+    /**
      * This stores the images to be displayed on the view.  The reason this can't be in the model
-     * is because the model would then become language specific, which we want to avoid.  Instead,
+     * is because the model would then become platform specific, which we want to avoid.  Instead,
      * the model will store the paths to the images using String, which is native to Java.
      * credit https://stackoverflow.com/questions/29061292/c-sharp-mvc-how-to-save-image-to-my-model
      */
@@ -90,6 +96,13 @@ public class PresenterInGame implements IPresenterInGame, Runnable {
 
         }
 
+
+        //start the game thread
+        gameThread = new PresenterGameThread();
+        gameThread.setRunning(true);
+        gameThread.start();
+
+
     }
 
     @Override
@@ -125,19 +138,13 @@ public class PresenterInGame implements IPresenterInGame, Runnable {
 
     }
 
-    //TODO: create thread to update model behavior and pass image data to view
-    //we need to do this because the activity is event driven -- how are we going to update the model
-    //while we are waiting for events if we don't have a separate thread?  In other words, the "main"
-    //loop is somewhere within native Android code, where we can't reach it.  So we have to create a
-    //thread within this presenter as soon as it is created, so it can control the automatic stuff
-    //like sprite animation and AI movement.
-
-    /**
-     * This method creates a thread used to control automatic events (sprite animation, AI movement)
-     */
     @Override
-    public void run() {
-
+    public void destroyed() {
+        //end the thread
+        try {
+            gameThread.setRunning(false);                //Tells thread to stop
+            gameThread.join();                           //Removes thread from mem.
+        } catch (InterruptedException e) { }
     }
 
     /**
