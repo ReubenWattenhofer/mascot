@@ -7,6 +7,8 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 import com.game.cis350.mascot.interfaces.IImage;
 //import com.game.cis350.mascot.views.DrawingPanel;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 
 /**
  * This is the worker thread for the game presenter.
- * @author Reuben 10/10/2017
+ * @author Reuben, Ariel 10/11/2017
  */
 
 //Most of this code comes from http://blog.danielnadeau.io/2012/01/android-canvas-beginners-tutorial.html
@@ -38,10 +40,10 @@ class PresenterGameThread extends Thread {
 
     /**
      * This is the constructor for the thread.
-     * @param surfaceHolder handler for the SurfaceView's canvas
-     * @param panel reference to our calling class
+     * @param holder handler for the SurfaceView's canvas
+     * @param gamePanel reference to our calling class
      */
-    GameThread()
+    PresenterGameThread(SurfaceHolder holder, SurfaceView gamePanel){
 
         images = new ArrayList<IImage>();
     }
