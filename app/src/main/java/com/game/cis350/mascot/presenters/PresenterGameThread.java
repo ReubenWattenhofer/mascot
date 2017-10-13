@@ -40,10 +40,8 @@ class PresenterGameThread extends Thread {
 
     /**
      * This is the constructor for the thread.
-     * @param holder handler for the SurfaceView's canvas
-     * @param gamePanel reference to our calling class
      */
-    PresenterGameThread(SurfaceHolder holder, SurfaceView gamePanel){
+    PresenterGameThread(){
 
         images = new ArrayList<IImage>();
     }
