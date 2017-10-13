@@ -58,10 +58,11 @@ class PresenterGameThread extends Thread {
 
     /**
      * This is the constructor for the thread.
-     * @param holder handler for the SurfaceView's canvas
-     * @param gamePanel reference to our calling class
+     * @param m model for presenter to talk to
      */
-    PresenterGameThread(SurfaceHolder holder, SurfaceView gamePanel){
+    PresenterGameThread(IModel m){
+        model = m;
+
         //create the hashmap
         images = new HashMap<String, Bitmap>();
 
@@ -108,6 +109,7 @@ class PresenterGameThread extends Thread {
             int playerX = model.getMainPlayer().getX();
             int playerY = model.getMainPlayer().getX();
 
+
             for (Collidable currentBus : model.getBusses()) {
                 // Bus moves right regardless of player position
                 currentBus.setX(currentBus.getX() + 50);
@@ -127,6 +129,7 @@ class PresenterGameThread extends Thread {
             //TODO: list update can probably can be optimized
 
             imagesToView.add(j);
+
         }
     }
 }

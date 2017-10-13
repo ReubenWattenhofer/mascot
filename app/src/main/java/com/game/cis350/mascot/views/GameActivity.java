@@ -37,7 +37,7 @@ import java.util.ArrayList;
 
 /**
  * This class is the View (MVP View, not Android View) for the game.
- * @author Reuben, Ariel 10/12/2017
+ * @author Reuben 10/12/2017
  */
 
 public class GameActivity extends AppCompatActivity implements IViewGame {
@@ -245,16 +245,6 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
 //        );
 //        return c.getHeight();
         return screenY; // (thread != null) ? thread.getScreenHeight() : 0;
-    }
-
-    @Override
-    public SurfaceView getSurfaceView(){
-        return gamePanel;
-    }
-
-    @Override
-    public SurfaceHolder getSurfaceHolder(){
-        return holder;
     }
 
     @Override
