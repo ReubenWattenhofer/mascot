@@ -46,7 +46,7 @@ public class PresenterInGame implements IPresenterInGame {
 
     /**
      * This stores the images to be displayed on the view.  The reason this can't be in the model
-     * is because the model would then become language specific, which we want to avoid.  Instead,
+     * is because the model would then become platform specific, which we want to avoid.  Instead,
      * the model will store the paths to the images using String, which is native to Java.
      * credit https://stackoverflow.com/questions/29061292/c-sharp-mvc-how-to-save-image-to-my-model
      */
