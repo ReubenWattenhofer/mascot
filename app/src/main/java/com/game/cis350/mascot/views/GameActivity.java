@@ -46,7 +46,6 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
      * Handles the logic when stuff gets pressed/interacted with.
      */
     private IPresenterInGame presenter;
-    //private GestureDetectorCompat detector; // Used for swipe detection
 
     /**
      * This is where the sprites get drawn.
@@ -182,52 +181,7 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
 
         });
 
-
-
-
-        /*
-        * Attempt at implementing swipe detection. Code from
-        * https://stackoverflow.com/questions/13095494/how-to-detect-swipe-direction-between-left-right-and-up-down
-        * Used with OnSwipeListener class
-
-        // Get the application context
-        //credit to https://android--code.blogspot.com/2016/01/android-popup-window-example.html
-        Context mContext = getApplicationContext();
-
-        detector = new GestureDetectorCompat(mContext, onSwipeListener);
-
-        view.setOnTouchListener(this); // Couldn't figure out what to put here - Ariel
-        */
     }
-
-    /*
-    * More swipe detection code.
-    //@Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        return detector.onTouchEvent(motionEvent);
-    }
-
-    OnSwipeListener onSwipeListener = new OnSwipeListener() {
-
-        @Override
-        public boolean onSwipe(Direction direction) {
-
-            // Possible implementation
-            if (direction == Direction.left || direction == Direction.right) {
-                // Do something COOL like animation or whatever you want
-                // Refer to your view if needed using a global reference
-                return true;
-            } else if (direction == Direction.up || direction == Direction.down) {
-                // Do something COOL like animation or whatever you want
-                // Refer to your view if needed using a global reference
-                return true;
-            }
-
-            return super.onSwipe(direction);
-        }
-
-    };
-    */
 
     //part of default basic activity code
     @Override

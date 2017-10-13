@@ -5,8 +5,10 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 /*
- * Possible swipe listener class for swipe detection.
+
+ * This method is used for swipe detection.
  * Code from: https://stackoverflow.com/questions/13095494/how-to-detect-swipe-direction-between-left-right-and-up-down
+ * @author Ariel 10/6/2017
  */
 
 public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {

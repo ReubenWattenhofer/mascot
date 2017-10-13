@@ -24,10 +24,11 @@ import java.util.HashMap;
 
 /**
  * This class handles the in-game logic.
- * @author Reuben 9/25/2017
+ * @author Reuben, Ariel 10/9/2017
  */
 
 public class PresenterInGame implements IPresenterInGame {
+
 
     /**
      * Uses the view to interact with it.
@@ -43,6 +44,12 @@ public class PresenterInGame implements IPresenterInGame {
      * This is the model that the presenter talks to.
      */
     private IModel model;
+
+    /**
+     * This is the thread that processes the automated game things, like AI and animation.
+     */
+    private PresenterGameThread gameThread;
+
 
     /**
      * This stores the images to be displayed on the view.  The reason this can't be in the model
@@ -89,6 +96,13 @@ public class PresenterInGame implements IPresenterInGame {
 
         }
 
+
+        //start the game thread
+        gameThread = new PresenterGameThread();
+        gameThread.setRunning(true);
+        gameThread.start();
+
+
     }
 
     @Override
@@ -124,13 +138,14 @@ public class PresenterInGame implements IPresenterInGame {
 
     }
 
-    //TODO: create thread to update model behavior and pass image data to view
-    //we need to do this because the activity is event driven -- how are we going to update the model
-    //while we are waiting for events if we don't have a separate thread?  In other words, the "main"
-    //loop is somewhere within native Android code, where we can't reach it.  So we have to create a
-    //thread within this presenter as soon as it is created, so it can control the automatic stuff
-    //like sprite animation and AI movement.
-
+    @Override
+    public void destroyed() {
+        //end the thread
+        try {
+            gameThread.setRunning(false);                //Tells thread to stop
+            gameThread.join();                           //Removes thread from mem.
+        } catch (InterruptedException e) { }
+    }
 
     /**
      * This method handles the behavior when "up" is pressed.
