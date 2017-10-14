@@ -2,9 +2,11 @@ package com.game.cis350.mascot.interfaces.models;
 
 import com.game.cis350.mascot.models.Collidable;
 
+import java.util.ArrayList;
+
 
 /**
- * @author Reuben 10/8/2017
+ * @author Reuben, Ariel 10/11/2017
  */
 
 public interface IModel {
@@ -14,5 +16,9 @@ public interface IModel {
      */
     Collidable getMainPlayer();
 
-
+    /**
+     * Gets an arrayList of busses.
+     * @return arrayList of busses
+     */
+    ArrayList<Collidable> getBusses();
 }

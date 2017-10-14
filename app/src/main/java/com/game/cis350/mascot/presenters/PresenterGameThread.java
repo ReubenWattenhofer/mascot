@@ -39,7 +39,15 @@ class PresenterGameThread extends Thread {
 
 
     /**
+     * This is the model that the presenter talks to.
+     */
+    private IModel model;
+
+
+    /**
      * This is the constructor for the thread.
+     * @param holder handler for the SurfaceView's canvas
+     * @param gamePanel reference to our calling class
      */
     PresenterGameThread(){
 
@@ -62,6 +70,7 @@ class PresenterGameThread extends Thread {
     {
         //Update the game screen by creating a new list of images,
         //centered around the player's new location.
+        images = new ArrayList<IImage>();
 
     }
 
@@ -76,9 +85,32 @@ class PresenterGameThread extends Thread {
             //update bus/boat movement, animate all sprites in the game (or figure out which sprites
             //are in the player's view and only update those, but that's an optimization for later)
 
+
+            ArrayList<IImage> imagesToView = new ArrayList<IImage>();
+
+            // Get coordinates of player
+            int playerX = model.getMainPlayer().getX();
+            int playerY = model.getMainPlayer().getX();
+
+            for (Collidable currentBus : model.getBusses()) {
+                // Bus moves right regardless of player position
+                currentBus.setX(currentBus.getX() + 50);
+
+                // Bus moves down as player moves up
+                currentBus.setY(currentBus.getY() - model.getMainPlayer().getY());
+
+                // Create new image for each bus
+                Image i = new Image(images.get(currentBus.getCurrentFrame()), currentBus.getX(), currentBus.getY());
+                imagesToView.add(i);
+            }
+
+            // Keep player the same
+            Image j = new Image(images.get(model.getMainPlayer().getCurrentFrame()), model.getMainPlayer().getX(), model.getMainPlayer().getY());
+
             //if anything has moved or animated, pass a new list of all images to the view to display
             //TODO: list update can probably can be optimized
 
-            }
+            imagesToView.add(j);
         }
+    }
 }

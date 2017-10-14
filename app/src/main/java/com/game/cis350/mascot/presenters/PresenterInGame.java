@@ -96,12 +96,42 @@ public class PresenterInGame implements IPresenterInGame {
 
         }
 
+        // Horzontal starting position of first bus
+        int startingPosition = 500;
+
+        // How far to place busses apart (horizontally)
+        int widthApart = 100;
+
+        // Vertical position of busses
+        int row = 0;
+
+        // Set coordinates of busses
+        for(int i=0; i<model.getBusses().size(); i++){
+            model.getBusses().get(i).setX(startingPosition + widthApart*i);
+            model.getBusses().get(i).setY(0);
+
+            //get the file paths for the main player
+            filePaths = model.getBusses().get(i).getFrames();
+
+            //create the bitmaps and store them in the hashmap
+            //credit https://stackoverflow.com/questions/25034782/dynamically-choosing-drawable
+            for (String s: filePaths) {
+                try {
+                    Bitmap b = BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier(s, "drawable", "com.game.cis350.mascot"));
+                    images.put(s, b);
+                } catch (Exception e) {
+                    //TODO: do something here
+                }
+
+            }
+        }
 
         //start the game thread
-        gameThread = new PresenterGameThread();
+        /* Uncommenting this causes the app to crash :'(
+        gameThread = new PresenterGameThread(view.getSurfaceHolder(), view.getSurfaceView());
         gameThread.setRunning(true);
         gameThread.start();
-
+        */
 
     }
 
