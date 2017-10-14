@@ -106,8 +106,8 @@ public class PresenterInGame implements IPresenterInGame {
         int row = 0;
 
         // Set coordinates of busses
-        for(int i=0; i<model.getBusses().size(); i++){
-            model.getBusses().get(i).setX(startingPosition + widthApart*i);
+        for (int i = 0; i < model.getBusses().size(); i++){
+            model.getBusses().get(i).setX(startingPosition + widthApart * i);
             model.getBusses().get(i).setY(0);
 
             //get the file paths for the main player

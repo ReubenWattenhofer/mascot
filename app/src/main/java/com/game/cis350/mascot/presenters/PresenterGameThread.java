@@ -10,7 +10,10 @@ import android.view.SurfaceView;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.game.cis350.mascot.Image;
 import com.game.cis350.mascot.interfaces.IImage;
+import com.game.cis350.mascot.interfaces.models.IModel;
+import com.game.cis350.mascot.models.Collidable;
 //import com.game.cis350.mascot.views.DrawingPanel;
 
 import java.util.ArrayList;
@@ -46,11 +49,11 @@ class PresenterGameThread extends Thread {
 
     /**
      * This is the constructor for the thread.
-     * @param holder handler for the SurfaceView's canvas
-     * @param gamePanel reference to our calling class
+     * @param m model for thread to refer to
      */
-    PresenterGameThread(){
+    PresenterGameThread(final IModel m) {
 
+        model = m;
         images = new ArrayList<IImage>();
     }
 
