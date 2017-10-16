@@ -1,17 +1,11 @@
 package com.game.cis350.mascot.views;
 
 import android.content.pm.ActivityInfo;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
-//import android.support.design.widget.FloatingActionButton;
-//import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,20 +13,13 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Toast;
 
 import com.game.cis350.mascot.R;
-import com.game.cis350.mascot.interfaces.IImage;
 import com.game.cis350.mascot.interfaces.presenters.IPresenterInGame;
 import com.game.cis350.mascot.interfaces.views.IViewGame;
 import com.game.cis350.mascot.presenters.PresenterInGame;
-
-import java.util.ArrayList;
-//import android.support.v7.widget.Toolbar;
-//import android.view.View;
-
+import com.game.cis350.mascot.presenters.PresenterInfo;
 
 
 /**
@@ -53,6 +40,9 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
 //    private DrawingPanel gamePanel;
     private SurfaceView gamePanel;
 
+    /**
+     * This is the holder for the SurfaceView in the layout.
+     */
     private SurfaceHolder holder;
 
     /**
@@ -66,7 +56,7 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
     private PanelThread thread;
 
     /**
-     * used to initialize the presenter
+     * used to initialize the presenter.
      */
     private GameActivity thisActivity;
 
@@ -99,50 +89,11 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
         display.getSize(size);
 
 
-////        screenY = size.y - toolbar.getHeight();
-//
-//        // Calculate ActionBar's height
-//        //credit https://stackoverflow.com/questions/13833582/get-the-height-of-actionbar
-//        TypedValue tv = new TypedValue();
-//        int actionBarHeight = 0;
-//        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
-//            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
-//        }
-//        screenX = size.x;
-//        screenY = size.y - actionBarHeight;
-//        //This will not result in a perfect height, but will be close enough; the app won't crash
-//        //if you try to draw offscreen.
-
-
-
-        // Initialize gameView and set it as the view
-//        gamePanel = new DrawingPanel(this); //, size.x, size.y);
         gamePanel = (SurfaceView) findViewById(R.id.surfaceView);
         holder = gamePanel.getHolder();
 
-//        gamePanel.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-//                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-//
-//        screenX = gamePanel.getMeasuredWidth(); // view width
-//        screenY = gamePanel.getMeasuredHeight(); //view height
-
-        //get layout and add the game panel to it
-        //https://stackoverflow.com/questions/27128425/add-multiple-custom-views-to-layout-programmatically
-//        ViewGroup layout = (ViewGroup) findViewById(R.id.linear_layout);
-
-
-//        layout.addView(gamePanel);
-
-
-//        gamePanel.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-//            @Override
-//            public boolean onPreDraw() {
-//                gamePanel.getViewTreeObserver().removeOnPreDrawListener(this);
-//                screenX = gamePanel.getWidth();
-//                screenY = gamePanel.getHeight();
-//                return true;
-//            }
-//        });
+        //initialize PresenterInfo
+        PresenterInfo.create(this);
 
         //credit https://stackoverflow.com/questions/4142090/how-to-retrieve-the-dimensions-of-a-view
         ViewTreeObserver vto = gamePanel.getViewTreeObserver();
@@ -150,8 +101,7 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
 
             @Override
             public void onGlobalLayout() {
-//                LayerDrawable ld = (LayerDrawable) gamePanel.getBackground();
-//                ld.setLayerInset(1, 0, gamePanel.getHeight() / 2, 0, 0);
+
                 screenX = gamePanel.getWidth();
                 screenY = gamePanel.getHeight();
 
@@ -168,7 +118,17 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
                 });
 
                 //create presenter
-                presenter = new PresenterInGame(thisActivity);
+                presenter = new PresenterInGame(thisActivity, holder);
+                //start the threads for the first time; after this, the threads will be started
+                //and stopped through onResume() and onPause()
+
+                //start the presenter's thread
+                presenter.onResume();
+                //start the view thread
+//                thread = new PanelThread(holder, presenter.getLayer1(), presenter.getLayer2(), presenter.getLayer3()); //Start the thread that
+//                thread = new PanelThread(holder, presenter.getLayers()); //Start the thread that
+//                thread.setRunning(true);                                //will make calls to
+//                thread.start();                                         //onDraw()
 
                 ViewTreeObserver obs = gamePanel.getViewTreeObserver();
 
@@ -199,8 +159,8 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
                 // User chose the "Credits" item, show the app credits
 
                 //http://stacktips.com/tutorials/android/android-toast-example
-                Toast.makeText(getApplicationContext(), "Restart pressed.",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Restart pressed.",
+//                        Toast.LENGTH_SHORT).show();
 
                 presenter.pressedRestart();
                 return true;
@@ -215,46 +175,25 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
 
     @Override
     public int getScreenWidth() {
-//        gamePanel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-//        return gamePanel.getMeasuredWidth();
-
-//        if (!holder.getSurface().isValid()){
-//            return 0;
-//        }
-//        Canvas c = holder.lockCanvas();
-//        return c.getWidth();
-         return screenX; //(thread != null) ? thread.getScreenWidth() : 0;
+         return screenX;
     }
 
     @Override
     public int getScreenHeight() {
-//        gamePanel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-//        return gamePanel.getMeasuredHeight();
-
-//        if (!holder.getSurface().isValid()){
-//            return 0;
-//        }
-//        Canvas canvas = holder.lockCanvas();
-//        canvas.post(new Runnable()
-//                    {
-//                        public void run()
-//                        {
-//                            int w = canvas.getWidth();
-//                        }
-//                    }
-//        );
-//        return c.getHeight();
-        return screenY; // (thread != null) ? thread.getScreenHeight() : 0;
+        return screenY;
     }
 
     @Override
-    public void update(final ArrayList<IImage> images) {
-        thread.update(images);
-    }
+    public void restart() {
+        //this will kill the presenter and create a new instance of it
 
-//    public void update(final Point p) {
-//        thread.update(p);
-//    }
+        //first kill the thread
+        presenter.onPause();
+        //create a new presenter
+        presenter = new PresenterInGame(thisActivity, holder);
+        //start the presenter's thread
+        presenter.onResume();
+    }
 
 
     @Override
@@ -263,20 +202,34 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
 
 //        gamePanel.setWillNotDraw(false); //Allows us to use invalidate() to call onDraw()
 
-
-        thread = new PanelThread(holder); //, gamePanel); //Start the thread that
-        thread.setRunning(true);                     //will make calls to
-        thread.start();                              //onDraw()
+        if (presenter != null) {
+            //resume the presenter's thread
+            presenter.onResume();
+//            thread = new PanelThread(holder, presenter.getLayers()); //Start the thread that
+//            thread.setRunning(true);                     //will make calls to
+//            thread.start();                              //onDraw()
+        }
     }
 
 
     @Override
     protected void onPause() {
         super.onPause();
-        try {
-            thread.setRunning(false);                //Tells thread to stop
-            thread.join();                           //Removes thread from mem.
-        } catch (InterruptedException e) { }
+
+        /*
+            kill the thread if it's been created (it should be unless the app has been paused
+            before the surfaceView has been displayed)
+         */
+        //if (thread != null) {
+            //kill the presenter's thread too
+        if (presenter != null) {
+            presenter.onPause();
+//            try {
+//                thread.setRunning(false);                //Tells thread to stop
+//                thread.join();                           //Removes thread from mem.
+//            } catch (InterruptedException e) {
+//            }
+        }
     }
 
 }

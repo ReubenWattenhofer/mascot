@@ -1,6 +1,4 @@
-package com.game.cis350.mascot.interfaces;
-
-import java.util.ArrayList;
+package com.game.cis350.mascot.interfaces.models;
 
 /**
  * This interface provides guaranteed functionality for Draw objects.
@@ -25,13 +23,13 @@ public interface IDrawable {
      * This method gets all the frames of the object.
      * @return animation frames of object
      */
-    ArrayList<String> getFrames();
+    String[] getFrames();
 
     /**
      * This method sets the frames of the object.
      * @param frames animation frames
      */
-    void setFrames(ArrayList<String> frames);
+    void setFrames(String[] frames);
 
     /**
      * This method sets the x coordinate of the object.
@@ -56,5 +54,5 @@ public interface IDrawable {
      * @return y
      */
     int getY();
-    
+
 }

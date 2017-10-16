@@ -1,4 +1,4 @@
-package com.game.cis350.mascot.interfaces;
+package com.game.cis350.mascot.interfaces.models;
 
 import com.game.cis350.mascot.models.Collidable;
 
@@ -8,11 +8,6 @@ import com.game.cis350.mascot.models.Collidable;
  */
 
 public interface ICollidable {
-
-    /**
-     * This method holds the logic for movement.
-     */
-    void move();
 
     /**
      * This method checks to see if a Collidable object is colliding with

@@ -1,5 +1,6 @@
 package com.game.cis350.mascot.models;
 
+import com.game.cis350.mascot.interfaces.models.IDrawable;
 import com.game.cis350.mascot.interfaces.models.IModel;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * @author Reuben, Ariel 10/11/2017.
  */
 
-public class Model implements IModel{
+public class Model implements IModel {
     /**
      * Sample object that model would store.
      */
@@ -18,26 +19,40 @@ public class Model implements IModel{
     /**
      * Bus objects that model would store.
      */
-    ArrayList<Collidable> busses;
+    private ArrayList<Collidable> busses;
 
+    /**
+     * Grid of background sprites.
+     */
+    private IDrawable[][] background;
+
+    /**
+     * Width and height of the map in tiles.
+     */
+    private int width, height;
 
     /**
      * Constructor for the model.
      */
+    //TODO: pass in a filepath to the model so it can create a map from non-hardcoded data (low priority)
     public Model() {
-        ArrayList<String> images = new ArrayList<String>();
-        images.add("louie");
+        player = new Collidable(Animations.PLAYER, 0, 0);
 
-        ArrayList<String> busImages = new ArrayList<String>();
-        busImages.add("bus");
-
-        player = new Collidable(images, 0, 0);
-
-        busses = new ArrayList<Collidable>();
+        busses = new ArrayList<>();
 
         // Add busses
-        for(Collidable currentBus : busses) {
-            busses.add(new Collidable(busImages,0,0));
+        busses.add(new Collidable(Animations.BUS, 0, 0));
+
+        //set the dimensions of the map
+        width = 10;
+        height = 10;
+
+        //add grass tiles
+        background = new IDrawable[width][height];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                background[i][j] = new Sprite(Animations.GRASS, 0, 0);
+            }
         }
 
     }
@@ -48,5 +63,22 @@ public class Model implements IModel{
     }
 
     @Override
-    public ArrayList<Collidable> getBusses() { return busses; }
+    public ArrayList<Collidable> getBusses() {
+        return busses;
+    }
+
+    @Override
+    public IDrawable[][] getBackground() {
+        return background;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
 }

@@ -1,6 +1,6 @@
 /**
  *
- * These classes contain the components of the Mascot game.
+ * Parent folder for the Mascot game.
  * <p>
  * Game is built using the MVP architecture pattern.
  *
