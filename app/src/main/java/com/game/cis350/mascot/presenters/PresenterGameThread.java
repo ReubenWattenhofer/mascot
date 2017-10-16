@@ -1,5 +1,6 @@
 package com.game.cis350.mascot.presenters;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -7,21 +8,21 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-
+import com.game.cis350.mascot.models.Collidable;
+import com.game.cis350.mascot.models.Model;
+import com.game.cis350.mascot.interfaces.models.IModel;
 import com.game.cis350.mascot.Image;
 import com.game.cis350.mascot.interfaces.IImage;
-import com.game.cis350.mascot.interfaces.models.IModel;
-import com.game.cis350.mascot.models.Collidable;
 //import com.game.cis350.mascot.views.DrawingPanel;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This is the worker thread for the game presenter.
  * @author Reuben, Ariel 10/11/2017
  */
+
+
 
 //Most of this code comes from http://blog.danielnadeau.io/2012/01/android-canvas-beginners-tutorial.html
 class PresenterGameThread extends Thread {
@@ -32,9 +33,17 @@ class PresenterGameThread extends Thread {
     private boolean run = false;
 
     /**
+     * This stores the images to be displayed on the view.  The reason this can't be in the model
+     * is because the model would then become platform specific, which we want to avoid.  Instead,
+     * the model will store the paths to the images using String, which is native to Java.
+     * credit https://stackoverflow.com/questions/29061292/c-sharp-mvc-how-to-save-image-to-my-model
+     */
+    private HashMap<String, Bitmap> images;
+
+    /**
      * The list of images to give to the view.
      */
-    private ArrayList<IImage> images;
+    ArrayList<IImage> imagesToView;
 
     /**
      * Width and height of the canvas.
@@ -49,12 +58,15 @@ class PresenterGameThread extends Thread {
 
     /**
      * This is the constructor for the thread.
-     * @param m model for thread to refer to
+     * @param m model for presenter to talk to
      */
-    PresenterGameThread(final IModel m) {
-
+    PresenterGameThread(IModel m){
         model = m;
-        images = new ArrayList<IImage>();
+
+        //create the hashmap
+        images = new HashMap<String, Bitmap>();
+
+        imagesToView = new ArrayList<IImage>();
     }
 
     /**
@@ -73,8 +85,10 @@ class PresenterGameThread extends Thread {
     {
         //Update the game screen by creating a new list of images,
         //centered around the player's new location.
-        images = new ArrayList<IImage>();
+        imagesToView = new ArrayList<IImage>();
 
+        //create the hashmap
+        images = new HashMap<String, Bitmap>();
     }
 
 
@@ -95,6 +109,7 @@ class PresenterGameThread extends Thread {
             int playerX = model.getMainPlayer().getX();
             int playerY = model.getMainPlayer().getX();
 
+
             for (Collidable currentBus : model.getBusses()) {
                 // Bus moves right regardless of player position
                 currentBus.setX(currentBus.getX() + 50);
@@ -114,6 +129,7 @@ class PresenterGameThread extends Thread {
             //TODO: list update can probably can be optimized
 
             imagesToView.add(j);
+
         }
     }
 }

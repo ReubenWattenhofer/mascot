@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 /**
  * This interface guarantees functionality for the in-game View.
- * @author Reuben, Ariel 10/12/2017
+ * @author Reuben 10/12/2017
  */
 
 public interface IViewGame {
@@ -27,18 +27,6 @@ public interface IViewGame {
      * @return screen height
      */
     int getScreenHeight();
-
-    /**
-     * This method gets the surface view of the game view.
-     * @return surface view
-     */
-    SurfaceView getSurfaceView();
-
-    /**
-     * This method gets the surface holder of the game view.
-     * @return surface holder
-     */
-    SurfaceHolder getSurfaceHolder();
 
     /**
      * This method updates the view with the sprites and positions to draw.

@@ -110,7 +110,7 @@ public class PresenterInGame implements IPresenterInGame {
             model.getBusses().get(i).setX(startingPosition + widthApart * i);
             model.getBusses().get(i).setY(0);
 
-            //get the file paths for the main player
+            //get the file paths for the bus
             filePaths = model.getBusses().get(i).getFrames();
 
             //create the bitmaps and store them in the hashmap
@@ -127,11 +127,10 @@ public class PresenterInGame implements IPresenterInGame {
         }
 
         //start the game thread
-        /* Uncommenting this causes the app to crash :'(
-        gameThread = new PresenterGameThread(view.getSurfaceHolder(), view.getSurfaceView());
+        gameThread = new PresenterGameThread(model);
         gameThread.setRunning(true);
         gameThread.start();
-        */
+
 
     }
 
