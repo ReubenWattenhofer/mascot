@@ -1,0 +1,37 @@
+package com.game.cis350.mascot;
+import static org.junit.Assert.*;
+import org.junit.Test;
+import java.util.ArrayList;
+
+import com.game.cis350.mascot.models.Collidable;
+import com.game.cis350.mascot.models.Model;
+
+/**
+ * Created by Ally Stoll on 10/16/2017.
+ */
+
+public class testModel {
+   // @Test
+   // public void testMainPlayer(){
+    //    Model m = new Model();
+     //   assertEquals(m.getMainPlayer(),);
+   // }
+    @Test
+    public void testWidth(){
+        Model m = new Model();
+        assertEquals(m.getWidth(), 3);
+    }
+    @Test
+    public void testHeight(){
+        Model m = new Model();
+        //m.getHeight(4);
+        assertEquals(m.getHeight(), 4);
+    }
+    @Test
+    public void testBusses(){
+        ArrayList<String> busses = new ArrayList<Collidable>(busses));
+        Model m = new Model();
+        assertEquals(m.getBusses(),busses);
+    }
+    
+}
