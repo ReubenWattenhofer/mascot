@@ -4,15 +4,18 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-/*
+/**
 
  * This method is used for swipe detection.
  * Code from: https://stackoverflow.com/questions/13095494/how-to-detect-swipe-direction-between-left-right-and-up-down
  * @author Ariel 10/6/2017
- */
+ **/
 
 public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
 
+    /**
+     * Tag.
+     */
     private static final String TAG = "OnSwipeListener";
 
     @Override
@@ -43,12 +46,15 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
         float x2 = e2.getX();
         float y2 = e2.getY();
 
-        Direction direction = getDirection(x1,y1,x2,y2);
+        Direction direction = getDirection(x1, y1, x2, y2);
         return onSwipe(direction);
     }
 
-    /** Override this method. The Direction enum will tell you how the user swiped. */
-    public boolean onSwipe(final Direction direction){
+    /** Override this method. The Direction enum will tell you how the user swiped.
+     * @param direction direction
+     * @return true if swipe
+     **/
+    public boolean onSwipe(final Direction direction) {
         return false;
     }
 
@@ -61,7 +67,7 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
      * @param y2 the y position of the second point
      * @return the direction
      */
-    public Direction getDirection(final float x1, final float y1, final float x2, final float y2){
+    public Direction getDirection(final float x1, final float y1, final float x2, final float y2) {
         double angle = getAngle(x1, y1, x2, y2);
         return Direction.get(angle);
     }
@@ -85,10 +91,25 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
     }
 
 
-    public enum Direction{
+    /**
+     * Enum for directions.
+     */
+    public enum Direction {
+        /**
+         * Up.
+         */
         up,
+        /**
+         * Down.
+         */
         down,
+        /**
+         * Left.
+         */
         left,
+        /**
+         * Right.
+         */
         right;
 
         /**
@@ -104,19 +125,16 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
          * @return the direction of an angle
          */
         public static Direction get(final double angle) {
-            if (inRange(angle, 45, 135)){
+            if (inRange(angle, 45, 135)) {
                 Log.d(TAG, "UP");
                 return Direction.up;
-            }
-            else if (inRange(angle, 0, 45) || inRange(angle, 315, 360)){
+            } else if (inRange(angle, 0, 45) || inRange(angle, 315, 360)) {
                 Log.d(TAG, "RIGHT");
                 return Direction.right;
-            }
-            else if (inRange(angle, 225, 315)){
+            } else if (inRange(angle, 225, 315)) {
                 Log.d(TAG, "DOWN");
                 return Direction.down;
-            }
-            else{
+            } else {
                 Log.d(TAG, "LEFT");
                 return Direction.left;
             }
@@ -129,7 +147,7 @@ public class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
          * @param end the final bound
          * @return returns true if the given angle is in the interval [init, end).
          */
-        private static boolean inRange(final double angle, final float init, final float end){
+        private static boolean inRange(final double angle, final float init, final float end) {
             return (angle >= init) && (angle < end);
         }
     }

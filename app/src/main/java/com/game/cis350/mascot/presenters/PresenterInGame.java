@@ -140,7 +140,7 @@ public class PresenterInGame implements IPresenterInGame {
         int y = (int) event.getY();
 
           if (previous == null || previous.getAction() == MotionEvent.ACTION_UP) {
-            if (Math.abs((double) (x - view.getScreenWidth() / 2)) - Math.abs((double) y - view.getScreenHeight() / 2) > 0) {
+            if (Math.abs(((double) x - (double) view.getScreenWidth() / 2)) - Math.abs((double) y - (double) view.getScreenHeight() / 2) > 0) {
                 if (x <= view.getScreenWidth() / 2) {
                     pressedLeft();
                 } else if (x > view.getScreenWidth() / 2) {

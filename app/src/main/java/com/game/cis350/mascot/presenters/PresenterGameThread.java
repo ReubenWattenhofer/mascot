@@ -58,10 +58,10 @@ class PresenterGameThread extends Thread {
      */
     private PanelDraw panel;
 
-    /**
+    /*
      * Tile width and height of screen.
      */
-    private int tileWidth, tileHeight;
+//    private int tileWidth, tileHeight;
 
     /**
      * Width and height and center of screen in pixels.
@@ -95,8 +95,8 @@ class PresenterGameThread extends Thread {
           model = m;
 
           //calculate tile tileWidth and tileHeight
-          tileWidth = sW / tileSize;
-          tileHeight = sH / tileSize;
+//          tileWidth = sW / tileSize;
+//          tileHeight = sH / tileSize;
           this.tileSize = tileSize;
 
           width = sW;
@@ -112,9 +112,9 @@ class PresenterGameThread extends Thread {
 
           //separate the layers for later
           try {
-              layer1 = layers[0];
-              layer2 = layers[1];
-              layer3 = layers[2];
+              layer1 = this.layers[0];
+              layer2 = this.layers[1];
+              layer3 = this.layers[2];
           } catch (Exception e) {
               //TODO: exception if we weren't passed a three element array
           }
@@ -187,7 +187,9 @@ class PresenterGameThread extends Thread {
 
                 for (int i = top; i <= bottom; i++) {
                     for (int j = left; j <= right; j++) {
-                        t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + back[i][j].getX(), yOffset + back[i][j].getY());
+//                        t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + back[i][j].getX(), yOffset + back[i][j].getY());
+                        //since they're in a grid, they should all be spaced evenly, so we know exactly where they are; this is for performance
+                        t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + j * tileSize, yOffset + i * tileSize);
                         layer1.add(t);
                     }
                 }
