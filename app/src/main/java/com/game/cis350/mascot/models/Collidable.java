@@ -11,6 +11,8 @@ import com.game.cis350.mascot.interfaces.models.IDrawable;
 public class Collidable extends Sprite implements IDrawable,
         ICollidable {
 
+    private CollideTypes collideType;
+    private Direction direction;
     /**
      * Constructor of the class.
      *
@@ -20,6 +22,8 @@ public class Collidable extends Sprite implements IDrawable,
      */
     public Collidable(final String[] animation, final int x, final int y) {
         super(animation, x, y);
+        collideType = null;
+        direction = null;
     }
 
     /**
@@ -30,6 +34,27 @@ public class Collidable extends Sprite implements IDrawable,
     @Override
     public boolean collideWith(final Collidable other) {
         return false;
+    }
+
+    @Override
+    public void setCollideType(CollideTypes collideType) {
+        this.collideType = collideType;
+    }
+
+    @Override
+    public CollideTypes getCollideType() {
+        return collideType;
+    }
+
+    @Override
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+
+    }
+
+    @Override
+    public Direction getDirection() {
+        return direction;
     }
 
 
