@@ -1,7 +1,8 @@
 package com.game.cis350.mascot.models;
 
 /**
- * Created by Filipe on 01/11/2017.
+ * These are the different directions that a Collidable object can have.
+ * @author Filipe 11/03/2017
  */
 
 public enum Direction {
