@@ -168,6 +168,31 @@ class PresenterGameThread extends Thread {
             //update bus/boat movement, animate all sprites in the game (or figure out which sprites
             //are in the player's view and only update those, but that's an optimization for later)
 
+            //move the player if he should be moved
+            Collidable player = model.getMainPlayer();
+            if (player.getStepCounter() > 0) {
+                //decrement the counter
+                player.decrementStepCounter();
+                switch (player.getDirection()) {
+                    case up:
+                        player.setY(player.getY() - player.getSpeed());
+                        break;
+                    case down:
+                        player.setY(player.getY() + player.getSpeed());
+                        break;
+                    case left:
+                        player.setX(player.getX() - player.getSpeed());
+                        break;
+                    case right:
+                        player.setX(player.getX() + player.getSpeed());
+                        break;
+                    default:
+                        break;
+                }
+                //update the screen view bounds since the player moved
+                update();
+            }
+
 //            synchronized (layers) {
 
 //            //put background sprites in layer1
@@ -221,6 +246,7 @@ class PresenterGameThread extends Thread {
 
             //draw to the screen now
             panel.draw();
+
         }
     }
 }

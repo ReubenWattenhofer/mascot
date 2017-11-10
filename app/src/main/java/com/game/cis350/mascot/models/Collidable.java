@@ -12,7 +12,19 @@ public class Collidable extends Sprite implements IDrawable,
         ICollidable {
 
     private CollideTypes collideType;
+    /**
+     * Direction of the object's movement.
+     */
     private Direction direction;
+    /**
+     * Speed of the objects movement.
+     */
+    private int speed;
+    /**
+     * Steps before the object stops, use -1 to disregard.
+     */
+    private int steps, stepCounter;
+
     /**
      * Constructor of the class.
      *
@@ -24,7 +36,11 @@ public class Collidable extends Sprite implements IDrawable,
         super(animation, x, y);
         collideType = null;
         direction = null;
+        speed = 0;
+        steps = -1;
+        stepCounter = 0;
     }
+
 
     /**
      * This method checks for collision with another Collidable object.
@@ -37,7 +53,7 @@ public class Collidable extends Sprite implements IDrawable,
     }
 
     @Override
-    public void setCollideType(CollideTypes collideType) {
+    public void setCollideType(final CollideTypes collideType) {
         this.collideType = collideType;
     }
 
@@ -47,7 +63,7 @@ public class Collidable extends Sprite implements IDrawable,
     }
 
     @Override
-    public void setDirection(Direction direction) {
+    public void setDirection(final Direction direction) {
         this.direction = direction;
 
     }
@@ -55,6 +71,41 @@ public class Collidable extends Sprite implements IDrawable,
     @Override
     public Direction getDirection() {
         return direction;
+    }
+
+    @Override
+    public void setSpeed(final int speed) {
+        this.speed = speed;
+    }
+
+    @Override
+    public int getSpeed() {
+        return speed;
+    }
+
+    @Override
+    public void setSteps(final int steps) {
+        this.steps = steps;
+    }
+
+    @Override
+    public int getSteps() {
+        return steps;
+    }
+
+    @Override
+    public void setStepCounter(final int counter) {
+        stepCounter = counter;
+    }
+
+    @Override
+    public void decrementStepCounter() {
+        stepCounter = (stepCounter <= 0) ? 0 : stepCounter - 1;
+    }
+
+    @Override
+    public int getStepCounter() {
+        return stepCounter;
     }
 
 
