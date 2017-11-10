@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements IViewMain {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 
         // Inflate the custom layout/view
-        View creditsView = inflater.inflate(R.layout.credits, null);
+        final View creditsView = inflater.inflate(R.layout.credits, null);
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -174,6 +175,15 @@ public class MainActivity extends AppCompatActivity implements IViewMain {
         int mContainerPositionY = coords[1] + mainLayout.getHeight();
         creditsWindow.showAtLocation(mainLayout, 0, mContainerPositionX, mContainerPositionY);
 
+        // credit to https://www.youtube.com/watch?v=wxqgtEewdfo
+        //this will close the popup window when the screen is pressed
+        creditsView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View view, final MotionEvent motionEvent) {
+                creditsWindow.dismiss();
+                return true;
+            }
+        });
     }
 
     @Override
