@@ -24,6 +24,11 @@ public abstract class PresenterInfo {
     private static HashMap<String, Bitmap> images;
 
     /**
+     * Step number for mascot.
+     */
+    public static final int STEPS = 6;
+
+    /**
      * This initializes the variables.
      * @param context context needed to create bitmaps
      */
@@ -49,6 +54,8 @@ public abstract class PresenterInfo {
         for (String s: filePaths) {
             try {
                 Bitmap temp = BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier(s, "drawable", "com.game.cis350.mascot"));
+                temp = Bitmap.createScaledBitmap(temp, (((int) temp.getWidth() / STEPS) * STEPS), (((int) temp.getHeight() / STEPS) * STEPS), false);
+
                 images.put(s, temp);
             } catch (Exception e) {
                 //TODO: do something here

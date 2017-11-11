@@ -20,11 +20,6 @@ public class PanelDraw {
     private SurfaceHolder surfaceHolder;
 
     /**
-     * This will kill the thread if set to false.
-     */
-    private boolean run = false;
-
-    /**
      * Tint to apply to the sprites.
      * credit http://gamecodeschool.com/android/coding-a-space-invaders-game/
      */
@@ -55,9 +50,9 @@ public class PanelDraw {
         this.layers = layers;
 
         try {
-            layer1 = layers[0];
-            layer2 = layers[1];
-            layer3 = layers[2];
+            layer1 = this.layers[0];
+            layer2 = this.layers[1];
+            layer3 = this.layers[2];
         } catch (Exception e) {
             //TODO: exception if we weren't passed a three element array
         }

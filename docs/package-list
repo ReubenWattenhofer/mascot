@@ -1,0 +1,8 @@
+com.game.cis350.mascot
+com.game.cis350.mascot.interfaces
+com.game.cis350.mascot.interfaces.models
+com.game.cis350.mascot.interfaces.presenters
+com.game.cis350.mascot.interfaces.views
+com.game.cis350.mascot.models
+com.game.cis350.mascot.presenters
+com.game.cis350.mascot.views

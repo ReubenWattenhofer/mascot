@@ -43,7 +43,7 @@ class PanelThread extends Thread {
      */
     //read about volatile here http://tutorials.jenkov.com/java-concurrency/volatile.html
 //    private volatile HashMap<Object, IImage> layer1;
-    private volatile ArrayList<IImage>[] layers;
+    private ArrayList<IImage>[] layers;
 
     /**
      * each layer in layers array.
@@ -81,9 +81,9 @@ class PanelThread extends Thread {
 //        this.layer2 = layer2;
 //        this.layer3 = layer3;
         try {
-            layer1 = layers[0];
-            layer2 = layers[1];
-            layer3 = layers[2];
+            layer1 = this.layers[0];
+            layer2 = this.layers[1];
+            layer3 = this.layers[2];
         } catch (Exception e) {
             //TODO: exception if we weren't passed a three element array
         }

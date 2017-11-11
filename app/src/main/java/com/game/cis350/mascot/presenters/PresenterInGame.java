@@ -11,6 +11,8 @@ import com.game.cis350.mascot.interfaces.models.IDrawable;
 import com.game.cis350.mascot.interfaces.models.IModel;
 import com.game.cis350.mascot.interfaces.presenters.IPresenterInGame;
 import com.game.cis350.mascot.interfaces.views.IViewGame;
+import com.game.cis350.mascot.models.Collidable;
+import com.game.cis350.mascot.models.Direction;
 import com.game.cis350.mascot.models.Model;
 
 import java.util.ArrayList;
@@ -86,8 +88,8 @@ public class PresenterInGame implements IPresenterInGame {
 
         //create the model
         model = new Model();
-        model.getMainPlayer().setX(view.getScreenWidth() / 2 - 13);
-        model.getMainPlayer().setY(view.getScreenHeight() / 2 - 13);
+        model.getMainPlayer().setX(0); //view.getScreenWidth() / 2 - 13);
+        model.getMainPlayer().setY(0); //view.getScreenHeight() / 2 - 13);
         //TODO: set the model animations here rather than in the model constructor?
 
         //create the hashmap
@@ -100,7 +102,24 @@ public class PresenterInGame implements IPresenterInGame {
 
         //get the tile size
         Bitmap b = BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier("grass", "drawable", "com.game.cis350.mascot"));
+//        double difference = b.getWidth() - (((int) b.getWidth() / 6) * 6);
+//        if (difference != 0) {}
+
+        int steps = PresenterInfo.STEPS;
+        //scale the bitmaps so that they're a factor of the mascot's step number
+        b = Bitmap.createScaledBitmap(b, (((int) b.getWidth() / steps) * steps), (((int) b.getHeight() / steps) * steps), false);
         tileSize = b.getWidth();
+
+
+        /*
+          set the mascot's step number to some number
+          (must be a factor of the tile width or you'll get misalignment with the tiles at some point)
+         */
+        model.getMainPlayer().setSteps(steps);
+        //set the mascot's speed based on the tile width (tiles should be square)
+        model.getMainPlayer().setSpeed(tileSize / steps);
+
+        //TODO: set bus and boat speed based on tile width
 
         // Horzontal starting position of first bus
         int startingPosition = 500;
@@ -140,7 +159,7 @@ public class PresenterInGame implements IPresenterInGame {
         int y = (int) event.getY();
 
           if (previous == null || previous.getAction() == MotionEvent.ACTION_UP) {
-            if (Math.abs((double) (x - view.getScreenWidth() / 2)) - Math.abs((double) y - view.getScreenHeight() / 2) > 0) {
+            if (Math.abs(((double) x - (double) view.getScreenWidth() / 2)) - Math.abs((double) y - (double) view.getScreenHeight() / 2) > 0) {
                 if (x <= view.getScreenWidth() / 2) {
                     pressedLeft();
                 } else if (x > view.getScreenWidth() / 2) {
@@ -190,37 +209,52 @@ public class PresenterInGame implements IPresenterInGame {
      * This method handles the behavior when "up" is pressed.
      */
     private void pressedUp() {
-        //TODO: replace with a notification to the thread that the player is moving up
-        model.getMainPlayer().setY(model.getMainPlayer().getY() - 50);
-        //TODO: once the player is done moving, update should be called -- this method should be private
-        gameThread.update();
+        Collidable player = model.getMainPlayer();
+        if (player.getStepCounter() <= 0) {
+            player.setDirection(Direction.up);
+            player.setStepCounter(player.getSteps());
+        }
+//        model.getMainPlayer().setY(model.getMainPlayer().getY() - 50);
+//        gameThread.update();
     }
 
     /**
      * This method handles the behavior when "down" is pressed.
      */
     private void pressedDown() {
-        //TODO: replace with a notification to the thread that the player is moving down
-       model.getMainPlayer().setY(model.getMainPlayer().getY() + 50);
-       gameThread.update();
+        Collidable player = model.getMainPlayer();
+        if (player.getStepCounter() <= 0) {
+            player.setDirection(Direction.down);
+            player.setStepCounter(player.getSteps());
+        }
+//       model.getMainPlayer().setY(model.getMainPlayer().getY() + 50);
+//       gameThread.update();
     }
 
     /**
      * This method handles the behavior when "left" is pressed.
      */
     private void pressedLeft() {
-        //TODO: replace with a notification to the thread that the player is moving left
-        model.getMainPlayer().setX(model.getMainPlayer().getX() - 50);
-        gameThread.update();
+        Collidable player = model.getMainPlayer();
+        if (player.getStepCounter() <= 0) {
+            player.setDirection(Direction.left);
+            player.setStepCounter(player.getSteps());
+        }
+//        model.getMainPlayer().setX(model.getMainPlayer().getX() - 50);
+//        gameThread.update();
     }
 
     /**
      * This method handles the behavior when "right" is pressed.
      */
     private void pressedright() {
-        //TODO: replace with a notification to the thread that the player is moving right
-        model.getMainPlayer().setX(model.getMainPlayer().getX() + 50);
-        gameThread.update();
+        Collidable player = model.getMainPlayer();
+        if (player.getStepCounter() <= 0) {
+            player.setDirection(Direction.right);
+            player.setStepCounter(player.getSteps());
+        }
+//        model.getMainPlayer().setX(model.getMainPlayer().getX() + 50);
+//        gameThread.update();
 
     }
 }

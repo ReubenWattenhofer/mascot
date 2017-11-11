@@ -2,6 +2,7 @@ package com.game.cis350.mascot.models;
 
 import com.game.cis350.mascot.interfaces.models.IDrawable;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 
@@ -16,7 +17,7 @@ public class Sprite implements IDrawable {
      * Stores the list of sprites to loop through.
      */
     private String[] animation;
-
+    private double animationDelay;
     /**
      * This is the frame of the animation that the sprite is currently on.
      */
@@ -34,10 +35,11 @@ public class Sprite implements IDrawable {
      * @param y y coordinate
      */
     public Sprite(final String[] animation, final int x, final int y) {
-        this.animation = animation;
+        this.animation = animation.clone();
         this.x = x;
         this.y = y;
 
+        animationDelay = (double) 1/60;
         frame = 0;
         maxFrame = animation.length - 1;
     }
@@ -57,12 +59,12 @@ public class Sprite implements IDrawable {
 
     @Override
     public String[] getFrames() {
-        return animation;
+        return animation.clone();
     }
 
     @Override
     public void setFrames(final String[] frames) {
-        animation = frames;
+        animation = frames.clone();
     }
 
     @Override
@@ -97,7 +99,7 @@ public class Sprite implements IDrawable {
         }
 
         Sprite sprite = (Sprite) o;
-        return Objects.equals(animation, sprite.animation)
+        return Arrays.equals(animation, sprite.animation)
                 && frame == sprite.frame
                 && maxFrame == sprite.maxFrame
                 && x == sprite.x
