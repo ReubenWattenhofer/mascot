@@ -9,14 +9,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
 import com.game.cis350.mascot.presenters.PresenterMain;
 import com.game.cis350.mascot.R;
@@ -44,9 +47,14 @@ public class MainActivity extends AppCompatActivity implements IViewMain {
     private PopupWindow creditsWindow;
 
     /**
-     * Main layout, used to anchor popup window.
+     * Layout of toolbar, used to anchor popup window.
      */
     private View mainLayout;
+
+    /**
+     * Relative layout of screen, used to get width/height.
+     */
+    private RelativeLayout screen;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -61,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements IViewMain {
         setContentView(R.layout.activity_main);
 //        mainLayout = findViewById(android.R.id.toolbar2);
         mainLayout = findViewById(R.id.toolbar2);
+        screen = (RelativeLayout) findViewById(R.id.relative);
 
         //set up buttons
         Button play = (Button) findViewById(R.id.button);
@@ -155,6 +164,9 @@ public class MainActivity extends AppCompatActivity implements IViewMain {
                 focusable
         );
 
+        //credit to https://stackoverflow.com/questions/9247792/how-to-make-animation-for-popup-window-in-android
+        creditsWindow.setAnimationStyle(R.style.AnimationPopup);
+
         // Set an elevation value for popup window
         // Call requires API level 21
         if (Build.VERSION.SDK_INT >= 21) {
@@ -166,13 +178,14 @@ public class MainActivity extends AppCompatActivity implements IViewMain {
         //and https://stackoverflow.com/questions/15862052/get-the-measures-of-popup-window
         int[] coords = new int[2];
 
+
         mainLayout.getLocationInWindow(coords);
 
         creditsView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
-        int mContainerPositionX = coords[0] + 5; // + mainLayout.getWidth() - creditsView.getMeasuredWidth();
-        int mContainerPositionY = coords[1] + mainLayout.getHeight();
+        int mContainerPositionX = coords[0] + mainLayout.getWidth() / 2 - creditsView.getMeasuredWidth() / 2;
+        int mContainerPositionY = coords[1] + screen.getHeight() / 2 - creditsView.getMeasuredHeight() / 2;
         creditsWindow.showAtLocation(mainLayout, 0, mContainerPositionX, mContainerPositionY);
 
         // credit to https://www.youtube.com/watch?v=wxqgtEewdfo

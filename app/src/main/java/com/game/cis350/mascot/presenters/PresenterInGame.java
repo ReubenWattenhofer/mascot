@@ -149,8 +149,20 @@ public class PresenterInGame implements IPresenterInGame {
 
     @Override
     public void pressedRestart() {
+        //dismiss any open windows
+        view.dismissWindows();
         //this will kill the presenter and create a new instance of it
         view.restart();
+    }
+
+    @Override
+    public void pressedQuit() {
+        //kill the thread
+        onPause();
+        //dismiss any open windows
+        view.dismissWindows();
+        //exit the game and return to the main menu
+        view.quit();
     }
 
     @Override
@@ -158,20 +170,22 @@ public class PresenterInGame implements IPresenterInGame {
         int x = (int) event.getX();
         int y = (int) event.getY();
 
-          if (previous == null || previous.getAction() == MotionEvent.ACTION_UP) {
-            if (Math.abs(((double) x - (double) view.getScreenWidth() / 2)) - Math.abs((double) y - (double) view.getScreenHeight() / 2) > 0) {
-                if (x <= view.getScreenWidth() / 2) {
-                    pressedLeft();
-                } else if (x > view.getScreenWidth() / 2) {
-                    pressedright();
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//            if (previous == null || previous.getAction() != MotionEvent.ACTION_UP) {
+                if (Math.abs(((double) x - (double) view.getScreenWidth() / 2)) - Math.abs((double) y - (double) view.getScreenHeight() / 2) > 0) {
+                    if (x <= view.getScreenWidth() / 2) {
+                        pressedLeft();
+                    } else if (x > view.getScreenWidth() / 2) {
+                        pressedright();
+                    }
+                } else {
+                    if (y <= view.getScreenHeight() / 2) {
+                        pressedUp();
+                    } else if (y > view.getScreenHeight() / 2) {
+                        pressedDown();
+                    }
                 }
-            } else {
-                if (y <= view.getScreenHeight() / 2) {
-                    pressedUp();
-                } else if (y > view.getScreenHeight() / 2) {
-                    pressedDown();
-                }
-            }
+//            }
         }
 
         previous = event;
@@ -227,6 +241,8 @@ public class PresenterInGame implements IPresenterInGame {
             player.setDirection(Direction.down);
             player.setStepCounter(player.getSteps());
         }
+
+//        view.showWin();
 //       model.getMainPlayer().setY(model.getMainPlayer().getY() + 50);
 //       gameThread.update();
     }
@@ -240,6 +256,7 @@ public class PresenterInGame implements IPresenterInGame {
             player.setDirection(Direction.left);
             player.setStepCounter(player.getSteps());
         }
+//        view.showLose();
 //        model.getMainPlayer().setX(model.getMainPlayer().getX() - 50);
 //        gameThread.update();
     }

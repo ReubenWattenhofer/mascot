@@ -24,4 +24,25 @@ public interface IViewGame {
      */
     void restart();
 
+    /**
+     * This method shows the win screen.
+     */
+    void showWin();
+
+    /**
+     * This method shows the lose screen.
+     */
+    void showLose();
+
+    /**
+     * This method dismisses any open windows within the game.
+     */
+    void dismissWindows();
+
+    /**
+     * This method exits the game view.
+     */
+    void quit();
+
+
 }

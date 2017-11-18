@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- http://www.compiletimerror.com/2014/03/android-button-selector-tutorial-with.html -->
+    <item android:state_pressed="true" android:drawable="@drawable/pressed" />
+    <item android:drawable="@drawable/normal" />
+</selector>
