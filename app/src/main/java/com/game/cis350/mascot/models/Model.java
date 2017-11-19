@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 /**
  * This class maintains the state and behavior of the game components.
- * @author Reuben, Ariel 10/11/2017.
+ * @author Reuben, Ariel 11/19/2017.
  */
 
 public class Model implements IModel {
@@ -20,6 +20,11 @@ public class Model implements IModel {
      * Bus objects that model would store.
      */
     private ArrayList<Collidable> busses;
+
+    /**
+     * Boat objects that model would store.
+     */
+    private ArrayList<Collidable> boats;
 
     /**
      * Grid of background sprites.
@@ -43,15 +48,27 @@ public class Model implements IModel {
         // Add busses
         busses.add(new Collidable(Animations.BUS, 0, 0));
 
+        boats = new ArrayList<>();
+
+        // Add boats
+        boats.add(new Collidable(Animations.BOAT, 0, 0));
+
         //set the dimensions of the map
         width = 10;
         height = 10;
 
-        //add grass tiles
+        //add background tiles for grass
         background = new IDrawable[width][height];
-        for (int i = 0; i < height; i++) {
+        for (int i = 0; i < height/2; i++) {
             for (int j = 0; j < width; j++) {
                 background[i][j] = new Sprite(Animations.GRASS, 0, 0);
+            }
+        }
+
+        //add background tiles for water
+        for (int i = height/2; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                background[i][j] = new Sprite(Animations.WATER, 0, 0);
             }
         }
 
@@ -65,6 +82,11 @@ public class Model implements IModel {
     @Override
     public ArrayList<Collidable> getBusses() {
         return busses;
+    }
+
+    @Override
+    public ArrayList<Collidable> getBoats() {
+        return boats;
     }
 
     @Override

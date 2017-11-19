@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 /**
  * This class handles the in-game logic.
- * @author Reuben, Ariel 10/9/2017
+ * @author Reuben, Ariel 11/19/2017
  */
 
 public class PresenterInGame implements IPresenterInGame {
@@ -121,22 +121,38 @@ public class PresenterInGame implements IPresenterInGame {
 
         //TODO: set bus and boat speed based on tile width
 
-        // Horzontal starting position of first bus
-        int startingPosition = 500;
+        // Horzontal starting position of first bus in tiles
+        int startingPositionBus = 1;
 
-        // How far to place busses apart (horizontally)
-        int widthApart = 100;
+        // How far to place busses apart in tiles (horizontally)
+        int widthApartBus = 1;
 
-        // Vertical position of busses
-        int row = 0;
+        // Vertical position of busses in tiles
+        int rowBus = 1;
 
         // Set coordinates of busses
         for (int i = 0; i < model.getBusses().size(); i++) {
-            model.getBusses().get(i).setX(startingPosition + widthApart * i);
-            model.getBusses().get(i).setY(0);
+            model.getBusses().get(i).setX((startingPositionBus*tileSize) + (widthApartBus * i * tileSize));
+            model.getBusses().get(i).setY(rowBus*tileSize);
         }
 
-        //create the grass tiles
+
+        // Horzontal starting position of first boat in tiles
+        int startingPositionBoat = 2;
+
+        // How far to place boats apart in tiles (horizontally)
+        int widthApartBoat = 1;
+
+        // Vertical position of boats in tiles
+        int rowBoat = 7;
+
+        // Set coordinates of boats
+        for (int i = 0; i < model.getBoats().size(); i++) {
+            model.getBoats().get(i).setX((startingPositionBoat*tileSize) + (widthApartBoat * i * tileSize));
+            model.getBoats().get(i).setY(rowBoat*tileSize);
+        }
+
+        //create the background tiles
         IDrawable[][] back = model.getBackground();
         for (int i = 0; i < model.getHeight(); i++) {
             for (int j = 0; j < model.getWidth(); j++) {

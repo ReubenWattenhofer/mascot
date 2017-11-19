@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 /**
  * This class holds presenter information that should persist for the whole game.
- * @author Reuben 10/15/2017
+ * @author Reuben, Ariel 11/19/2017
  */
 
 public abstract class PresenterInfo {
@@ -44,8 +44,18 @@ public abstract class PresenterInfo {
         for (String s : Animations.BUS) {
             filePaths.add(s);
         }
+
+        //get the file paths for the boats
+        for (String s : Animations.BOAT) {
+            filePaths.add(s);
+        }
         //get the file paths for the grass
         for (String s : Animations.GRASS) {
+            filePaths.add(s);
+        }
+
+        //get the file paths for the water
+        for (String s : Animations.WATER) {
             filePaths.add(s);
         }
 

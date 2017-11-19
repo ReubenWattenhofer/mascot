@@ -8,6 +8,7 @@ import com.game.cis350.mascot.models.Collidable;
 import com.game.cis350.mascot.interfaces.models.IModel;
 import com.game.cis350.mascot.Image;
 import com.game.cis350.mascot.interfaces.IImage;
+import com.game.cis350.mascot.models.CollideTypes;
 import com.game.cis350.mascot.views.PanelDraw;
 //import com.game.cis350.mascot.views.DrawingPanel;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 
 /**
  * This is the worker thread for the game presenter.
- * @author Reuben, Ariel 10/11/2017
+ * @author Reuben, Ariel 11/19/2017
  */
 
 
@@ -216,6 +217,24 @@ class PresenterGameThread extends Thread {
                         //since they're in a grid, they should all be spaced evenly, so we know exactly where they are; this is for performance
                         t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + j * tileSize, yOffset + i * tileSize);
                         layer1.add(t);
+
+                        /*
+                        // Check if player is on background tile
+                        if(i == playerX && j == playerY ){
+
+                            // Check if player drowns
+                            if(back[i][j].getCollideType() == CollideTypes.crushes){
+                                // Game lost
+                                //view.showLose();
+                            }
+
+                            // Check if player wins
+                            if(back[i][j].getCollideType() == CollideTypes.win){
+                                // Game won
+                                //view.showWin();
+                            }
+                        }
+                        */
                     }
                 }
 
@@ -227,20 +246,35 @@ class PresenterGameThread extends Thread {
 
             //put buses/boats in layer2
 
-
-
             for (Collidable currentBus : model.getBusses()) {
                 // Bus moves right regardless of player position
                 currentBus.setX(currentBus.getX() + 1);
 
-                // Bus moves down as player moves up
-//                currentBus.setY(currentBus.getY() - model.getMainPlayer().getY());
-
                 // Create new image for each bus
                 Image i = new Image(images.get(currentBus.getCurrentFrame()), xOffset + currentBus.getX(), yOffset + currentBus.getY());
                 layer2.add(i);
+
+                // Check if player is hit by bus
+                if(currentBus.getX() == player.getX() && currentBus.getY() == player.getY()){
+                    // Game lost
+                    //view.showLose();
+                }
             }
 
+
+            for (Collidable currentBoat : model.getBoats()) {
+                // Boat moves right regardless of player position
+                currentBoat.setX(currentBoat.getX() + 1);
+
+                // Create new image for each boat
+                Image i = new Image(images.get(currentBoat.getCurrentFrame()), xOffset + currentBoat.getX(), yOffset + currentBoat.getY());
+                layer2.add(i);
+
+                // Check if player is on boat
+                if(currentBoat.getX() == player.getX() && currentBoat.getY() == player.getY()){
+                    // Player moves with boat
+                }
+            }
 
 //            }
 
@@ -250,3 +284,4 @@ class PresenterGameThread extends Thread {
         }
     }
 }
+
