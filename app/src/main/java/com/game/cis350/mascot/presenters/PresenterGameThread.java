@@ -214,8 +214,10 @@ class PresenterGameThread extends Thread {
                 for (int i = top; i <= bottom; i++) {
                     for (int j = left; j <= right; j++) {
 //                        t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + back[i][j].getX(), yOffset + back[i][j].getY());
+
                         //since they're in a grid, they should all be spaced evenly, so we know exactly where they are; this is for performance
-                        t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + j * tileSize, yOffset + i * tileSize);
+                        t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + (j * tileSize), yOffset - (i * tileSize));
+                        //t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + j * tileSize, yOffset + i * tileSize); // original
                         layer1.add(t);
 
                         /*

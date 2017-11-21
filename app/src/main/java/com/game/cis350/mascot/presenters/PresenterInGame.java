@@ -111,6 +111,7 @@ public class PresenterInGame implements IPresenterInGame {
         tileSize = b.getWidth();
 
 
+
         /*
           set the mascot's step number to some number
           (must be a factor of the tile width or you'll get misalignment with the tiles at some point)
@@ -133,7 +134,7 @@ public class PresenterInGame implements IPresenterInGame {
         // Set coordinates of busses
         for (int i = 0; i < model.getBusses().size(); i++) {
             model.getBusses().get(i).setX((startingPositionBus*tileSize) + (widthApartBus * i * tileSize));
-            model.getBusses().get(i).setY(rowBus*tileSize);
+            model.getBusses().get(i).setY(-rowBus*tileSize);
         }
 
 
@@ -149,17 +150,19 @@ public class PresenterInGame implements IPresenterInGame {
         // Set coordinates of boats
         for (int i = 0; i < model.getBoats().size(); i++) {
             model.getBoats().get(i).setX((startingPositionBoat*tileSize) + (widthApartBoat * i * tileSize));
-            model.getBoats().get(i).setY(rowBoat*tileSize);
+            model.getBoats().get(i).setY(-rowBoat*tileSize);
         }
+
 
         //create the background tiles
         IDrawable[][] back = model.getBackground();
         for (int i = 0; i < model.getHeight(); i++) {
             for (int j = 0; j < model.getWidth(); j++) {
                 back[i][j].setX(j * tileSize);
-                back[i][j].setY(i * tileSize);
+                back[i][j].setY(-i * tileSize);
             }
         }
+
     }
 
 
