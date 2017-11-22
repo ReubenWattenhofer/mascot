@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
 import com.game.cis350.mascot.interfaces.IImage;
+import com.game.cis350.mascot.interfaces.models.ICollidable;
 import com.game.cis350.mascot.interfaces.models.IDrawable;
 import com.game.cis350.mascot.interfaces.models.IModel;
 import com.game.cis350.mascot.interfaces.presenters.IPresenterInGame;
@@ -86,20 +87,6 @@ public class PresenterInGame implements IPresenterInGame {
 
         previous = null;
 
-        //create the model
-        model = new Model();
-        model.getMainPlayer().setX(0); //view.getScreenWidth() / 2 - 13);
-        model.getMainPlayer().setY(0); //view.getScreenHeight() / 2 - 13);
-        //TODO: set the model animations here rather than in the model constructor?
-
-        //create the hashmap
-        images = PresenterInfo.getImages(); // new HashMap<String, Bitmap>();
-
-        layers = new ArrayList[3];
-        layers[0] = new ArrayList<>();
-        layers[1] = new ArrayList<>();
-        layers[2] = new ArrayList<>();
-
         //get the tile size
         Bitmap b = BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier("grass", "drawable", "com.game.cis350.mascot"));
 //        double difference = b.getWidth() - (((int) b.getWidth() / 6) * 6);
@@ -111,10 +98,31 @@ public class PresenterInGame implements IPresenterInGame {
         tileSize = b.getWidth();
 
 
+        //create the model
+        model = new Model();
+
+        //set mascot's starting location
+        Collidable player = model.getMainPlayer();
+        player.setX(player.getX() * tileSize);
+        player.setY(player.getY() * tileSize);
+//        model.getMainPlayer().setY((model.getHeight() - 1) * tileSize); //view.getScreenHeight() / 2 - 13);
+        //TODO: set the model animations here rather than in the model constructor?
+
+        //create the hashmap
+        images = PresenterInfo.getImages(); // new HashMap<String, Bitmap>();
+
+        layers = new ArrayList[3];
+        layers[0] = new ArrayList<>();
+        layers[1] = new ArrayList<>();
+        layers[2] = new ArrayList<>();
+
+
+
 
         /*
           set the mascot's step number to some number
-          (must be a factor of the tile width or you'll get misalignment with the tiles at some point)
+          (does NOT have to be a factor of the tile width; instead, PresenterInfo scales every
+          sprite's width to be a factor of step number)
          */
         model.getMainPlayer().setSteps(steps);
         //set the mascot's speed based on the tile width (tiles should be square)
@@ -122,36 +130,49 @@ public class PresenterInGame implements IPresenterInGame {
 
         //TODO: set bus and boat speed based on tile width
 
-        // Horzontal starting position of first bus in tiles
-        int startingPositionBus = 1;
-
-        // How far to place busses apart in tiles (horizontally)
-        int widthApartBus = 1;
-
-        // Vertical position of busses in tiles
-        int rowBus = 1;
-
-        // Set coordinates of busses
-        for (int i = 0; i < model.getBusses().size(); i++) {
-            model.getBusses().get(i).setX((startingPositionBus*tileSize) + (widthApartBus * i * tileSize));
-            model.getBusses().get(i).setY(-rowBus*tileSize);
+//        // Horzontal starting position of first bus in tiles
+//        int startingPositionBus = 1;
+//
+//        // How far to place busses apart in tiles (horizontally)
+//        int widthApartBus = 1;
+//
+//        // Vertical position of busses in tiles
+//        int rowBus = model.getHeight() - 2; //offset by one more than target row since row starts at 0
+//
+//        // Set coordinates of busses
+        ArrayList<Collidable> busses = model.getBusses();
+        for (int i = 0; i < busses.size(); i++) {
+            Collidable bus = busses.get(i);
+            bus.setX(bus.getX() * tileSize);
+            bus.setY(bus.getY() * tileSize);
         }
+//        for (int i = 0; i < model.getBusses().size(); i++) {
+//            model.getBusses().get(i).setX((startingPositionBus*tileSize) + (widthApartBus * i * tileSize));
+//            model.getBusses().get(i).setY(rowBus*tileSize);
+//        }
 
 
-        // Horzontal starting position of first boat in tiles
-        int startingPositionBoat = 2;
 
-        // How far to place boats apart in tiles (horizontally)
-        int widthApartBoat = 1;
-
-        // Vertical position of boats in tiles
-        int rowBoat = 7;
-
-        // Set coordinates of boats
-        for (int i = 0; i < model.getBoats().size(); i++) {
-            model.getBoats().get(i).setX((startingPositionBoat*tileSize) + (widthApartBoat * i * tileSize));
-            model.getBoats().get(i).setY(-rowBoat*tileSize);
+//        // Horzontal starting position of first boat in tiles
+//        int startingPositionBoat = 2;
+//
+//        // How far to place boats apart in tiles (horizontally)
+//        int widthApartBoat = 1;
+//
+//        // Vertical position of boats in tiles
+//        int rowBoat = model.getHeight() - 8;
+//
+//        // Set coordinates of boats
+        ArrayList<Collidable> boats = model.getBoats();
+        for (int i = 0; i < boats.size(); i++) {
+            Collidable boat = boats.get(i);
+            boat.setX(boat.getX() * tileSize);
+            boat.setY(boat.getY() * tileSize);
         }
+//        for (int i = 0; i < model.getBoats().size(); i++) {
+//            model.getBoats().get(i).setX((startingPositionBoat*tileSize) + (widthApartBoat * i * tileSize));
+//            model.getBoats().get(i).setY(rowBoat*tileSize);
+//        }
 
 
         //create the background tiles
