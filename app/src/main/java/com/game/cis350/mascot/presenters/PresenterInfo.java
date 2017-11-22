@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.game.cis350.mascot.models.Animations;
+import com.game.cis350.mascot.models.Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,11 +23,6 @@ public abstract class PresenterInfo {
      * credit https://stackoverflow.com/questions/29061292/c-sharp-mvc-how-to-save-image-to-my-model
      */
     private static HashMap<String, Bitmap> images;
-
-    /**
-     * Step number for mascot.
-     */
-    public static final int STEPS = 6;
 
     /**
      * This initializes the variables.
@@ -64,7 +60,7 @@ public abstract class PresenterInfo {
         for (String s: filePaths) {
             try {
                 Bitmap temp = BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier(s, "drawable", "com.game.cis350.mascot"));
-                temp = Bitmap.createScaledBitmap(temp, (((int) temp.getWidth() / STEPS) * STEPS), (((int) temp.getHeight() / STEPS) * STEPS), false);
+                temp = Bitmap.createScaledBitmap(temp, (((int) temp.getWidth() / Model.STEPS) * Model.STEPS), (((int) temp.getHeight() / Model.STEPS) * Model.STEPS), false);
 
                 images.put(s, temp);
             } catch (Exception e) {

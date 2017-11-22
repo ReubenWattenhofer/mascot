@@ -11,6 +11,9 @@ import com.game.cis350.mascot.interfaces.models.IDrawable;
 public class Collidable extends Sprite implements IDrawable,
         ICollidable {
 
+    /**
+     * Collision type of the object.
+     */
     private CollideTypes collideType;
     /**
      * Direction of the object's movement.

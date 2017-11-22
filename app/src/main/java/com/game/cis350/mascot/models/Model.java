@@ -12,6 +12,11 @@ import java.util.ArrayList;
 
 public class Model implements IModel {
     /**
+     * Step number for mascot.
+     */
+    public static final int STEPS = 6;
+
+    /**
      * Sample object that model would store.
      */
     private Collidable player;
@@ -50,6 +55,7 @@ public class Model implements IModel {
         height = 10;
 
         player = new Collidable(Animations.PLAYER, width / 2, height - 1);
+        player.setSteps(STEPS);
 
         busses = new ArrayList<>();
 

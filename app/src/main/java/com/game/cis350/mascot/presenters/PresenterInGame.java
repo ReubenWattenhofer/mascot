@@ -92,7 +92,7 @@ public class PresenterInGame implements IPresenterInGame {
 //        double difference = b.getWidth() - (((int) b.getWidth() / 6) * 6);
 //        if (difference != 0) {}
 
-        int steps = PresenterInfo.STEPS;
+        int steps = Model.STEPS;
         //scale the bitmaps so that they're a factor of the mascot's step number
         b = Bitmap.createScaledBitmap(b, (((int) b.getWidth() / steps) * steps), (((int) b.getHeight() / steps) * steps), false);
         tileSize = b.getWidth();
@@ -124,11 +124,11 @@ public class PresenterInGame implements IPresenterInGame {
           (does NOT have to be a factor of the tile width; instead, PresenterInfo scales every
           sprite's width to be a factor of step number)
          */
-        model.getMainPlayer().setSteps(steps);
+//        model.getMainPlayer().setSteps(steps);
         //set the mascot's speed based on the tile width (tiles should be square)
         model.getMainPlayer().setSpeed(tileSize / steps);
 
-        //TODO: set bus and boat speed based on tile width
+        //TODO: set bus and boat speed as a factor of tile width
 
 //        // Horzontal starting position of first bus in tiles
 //        int startingPositionBus = 1;
