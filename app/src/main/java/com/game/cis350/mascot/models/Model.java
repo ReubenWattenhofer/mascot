@@ -68,9 +68,11 @@ public class Model implements IModel {
         // Vertical position of busses in tiles
         int rowBus = height - 2; //offset by one more than target row since row starts at 0
 
-        // Add busses
+        // Add right moving busses
         for (int i = 0; i < 1; i++) {
-            busses.add(new Collidable(Animations.BUS, (startingPositionBus) + (widthApartBus * i), rowBus));
+            Collidable c = new Collidable(Animations.BUS, (startingPositionBus) + (widthApartBus * i), rowBus);
+            c.setDirection(Direction.right);
+            busses.add(c);
         }
 
         boats = new ArrayList<>();
@@ -82,11 +84,14 @@ public class Model implements IModel {
         int widthApartBoat = 1;
 
         // Vertical position of boats in tiles
-        int rowBoat = height - 8;
+        int rowBoat = height - 6;
 
-        // Add boats
+        // Add right moving boats
         for (int i = 0; i < 1; i++) {
-            boats.add(new Collidable(Animations.BOAT, (startingPositionBoat) + (widthApartBoat * i), rowBoat));
+            Collidable currentBoat = new Collidable(Animations.BOAT, (startingPositionBoat) + (widthApartBoat * i), rowBoat);
+            currentBoat.setDirection(Direction.right);
+            currentBoat.setSteps(STEPS);
+            boats.add(currentBoat);
         }
 
         //add background tiles for water

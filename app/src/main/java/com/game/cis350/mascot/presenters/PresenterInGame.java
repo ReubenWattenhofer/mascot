@@ -3,8 +3,11 @@ package com.game.cis350.mascot.presenters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Looper;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
+import android.os.Handler;
 
 import com.game.cis350.mascot.interfaces.IImage;
 import com.game.cis350.mascot.interfaces.models.ICollidable;
@@ -76,6 +79,11 @@ public class PresenterInGame implements IPresenterInGame {
     private MotionEvent previous;
 
     /**
+     * Handler for allowing thread to communicate with UI
+     */
+    private Handler mHandler;
+
+    /**
      * Initializes the view.
      * @param v view to assign to presenter
      * @param holder SurfaceHolder of view's SurfaceView
@@ -86,6 +94,25 @@ public class PresenterInGame implements IPresenterInGame {
         this.holder = holder;
 
         previous = null;
+
+        // Create handler so PresenterGameThread can work with view
+        // https://developer.android.com/training/multiple-threads/communicate-ui.html
+        mHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message) {
+                switch(message.what){
+                    case 1:
+                        win();
+                        break;
+                    case 0:
+                        lose();
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+        };
 
         //get the tile size
         Bitmap b = BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier("grass", "drawable", "com.game.cis350.mascot"));
@@ -130,50 +157,24 @@ public class PresenterInGame implements IPresenterInGame {
 
         //TODO: set bus and boat speed as a factor of tile width
 
-//        // Horzontal starting position of first bus in tiles
-//        int startingPositionBus = 1;
-//
-//        // How far to place busses apart in tiles (horizontally)
-//        int widthApartBus = 1;
-//
-//        // Vertical position of busses in tiles
-//        int rowBus = model.getHeight() - 2; //offset by one more than target row since row starts at 0
-//
-//        // Set coordinates of busses
+        // Set coordinates of busses
         ArrayList<Collidable> busses = model.getBusses();
         for (int i = 0; i < busses.size(); i++) {
             Collidable bus = busses.get(i);
             bus.setX(bus.getX() * tileSize);
             bus.setY(bus.getY() * tileSize);
         }
-//        for (int i = 0; i < model.getBusses().size(); i++) {
-//            model.getBusses().get(i).setX((startingPositionBus*tileSize) + (widthApartBus * i * tileSize));
-//            model.getBusses().get(i).setY(rowBus*tileSize);
-//        }
 
-
-
-//        // Horzontal starting position of first boat in tiles
-//        int startingPositionBoat = 2;
-//
-//        // How far to place boats apart in tiles (horizontally)
-//        int widthApartBoat = 1;
-//
-//        // Vertical position of boats in tiles
-//        int rowBoat = model.getHeight() - 8;
-//
-//        // Set coordinates of boats
+        // Set coordinates of boats
         ArrayList<Collidable> boats = model.getBoats();
         for (int i = 0; i < boats.size(); i++) {
             Collidable boat = boats.get(i);
             boat.setX(boat.getX() * tileSize);
             boat.setY(boat.getY() * tileSize);
-        }
-//        for (int i = 0; i < model.getBoats().size(); i++) {
-//            model.getBoats().get(i).setX((startingPositionBoat*tileSize) + (widthApartBoat * i * tileSize));
-//            model.getBoats().get(i).setY(rowBoat*tileSize);
-//        }
 
+            //set the boat speed based on the tile width (tiles should be square)
+            boat.setSpeed(tileSize / steps);
+        }
 
         //create the background tiles
         IDrawable[][] back = model.getBackground();
@@ -183,9 +184,7 @@ public class PresenterInGame implements IPresenterInGame {
                 back[i][j].setY(-i * tileSize);
             }
         }
-
     }
-
 
     @Override
     public void pressedRestart() {
@@ -232,10 +231,12 @@ public class PresenterInGame implements IPresenterInGame {
 
     }
 
+
+
     @Override
     public void onResume() {
         //start the game thread
-        gameThread = new PresenterGameThread(model, images, layers, holder, view.getScreenWidth(), view.getScreenHeight(), tileSize);
+        gameThread = new PresenterGameThread(model, images, layers, holder, view.getScreenWidth(), view.getScreenHeight(), tileSize, mHandler, this);
         gameThread.setRunning(true);
         gameThread.start();
     }
@@ -313,5 +314,15 @@ public class PresenterInGame implements IPresenterInGame {
 //        model.getMainPlayer().setX(model.getMainPlayer().getX() + 50);
 //        gameThread.update();
 
+    }
+
+    public void win(){
+        gameThread.setRunning(false);
+        view.showWin();
+    }
+
+    public void lose(){
+        gameThread.setRunning(false);
+        view.showLose();
     }
 }

@@ -1,14 +1,18 @@
 package com.game.cis350.mascot.presenters;
 
 import android.graphics.Bitmap;
+import android.os.Message;
 import android.view.SurfaceHolder;
+import android.os.Handler;
 
 import com.game.cis350.mascot.interfaces.models.IDrawable;
+import com.game.cis350.mascot.interfaces.views.IViewGame;
 import com.game.cis350.mascot.models.Collidable;
 import com.game.cis350.mascot.interfaces.models.IModel;
 import com.game.cis350.mascot.Image;
 import com.game.cis350.mascot.interfaces.IImage;
 import com.game.cis350.mascot.models.CollideTypes;
+import com.game.cis350.mascot.models.Direction;
 import com.game.cis350.mascot.views.PanelDraw;
 //import com.game.cis350.mascot.views.DrawingPanel;
 import java.util.ArrayList;
@@ -55,6 +59,11 @@ class PresenterGameThread extends Thread {
     private IModel model;
 
     /**
+     * This is the presenter in game object.
+     */
+    private PresenterInGame presenter;
+
+    /**
      * This is what updates the SurfaceView inside the view.
      */
     private PanelDraw panel;
@@ -80,6 +89,11 @@ class PresenterGameThread extends Thread {
     private int top, bottom, left, right;
 
     /**
+     * Handler for allowing thread to communicate with UI
+     */
+    private Handler mHandler;
+
+    /**
      * This is the constructor for the thread.
      * @param m reference to model presenter talks to
      * @param images reference to hashmap in presenter
@@ -90,10 +104,15 @@ class PresenterGameThread extends Thread {
      * @param tileSize tilesize
      **/
       PresenterGameThread(final IModel m, final HashMap<String, Bitmap> images, final ArrayList<IImage>[] layers,
-                          final SurfaceHolder holder, final int sW, final int sH, final int tileSize) {
+                          final SurfaceHolder holder, final int sW, final int sH, final int tileSize, Handler h, PresenterInGame p) {
+
           panel = new PanelDraw(holder, layers);
 
           model = m;
+
+          mHandler = h;
+
+          presenter = p;
 
           //calculate tile tileWidth and tileHeight
 //          tileWidth = sW / tileSize;
@@ -171,6 +190,7 @@ class PresenterGameThread extends Thread {
 
             //move the player if he should be moved
             Collidable player = model.getMainPlayer();
+
             if (player.getStepCounter() > 0) {
                 //decrement the counter
                 player.decrementStepCounter();
@@ -249,33 +269,80 @@ class PresenterGameThread extends Thread {
             //put buses/boats in layer2
 
             for (Collidable currentBus : model.getBusses()) {
+
+                currentBus.setDirection(Direction.right);
+
+                // Check if player is hit by bus
+                if(currentBus.getDirection() == Direction.right
+                        &&  player.getX() >= currentBus.getX()
+                        && player.getX() <= currentBus.getX() + (tileSize*2)
+                        && currentBus.getY() == player.getY()){
+                    Message completeMessage = mHandler.obtainMessage(0);
+                    completeMessage.sendToTarget();
+                }
+
                 // Bus moves right regardless of player position
-                currentBus.setX(currentBus.getX() + 1);
+                if(currentBus.getDirection() == Direction.right && currentBus.getX() < tileSize*model.getWidth()){
+
+                    currentBus.setX(currentBus.getX() + 1);
+
+                // Move bus to left side if it has reached the right bounds
+                }else{
+                    currentBus.setX(0-(tileSize*2));
+                }
 
                 // Create new image for each bus
                 Image i = new Image(images.get(currentBus.getCurrentFrame()), xOffset + currentBus.getX(), yOffset + currentBus.getY());
                 layer2.add(i);
-
-                // Check if player is hit by bus
-                if(currentBus.getX() == player.getX() && currentBus.getY() == player.getY()){
-                    // Game lost
-                    //view.showLose();
-                }
             }
 
 
             for (Collidable currentBoat : model.getBoats()) {
+
+                currentBoat.setDirection(Direction.right);
+
                 // Boat moves right regardless of player position
-                currentBoat.setX(currentBoat.getX() + 1);
+                if (currentBoat.getDirection() == Direction.right && currentBoat.getX() < tileSize * model.getWidth()) {
+
+                    // Reset boat step counter if needed
+                    if (currentBoat.getStepCounter() <= 0) {
+                        currentBoat.setStepCounter(currentBoat.getSteps());
+                    }
+
+                    //while (currentBoat.getStepCounter() > 0) { // wait for boat to finish moving by tile
+                    if (currentBoat.getStepCounter() > 0) {
+                        //decrement the counter
+                        currentBoat.decrementStepCounter();
+                        switch (currentBoat.getDirection()) {
+//                        case left:
+//                            break;
+                            case right:
+
+                                // Check if player is on boat
+                                if (player.getX() >= currentBoat.getX()
+                                        && player.getX() <= currentBoat.getX() + (tileSize * 2)
+                                        && currentBoat.getY() == player.getY()) {
+
+                                    //player.setX(currentBoat.getX() + ((player.getX() - currentBoat.getX())/tileSize) + currentBoat.getSpeed());
+                                    player.setX(player.getX() + currentBoat.getSpeed());
+                                    //update the screen view bounds since the player moved
+                                    update();
+                                }
+                                currentBoat.setX(currentBoat.getX() + currentBoat.getSpeed());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    // Move boat to left side if it has reached the right bounds
+                } else {
+                    currentBoat.setX(0 - (tileSize * 3));
+                }
 
                 // Create new image for each boat
                 Image i = new Image(images.get(currentBoat.getCurrentFrame()), xOffset + currentBoat.getX(), yOffset + currentBoat.getY());
                 layer2.add(i);
-
-                // Check if player is on boat
-                if(currentBoat.getX() == player.getX() && currentBoat.getY() == player.getY()){
-                    // Player moves with boat
-                }
             }
 
 //            }
