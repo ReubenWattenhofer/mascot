@@ -273,8 +273,7 @@ class PresenterGameThread extends Thread {
                 currentBus.setDirection(Direction.right);
 
                 // Check if player is hit by bus
-                if(currentBus.getDirection() == Direction.right
-                        &&  player.getX() >= currentBus.getX()
+                if(player.getX() + tileSize*0.7 > currentBus.getX()
                         && player.getX() <= currentBus.getX() + (tileSize*2)
                         && currentBus.getY() == player.getY()){
                     Message completeMessage = mHandler.obtainMessage(0);
