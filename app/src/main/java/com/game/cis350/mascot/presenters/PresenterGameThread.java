@@ -59,11 +59,6 @@ class PresenterGameThread extends Thread {
     private IModel model;
 
     /**
-     * This is the presenter in game object.
-     */
-    private PresenterInGame presenter;
-
-    /**
      * This is what updates the SurfaceView inside the view.
      */
     private PanelDraw panel;
@@ -94,6 +89,11 @@ class PresenterGameThread extends Thread {
     private Handler mHandler;
 
     /**
+     * Determine if player is on boat
+     */
+    private boolean onBoat;
+
+    /**
      * This is the constructor for the thread.
      * @param m reference to model presenter talks to
      * @param images reference to hashmap in presenter
@@ -104,15 +104,13 @@ class PresenterGameThread extends Thread {
      * @param tileSize tilesize
      **/
       PresenterGameThread(final IModel m, final HashMap<String, Bitmap> images, final ArrayList<IImage>[] layers,
-                          final SurfaceHolder holder, final int sW, final int sH, final int tileSize, Handler h, PresenterInGame p) {
+                          final SurfaceHolder holder, final int sW, final int sH, final int tileSize, Handler h) {
 
           panel = new PanelDraw(holder, layers);
 
           model = m;
 
           mHandler = h;
-
-          presenter = p;
 
           //calculate tile tileWidth and tileHeight
 //          tileWidth = sW / tileSize;
@@ -177,7 +175,6 @@ class PresenterGameThread extends Thread {
         }
     }
 
-
     @Override
     public void run() {
 
@@ -190,6 +187,11 @@ class PresenterGameThread extends Thread {
 
             //move the player if he should be moved
             Collidable player = model.getMainPlayer();
+
+            // Set message type to none
+            int messageType = 2;
+
+            onBoat = false;
 
             if (player.getStepCounter() > 0) {
                 //decrement the counter
@@ -210,6 +212,8 @@ class PresenterGameThread extends Thread {
                     default:
                         break;
                 }
+
+                onBoat = true;
                 //update the screen view bounds since the player moved
                 update();
             }
@@ -228,41 +232,6 @@ class PresenterGameThread extends Thread {
                 layer2.clear();
                 layer3.clear();
 
-                Image t = null;
-                IDrawable[][] back = model.getBackground();
-
-                for (int i = top; i <= bottom; i++) {
-                    for (int j = left; j <= right; j++) {
-//                        t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + back[i][j].getX(), yOffset + back[i][j].getY());
-
-                        //since they're in a grid, they should all be spaced evenly, so we know exactly where they are; this is for performance
-//                        t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + (j * tileSize), yOffset - (i * tileSize));
-                        t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + j * tileSize, yOffset + i * tileSize); // original
-                        layer1.add(t);
-
-                        /*
-                        // Check if player is on background tile
-                        if(i == playerX && j == playerY ){
-
-                            // Check if player drowns
-                            if(back[i][j].getCollideType() == CollideTypes.crushes){
-                                // Game lost
-                                //view.showLose();
-                            }
-
-                            // Check if player wins
-                            if(back[i][j].getCollideType() == CollideTypes.win){
-                                // Game won
-                                //view.showWin();
-                            }
-                        }
-                        */
-                    }
-                }
-
-                //put the player in layer3
-                Image j = new Image(images.get(model.getMainPlayer().getCurrentFrame()), xCenter, yCenter);
-                layer3.add(j);
 
 //            }
 
@@ -270,73 +239,119 @@ class PresenterGameThread extends Thread {
 
             for (Collidable currentBus : model.getBusses()) {
 
-                currentBus.setDirection(Direction.right);
-
                 // Check if player is hit by bus
                 if(player.getX() + tileSize*0.7 > currentBus.getX()
                         && player.getX() <= currentBus.getX() + (tileSize*2)
                         && currentBus.getY() == player.getY()){
-                    Message completeMessage = mHandler.obtainMessage(0);
-                    completeMessage.sendToTarget();
+
+                    // Send lose message
+                    messageType = 0;
                 }
 
-                // Bus moves right regardless of player position
-                if(currentBus.getDirection() == Direction.right && currentBus.getX() < tileSize*model.getWidth()){
-
-                    currentBus.setX(currentBus.getX() + 1);
-
-                // Move bus to left side if it has reached the right bounds
-                }else{
-                    currentBus.setX(0-(tileSize*2));
+                // Reset boat step counter if needed
+                if (currentBus.getStepCounter() <= 0) {
+                    currentBus.setStepCounter(currentBus.getSteps());
                 }
 
+                if (currentBus.getStepCounter() > 0) {
+                    //decrement the counter
+                    currentBus.decrementStepCounter();
+                    switch (currentBus.getDirection()) {
+                        case left:
+
+                            // Check if bus is out of bounds
+                            if(currentBus.getX() > 0 - (tileSize * 3)) {
+
+                                // Move bus based on speed
+                                currentBus.setX(currentBus.getX() - currentBus.getSpeed());
+                            }else {
+
+                                // Move bus to left side if it has reached the right bounds
+                                currentBus.setX(tileSize * model.getWidth());
+                            }
+
+                            break;
+
+                        case right:
+
+                            // Check if bus is out of bounds
+                            if(currentBus.getX() < tileSize * model.getWidth()) {
+
+                                // Move bus based on speed
+                                currentBus.setX(currentBus.getX() + currentBus.getSpeed());
+                            }else {
+
+                                // Move bus to left side if it has reached the right bounds
+                                currentBus.setX(0 - (tileSize * 3));
+                            }
+
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 // Create new image for each bus
                 Image i = new Image(images.get(currentBus.getCurrentFrame()), xOffset + currentBus.getX(), yOffset + currentBus.getY());
+
                 layer2.add(i);
             }
 
-
             for (Collidable currentBoat : model.getBoats()) {
 
-                currentBoat.setDirection(Direction.right);
+                // Check if player is on boat
+                if (player.getX() + tileSize * 0.5 > currentBoat.getX()
+                        && player.getX() <= currentBoat.getX() + (tileSize * 2.5)
+                        && currentBoat.getY() == player.getY()
+                        && player.getStepCounter() <= 0
+                        ) {
 
-                // Boat moves right regardless of player position
-                if (currentBoat.getDirection() == Direction.right && currentBoat.getX() < tileSize * model.getWidth()) {
+                    onBoat = true;
+                    
+                    // Put player on third of boat that he's closest to (boat is three tiles long)
+                    player.setX(currentBoat.getX() + (((player.getX() - currentBoat.getX()) / (tileSize - (tileSize / 10))) * tileSize) + currentBoat.getSpeed());
 
-                    // Reset boat step counter if needed
-                    if (currentBoat.getStepCounter() <= 0) {
-                        currentBoat.setStepCounter(currentBoat.getSteps());
-                    }
+                    //update the screen view bounds since the player moved
+                    update();
+                }
 
-                    //while (currentBoat.getStepCounter() > 0) { // wait for boat to finish moving by tile
-                    if (currentBoat.getStepCounter() > 0) {
-                        //decrement the counter
-                        currentBoat.decrementStepCounter();
-                        switch (currentBoat.getDirection()) {
-//                        case left:
-//                            break;
-                            case right:
+                // Reset boat step counter if needed
+                if (currentBoat.getStepCounter() <= 0) {
+                    currentBoat.setStepCounter(currentBoat.getSteps());
+                }
 
-                                // Check if player is on boat
-                                if (player.getX() >= currentBoat.getX()
-                                        && player.getX() <= currentBoat.getX() + (tileSize * 2)
-                                        && currentBoat.getY() == player.getY()) {
+                if (currentBoat.getStepCounter() > 0) {
+                    //decrement the counter
+                    currentBoat.decrementStepCounter();
 
-                                    //player.setX(currentBoat.getX() + ((player.getX() - currentBoat.getX())/tileSize) + currentBoat.getSpeed());
-                                    player.setX(player.getX() + currentBoat.getSpeed());
-                                    //update the screen view bounds since the player moved
-                                    update();
-                                }
+                    switch (currentBoat.getDirection()) {
+                        case left:
+
+                            // Check if boat is out of bounds
+                            if(currentBoat.getX() > 0 - (tileSize * 3)) {
+
+                                currentBoat.setX(currentBoat.getX() - currentBoat.getSpeed());
+                            }else {
+                                // Move boat to left side if it has reached the right bounds
+                                currentBoat.setX(tileSize * model.getWidth());
+                            }
+
+                            break;
+
+                        case right:
+
+                            // Check if boat is out of bounds
+                            if(currentBoat.getX() < tileSize * model.getWidth()) {
+
                                 currentBoat.setX(currentBoat.getX() + currentBoat.getSpeed());
-                                break;
-                            default:
-                                break;
-                        }
-                    }
+                            }else {
+                                // Move boat to left side if it has reached the right bounds
+                                currentBoat.setX(0 - (tileSize * 3));
+                            }
 
-                    // Move boat to left side if it has reached the right bounds
-                } else {
-                    currentBoat.setX(0 - (tileSize * 3));
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
                 // Create new image for each boat
@@ -344,7 +359,55 @@ class PresenterGameThread extends Thread {
                 layer2.add(i);
             }
 
+            Image t = null;
+            IDrawable[][] back = model.getBackground();
+
+            for (int i = top; i <= bottom; i++) {
+                for (int j = left; j <= right; j++) {
+//                        t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + back[i][j].getX(), yOffset + back[i][j].getY());
+
+                    //since they're in a grid, they should all be spaced evenly, so we know exactly where they are; this is for performance
+//                        t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + (j * tileSize), yOffset - (i * tileSize));
+                    t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + j * tileSize, yOffset + i * tileSize); // original
+                    layer1.add(t);
+
+
+                    // Check if player is on background tile
+                    if(i*tileSize == player.getY() && j*tileSize <= player.getX() && player.getX() <= j*tileSize + tileSize){
+
+                        // Check if player drowns
+//                        if(back[i][j].getCollideType() == CollideTypes.crushes && !onBoat){
+//
+//                            // Send lose message
+//                            messageType = 0;
+//                        }
+
+                        // Check if player wins
+//                        if(back[i][j].getCollideType() == CollideTypes.win){
+//
+//                            // Send win message
+//                            messageType = 1;
+//                        }
+                    }
+                }
+            }
+
+            // Check if player is out of bounds
+            if(player.getX() < 0 || player.getX() >= tileSize * (model.getWidth()) )
+                // Send lose message
+                messageType = 0;
+
+            //put the player in layer3
+            Image j = new Image(images.get(model.getMainPlayer().getCurrentFrame()), xCenter, yCenter);
+            layer3.add(j);
+
 //            }
+
+            // Send message if win or lose
+            if(messageType == 1 || messageType == 0) {
+                Message completeMessage = mHandler.obtainMessage(messageType);
+                completeMessage.sendToTarget();
+            }
 
             //draw to the screen now
             panel.draw();

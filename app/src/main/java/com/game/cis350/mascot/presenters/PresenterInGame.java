@@ -124,7 +124,6 @@ public class PresenterInGame implements IPresenterInGame {
         b = Bitmap.createScaledBitmap(b, (((int) b.getWidth() / steps) * steps), (((int) b.getHeight() / steps) * steps), false);
         tileSize = b.getWidth();
 
-
         //create the model
         model = new Model();
 
@@ -143,37 +142,43 @@ public class PresenterInGame implements IPresenterInGame {
         layers[1] = new ArrayList<>();
         layers[2] = new ArrayList<>();
 
-
-
-
         /*
           set the mascot's step number to some number
           (does NOT have to be a factor of the tile width; instead, PresenterInfo scales every
           sprite's width to be a factor of step number)
          */
-//        model.getMainPlayer().setSteps(steps);
+
         //set the mascot's speed based on the tile width (tiles should be square)
         model.getMainPlayer().setSpeed(tileSize / steps);
 
-        //TODO: set bus and boat speed as a factor of tile width
-
         // Set coordinates of busses
         ArrayList<Collidable> busses = model.getBusses();
+
+        // Set speeds of busses
+        int[] busSpeeds = {tileSize / 20, tileSize / 20};
+
         for (int i = 0; i < busses.size(); i++) {
             Collidable bus = busses.get(i);
             bus.setX(bus.getX() * tileSize);
             bus.setY(bus.getY() * tileSize);
+
+            // Set the bus speed based on the tile width (tiles should be square)
+            bus.setSpeed(busSpeeds[i]);
         }
 
         // Set coordinates of boats
         ArrayList<Collidable> boats = model.getBoats();
+
+        // Set speeds of boats
+        int[] boatSpeeds = {0, tileSize / 50, tileSize / 30};
+
         for (int i = 0; i < boats.size(); i++) {
             Collidable boat = boats.get(i);
             boat.setX(boat.getX() * tileSize);
             boat.setY(boat.getY() * tileSize);
 
             //set the boat speed based on the tile width (tiles should be square)
-            boat.setSpeed(tileSize / steps);
+            boat.setSpeed(boatSpeeds[i]);
         }
 
         //create the background tiles
@@ -228,15 +233,12 @@ public class PresenterInGame implements IPresenterInGame {
         }
 
         previous = event;
-
     }
-
-
 
     @Override
     public void onResume() {
         //start the game thread
-        gameThread = new PresenterGameThread(model, images, layers, holder, view.getScreenWidth(), view.getScreenHeight(), tileSize, mHandler, this);
+        gameThread = new PresenterGameThread(model, images, layers, holder, view.getScreenWidth(), view.getScreenHeight(), tileSize, mHandler);
         gameThread.setRunning(true);
         gameThread.start();
     }
@@ -259,70 +261,86 @@ public class PresenterInGame implements IPresenterInGame {
         return layers;
     }
 
-
     /**
      * This method handles the behavior when "up" is pressed.
      */
     private void pressedUp() {
         Collidable player = model.getMainPlayer();
+
+        checkPosition();
+
         if (player.getStepCounter() <= 0) {
             player.setDirection(Direction.up);
             player.setStepCounter(player.getSteps());
         }
-//        model.getMainPlayer().setY(model.getMainPlayer().getY() - 50);
-//        gameThread.update();
     }
 
     /**
      * This method handles the behavior when "down" is pressed.
      */
     private void pressedDown() {
+        checkPosition();
+
         Collidable player = model.getMainPlayer();
         if (player.getStepCounter() <= 0) {
             player.setDirection(Direction.down);
             player.setStepCounter(player.getSteps());
         }
-
-//        view.showWin();
-//       model.getMainPlayer().setY(model.getMainPlayer().getY() + 50);
-//       gameThread.update();
     }
 
     /**
      * This method handles the behavior when "left" is pressed.
      */
     private void pressedLeft() {
+
         Collidable player = model.getMainPlayer();
         if (player.getStepCounter() <= 0) {
             player.setDirection(Direction.left);
             player.setStepCounter(player.getSteps());
         }
-//        view.showLose();
-//        model.getMainPlayer().setX(model.getMainPlayer().getX() - 50);
-//        gameThread.update();
     }
 
     /**
      * This method handles the behavior when "right" is pressed.
      */
     private void pressedright() {
+
         Collidable player = model.getMainPlayer();
         if (player.getStepCounter() <= 0) {
             player.setDirection(Direction.right);
             player.setStepCounter(player.getSteps());
         }
-//        model.getMainPlayer().setX(model.getMainPlayer().getX() + 50);
-//        gameThread.update();
 
     }
 
-    public void win(){
+    /**
+     * This method handles the UI behavior when the player wins.
+     */
+    private void win(){
         gameThread.setRunning(false);
         view.showWin();
     }
 
-    public void lose(){
+    /**
+     * This method handles the UI behavior when the player loses.
+     */
+    private void lose(){
         gameThread.setRunning(false);
         view.showLose();
+    }
+
+    /**
+     * This method helps align the player's horizontal position to being on a tile when stepping off of a boat.
+     */
+    private void checkPosition(){
+        Collidable player = model.getMainPlayer();
+
+        // Check if player is lined up with tile
+        if(player.getX() % tileSize != 0) {
+            if (player.getX() % tileSize < tileSize / 2)
+                player.setX((player.getX() / tileSize) * (tileSize));
+            else
+                player.setX(tileSize + ((player.getX() / tileSize) * (tileSize)));
+        }
     }
 }

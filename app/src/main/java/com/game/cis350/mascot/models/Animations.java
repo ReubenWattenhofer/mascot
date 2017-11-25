@@ -14,14 +14,24 @@ public final class Animations {
     public static final String[] PLAYER = new String[] {"louie"};
 
     /**
-     *  Animations for the buses.
+     *  Animations for right moving buses.
      */
     public static final String[] BUS = new String[] {"bus"};
 
     /**
-     *  Animations for the boats.
+     *  Animations for left moving buses.
+     */
+    public static final String[] BUS_LEFT = new String[] {"bus_left"};
+
+    /**
+     *  Animations for right moving boats.
      */
     public static final String[] BOAT = new String[] {"boat"};
+
+    /**
+     *  Animations for left moving boats.
+     */
+    public static final String[] BOAT_LEFT = new String[] {"boat_left"};
 
     /**
      *  Animations for the grass tiles.

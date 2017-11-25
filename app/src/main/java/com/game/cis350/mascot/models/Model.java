@@ -59,46 +59,87 @@ public class Model implements IModel {
 
         busses = new ArrayList<>();
 
-        // Horizontal starting position of first bus in tiles
-        int startingPositionBus = 1;
+        // Horzontal starting position of bus in tiles
+        int columnBus = 2;
 
-        // How far to place busses apart in tiles (horizontally)
-        int widthApartBus = 1;
+        // Vertical position of bus in tiles
+        int rowBus = 8; //offset by one more than target row since row starts at 0
 
-        // Vertical position of busses in tiles
-        int rowBus = height - 2; //offset by one more than target row since row starts at 0
+        Collidable c = new Collidable(Animations.BUS, columnBus, rowBus);
+        c.setDirection(Direction.right);
+        c.setSteps(STEPS);
+        busses.add(c);
+
+        // Horzontal starting position of bus in tiles
+        columnBus = 1;
+
+        // Vertical position of bus in tiles
+        rowBus = 7; //offset by one more than target row since row starts at 0
+
+        c = new Collidable(Animations.BUS_LEFT, columnBus, rowBus);
+        c.setDirection(Direction.left);
+        c.setSteps(STEPS);
+        busses.add(c);
 
         // Add right moving busses
-        for (int i = 0; i < 1; i++) {
-            Collidable c = new Collidable(Animations.BUS, (startingPositionBus) + (widthApartBus * i), rowBus);
-            c.setDirection(Direction.right);
-            busses.add(c);
-        }
+//        for (int i = 0; i < 1; i++) {
+//            Collidable c = new Collidable(Animations.BUS, (startingPositionBus) + (widthApartBus * i), rowBus);
+//            c.setDirection(Direction.right);
+//            c.setSteps(STEPS);
+//            busses.add(c);
+//        }
 
         boats = new ArrayList<>();
 
-        // Horzontal starting position of first boat in tiles
-        int startingPositionBoat = 2;
-
-        // How far to place boats apart in tiles (horizontally)
-        int widthApartBoat = 1;
+        // Horzontal starting position of boat in tiles
+        int columnBoat = 2;
 
         // Vertical position of boats in tiles
-        int rowBoat = height - 6;
+        int rowBoat = 4;
 
         // Add right moving boats
-        for (int i = 0; i < 1; i++) {
-            Collidable currentBoat = new Collidable(Animations.BOAT, (startingPositionBoat) + (widthApartBoat * i), rowBoat);
-            currentBoat.setDirection(Direction.right);
-            currentBoat.setSteps(STEPS);
-            boats.add(currentBoat);
-        }
+        Collidable currentBoat = new Collidable(Animations.BOAT, columnBoat, rowBoat);
+        currentBoat.setDirection(Direction.right);
+        currentBoat.setSteps(STEPS);
+        boats.add(currentBoat);
+
+        // Horzontal starting position of boat in tiles
+        columnBoat = 9;
+
+        // Vertical position of boats in tiles
+        rowBoat = 3;
+
+        // Add right moving boats
+        currentBoat = new Collidable(Animations.BOAT, columnBoat, rowBoat);
+        currentBoat.setDirection(Direction.right);
+        currentBoat.setSteps(STEPS);
+        boats.add(currentBoat);
+
+        // Horzontal starting position of boat in tiles
+        columnBoat = 9;
+
+        // Vertical position of boats in tiles
+        rowBoat = 2;
+
+        // Add left moving boats
+        currentBoat = new Collidable(Animations.BOAT_LEFT, columnBoat, rowBoat);
+        currentBoat.setDirection(Direction.left);
+        currentBoat.setSteps(STEPS);
+        boats.add(currentBoat);
+
+//        for (int i = 0; i < 1; i++) {
+//            Collidable currentBoat = new Collidable(Animations.BOAT, (startingPositionBoat) + (widthApartBoat * i), rowBoat);
+//            currentBoat.setDirection(Direction.right);
+//            currentBoat.setSteps(STEPS);
+//            boats.add(currentBoat);
+//        }
 
         //add background tiles for water
         background = new IDrawable[width][height];
         for (int i = 0; i < height / 2; i++) {
             for (int j = 0; j < width; j++) {
                 background[i][j] = new Sprite(Animations.WATER, j, i);
+                //background[i][j].setCollideType(CollideTypes.crushes);
             }
         }
 

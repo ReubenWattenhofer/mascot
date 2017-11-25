@@ -36,15 +36,26 @@ public abstract class PresenterInfo {
         for (String s : Animations.PLAYER) {
             filePaths.add(s);
         }
-        //get the file paths for the busses
+        //get the file paths for the right moving busses
         for (String s : Animations.BUS) {
             filePaths.add(s);
         }
 
-        //get the file paths for the boats
+        //get the file paths for the left moving busses
+        for (String s : Animations.BUS_LEFT) {
+            filePaths.add(s);
+        }
+
+        //get the file paths for the right moving boats
         for (String s : Animations.BOAT) {
             filePaths.add(s);
         }
+
+        //get the file paths for the left moving boats
+        for (String s : Animations.BOAT_LEFT) {
+            filePaths.add(s);
+        }
+
         //get the file paths for the grass
         for (String s : Animations.GRASS) {
             filePaths.add(s);
