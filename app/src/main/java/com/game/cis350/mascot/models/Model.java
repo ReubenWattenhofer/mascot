@@ -59,7 +59,7 @@ public class Model implements IModel {
 
         busses = new ArrayList<>();
 
-        // Horzontal starting position of bus in tiles
+        // Horizontal starting position of bus in tiles
         int columnBus = 2;
 
         // Vertical position of bus in tiles
