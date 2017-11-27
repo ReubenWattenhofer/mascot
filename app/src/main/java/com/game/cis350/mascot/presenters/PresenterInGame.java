@@ -3,10 +3,14 @@ package com.game.cis350.mascot.presenters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Looper;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
+import android.os.Handler;
 
 import com.game.cis350.mascot.interfaces.IImage;
+import com.game.cis350.mascot.interfaces.models.ICollidable;
 import com.game.cis350.mascot.interfaces.models.IDrawable;
 import com.game.cis350.mascot.interfaces.models.IModel;
 import com.game.cis350.mascot.interfaces.presenters.IPresenterInGame;
@@ -20,7 +24,7 @@ import java.util.HashMap;
 
 /**
  * This class handles the in-game logic.
- * @author Reuben, Ariel 10/9/2017
+ * @author Reuben, Ariel 11/19/2017
  */
 
 public class PresenterInGame implements IPresenterInGame {
@@ -75,6 +79,11 @@ public class PresenterInGame implements IPresenterInGame {
     private MotionEvent previous;
 
     /**
+     * Handler for allowing thread to communicate with UI
+     */
+    private Handler mHandler;
+
+    /**
      * Initializes the view.
      * @param v view to assign to presenter
      * @param holder SurfaceHolder of view's SurfaceView
@@ -86,10 +95,43 @@ public class PresenterInGame implements IPresenterInGame {
 
         previous = null;
 
+        // Create handler so PresenterGameThread can work with view
+        // https://developer.android.com/training/multiple-threads/communicate-ui.html
+        mHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message) {
+                switch(message.what){
+                    case 1:
+                        win();
+                        break;
+                    case 0:
+                        lose();
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+        };
+
+        //get the tile size
+        Bitmap b = BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier("grass", "drawable", "com.game.cis350.mascot"));
+//        double difference = b.getWidth() - (((int) b.getWidth() / 6) * 6);
+//        if (difference != 0) {}
+
+        int steps = Model.STEPS;
+        //scale the bitmaps so that they're a factor of the mascot's step number
+        b = Bitmap.createScaledBitmap(b, (((int) b.getWidth() / steps) * steps), (((int) b.getHeight() / steps) * steps), false);
+        tileSize = b.getWidth();
+
         //create the model
         model = new Model();
-        model.getMainPlayer().setX(0); //view.getScreenWidth() / 2 - 13);
-        model.getMainPlayer().setY(0); //view.getScreenHeight() / 2 - 13);
+
+        //set mascot's starting location
+        Collidable player = model.getMainPlayer();
+        player.setX(player.getX() * tileSize);
+        player.setY(player.getY() * tileSize);
+//        model.getMainPlayer().setY((model.getHeight() - 1) * tileSize); //view.getScreenHeight() / 2 - 13);
         //TODO: set the model animations here rather than in the model constructor?
 
         //create the hashmap
@@ -100,57 +142,71 @@ public class PresenterInGame implements IPresenterInGame {
         layers[1] = new ArrayList<>();
         layers[2] = new ArrayList<>();
 
-        //get the tile size
-        Bitmap b = BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier("grass", "drawable", "com.game.cis350.mascot"));
-//        double difference = b.getWidth() - (((int) b.getWidth() / 6) * 6);
-//        if (difference != 0) {}
-
-        int steps = PresenterInfo.STEPS;
-        //scale the bitmaps so that they're a factor of the mascot's step number
-        b = Bitmap.createScaledBitmap(b, (((int) b.getWidth() / steps) * steps), (((int) b.getHeight() / steps) * steps), false);
-        tileSize = b.getWidth();
-
-
         /*
           set the mascot's step number to some number
-          (must be a factor of the tile width or you'll get misalignment with the tiles at some point)
+          (does NOT have to be a factor of the tile width; instead, PresenterInfo scales every
+          sprite's width to be a factor of step number)
          */
-        model.getMainPlayer().setSteps(steps);
+
         //set the mascot's speed based on the tile width (tiles should be square)
         model.getMainPlayer().setSpeed(tileSize / steps);
 
-        //TODO: set bus and boat speed based on tile width
-
-        // Horzontal starting position of first bus
-        int startingPosition = 500;
-
-        // How far to place busses apart (horizontally)
-        int widthApart = 100;
-
-        // Vertical position of busses
-        int row = 0;
-
         // Set coordinates of busses
-        for (int i = 0; i < model.getBusses().size(); i++) {
-            model.getBusses().get(i).setX(startingPosition + widthApart * i);
-            model.getBusses().get(i).setY(0);
+        ArrayList<Collidable> busses = model.getBusses();
+
+        // Set speeds of busses
+        int[] busSpeeds = {tileSize / 20, tileSize / 20};
+
+        for (int i = 0; i < busses.size(); i++) {
+            Collidable bus = busses.get(i);
+            bus.setX(bus.getX() * tileSize);
+            bus.setY(bus.getY() * tileSize);
+
+            // Set the bus speed based on the tile width (tiles should be square)
+            bus.setSpeed(busSpeeds[i]);
         }
 
-        //create the grass tiles
+        // Set coordinates of boats
+        ArrayList<Collidable> boats = model.getBoats();
+
+        // Set speeds of boats
+        int[] boatSpeeds = {0, tileSize / 50, tileSize / 30};
+
+        for (int i = 0; i < boats.size(); i++) {
+            Collidable boat = boats.get(i);
+            boat.setX(boat.getX() * tileSize);
+            boat.setY(boat.getY() * tileSize);
+
+            //set the boat speed based on the tile width (tiles should be square)
+            boat.setSpeed(boatSpeeds[i]);
+        }
+
+        //create the background tiles
         IDrawable[][] back = model.getBackground();
         for (int i = 0; i < model.getHeight(); i++) {
             for (int j = 0; j < model.getWidth(); j++) {
                 back[i][j].setX(j * tileSize);
-                back[i][j].setY(i * tileSize);
+                back[i][j].setY(-i * tileSize);
             }
         }
     }
 
-
     @Override
     public void pressedRestart() {
+        //dismiss any open windows
+        view.dismissWindows();
         //this will kill the presenter and create a new instance of it
         view.restart();
+    }
+
+    @Override
+    public void pressedQuit() {
+        //kill the thread
+        onPause();
+        //dismiss any open windows
+        view.dismissWindows();
+        //exit the game and return to the main menu
+        view.quit();
     }
 
     @Override
@@ -158,30 +214,31 @@ public class PresenterInGame implements IPresenterInGame {
         int x = (int) event.getX();
         int y = (int) event.getY();
 
-          if (previous == null || previous.getAction() == MotionEvent.ACTION_UP) {
-            if (Math.abs(((double) x - (double) view.getScreenWidth() / 2)) - Math.abs((double) y - (double) view.getScreenHeight() / 2) > 0) {
-                if (x <= view.getScreenWidth() / 2) {
-                    pressedLeft();
-                } else if (x > view.getScreenWidth() / 2) {
-                    pressedright();
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//            if (previous == null || previous.getAction() != MotionEvent.ACTION_UP) {
+                if (Math.abs(((double) x - (double) view.getScreenWidth() / 2)) - Math.abs((double) y - (double) view.getScreenHeight() / 2) > 0) {
+                    if (x <= view.getScreenWidth() / 2) {
+                        pressedLeft();
+                    } else if (x > view.getScreenWidth() / 2) {
+                        pressedright();
+                    }
+                } else {
+                    if (y <= view.getScreenHeight() / 2) {
+                        pressedUp();
+                    } else if (y > view.getScreenHeight() / 2) {
+                        pressedDown();
+                    }
                 }
-            } else {
-                if (y <= view.getScreenHeight() / 2) {
-                    pressedUp();
-                } else if (y > view.getScreenHeight() / 2) {
-                    pressedDown();
-                }
-            }
+//            }
         }
 
         previous = event;
-
     }
 
     @Override
     public void onResume() {
         //start the game thread
-        gameThread = new PresenterGameThread(model, images, layers, holder, view.getScreenWidth(), view.getScreenHeight(), tileSize);
+        gameThread = new PresenterGameThread(model, images, layers, holder, view.getScreenWidth(), view.getScreenHeight(), tileSize, mHandler);
         gameThread.setRunning(true);
         gameThread.start();
     }
@@ -204,57 +261,86 @@ public class PresenterInGame implements IPresenterInGame {
         return layers;
     }
 
-
     /**
      * This method handles the behavior when "up" is pressed.
      */
     private void pressedUp() {
         Collidable player = model.getMainPlayer();
+
+        checkPosition();
+
         if (player.getStepCounter() <= 0) {
             player.setDirection(Direction.up);
             player.setStepCounter(player.getSteps());
         }
-//        model.getMainPlayer().setY(model.getMainPlayer().getY() - 50);
-//        gameThread.update();
     }
 
     /**
      * This method handles the behavior when "down" is pressed.
      */
     private void pressedDown() {
+        checkPosition();
+
         Collidable player = model.getMainPlayer();
         if (player.getStepCounter() <= 0) {
             player.setDirection(Direction.down);
             player.setStepCounter(player.getSteps());
         }
-//       model.getMainPlayer().setY(model.getMainPlayer().getY() + 50);
-//       gameThread.update();
     }
 
     /**
      * This method handles the behavior when "left" is pressed.
      */
     private void pressedLeft() {
+
         Collidable player = model.getMainPlayer();
         if (player.getStepCounter() <= 0) {
             player.setDirection(Direction.left);
             player.setStepCounter(player.getSteps());
         }
-//        model.getMainPlayer().setX(model.getMainPlayer().getX() - 50);
-//        gameThread.update();
     }
 
     /**
      * This method handles the behavior when "right" is pressed.
      */
     private void pressedright() {
+
         Collidable player = model.getMainPlayer();
         if (player.getStepCounter() <= 0) {
             player.setDirection(Direction.right);
             player.setStepCounter(player.getSteps());
         }
-//        model.getMainPlayer().setX(model.getMainPlayer().getX() + 50);
-//        gameThread.update();
 
+    }
+
+    /**
+     * This method handles the UI behavior when the player wins.
+     */
+    private void win(){
+        gameThread.setRunning(false);
+        view.showWin();
+    }
+
+    /**
+     * This method handles the UI behavior when the player loses.
+     */
+    private void lose(){
+        gameThread.setRunning(false);
+        view.showLose();
+    }
+
+    /**
+     * This method helps align the player's horizontal position to being on a tile when stepping off of a boat.
+     */
+    private void checkPosition(){
+        Collidable player = model.getMainPlayer();
+
+        // Check if player is lined up with tile
+        if(player.getX() % tileSize != 0) {
+            if (player.getX() % tileSize < tileSize / 2)
+                player.setX((player.getX() / tileSize) * (tileSize));
+            else
+                player.setX(tileSize + ((player.getX() / tileSize) * (tileSize)));
+        }
     }
 }

@@ -17,7 +17,7 @@ public class Sprite implements IDrawable {
      * Stores the list of sprites to loop through.
      */
     private String[] animation;
-    private double animationDelay;
+
     /**
      * This is the frame of the animation that the sprite is currently on.
      */
@@ -39,7 +39,6 @@ public class Sprite implements IDrawable {
         this.x = x;
         this.y = y;
 
-        animationDelay = (double) 1/60;
         frame = 0;
         maxFrame = animation.length - 1;
     }

@@ -1,5 +1,7 @@
 package com.game.cis350.mascot.views;
 
+import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Build;
@@ -7,13 +9,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import com.game.cis350.mascot.R;
 import com.game.cis350.mascot.interfaces.presenters.IPresenterInGame;
@@ -60,6 +67,16 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
      */
     private GameActivity thisActivity;
 
+    /**
+     * Popup window for winning and losing.
+     */
+    private PopupWindow winWindow, loseWindow;
+
+    /**
+     * Needed for the popup windows.
+     */
+    private Context mContext;
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -94,6 +111,10 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
 
         //initialize PresenterInfo
         PresenterInfo.create(this);
+
+        // Get the application context
+        //credit to https://android--code.blogspot.com/2016/01/android-popup-window-example.html
+        mContext = getApplicationContext();
 
         //credit https://stackoverflow.com/questions/4142090/how-to-retrieve-the-dimensions-of-a-view
         ViewTreeObserver vto = gamePanel.getViewTreeObserver();
@@ -193,6 +214,181 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
         presenter = new PresenterInGame(thisActivity, holder);
         //start the presenter's thread
         presenter.onResume();
+    }
+
+    @Override
+    public void showWin() {
+        //credit to https://android--code.blogspot.com/2016/01/android-popup-window-example.html
+
+        // Initialize a new instance of LayoutInflater service
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        // Inflate the custom layout/view
+        final View view = inflater.inflate(R.layout.win, null);
+
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+
+        // Initialize a new instance of popup window
+        winWindow = new PopupWindow(
+                view,
+                width,
+                height,
+                focusable
+        );
+
+        //credit to https://stackoverflow.com/questions/9247792/how-to-make-animation-for-popup-window-in-android
+        winWindow.setAnimationStyle(R.style.AnimationPopup);
+
+        winWindow.setOutsideTouchable(false);
+        winWindow.setFocusable(true);
+        winWindow.setTouchable(true);
+
+
+        // Set an elevation value for popup window
+        // Call requires API level 21
+        if (Build.VERSION.SDK_INT >= 21) {
+            winWindow.setElevation(5.0f);
+        }
+
+        // Finally, show the popup window at the center location of root relative layout
+        //credit to https://www.codota.com/android/methods/android.widget.PopupWindow/showAtLocation
+        //and https://stackoverflow.com/questions/15862052/get-the-measures-of-popup-window
+        int[] coords = new int[2];
+
+
+        gamePanel.getLocationInWindow(coords);
+
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+        int mContainerPositionX = coords[0] + screenX / 2 - view.getMeasuredWidth() / 2;
+        int mContainerPositionY = coords[1] + screenY / 2 - view.getMeasuredHeight() / 2;
+        winWindow.showAtLocation(gamePanel, 0, mContainerPositionX, mContainerPositionY);
+        //credit to https://stackoverflow.com/questions/24935455/dont-dismiss-popupwindow-when-clicking-outside-only-when-the-close-button-is-c
+
+        // credit to https://www.youtube.com/watch?v=wxqgtEewdfo
+        //this will close the popup window when the screen is pressed
+//        view.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(final View view, final MotionEvent motionEvent) {
+//                winWindow.dismiss();
+//                return true;
+//            }
+//        });
+        Button restart = (Button) view.findViewById(R.id.restart);
+        Button quit = (Button) view.findViewById(R.id.quit);
+
+        restart.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View view, final MotionEvent motionEvent) {
+                presenter.pressedRestart();
+                return true;
+            }
+        });
+
+        quit.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View view, final MotionEvent motionEvent) {
+                presenter.pressedQuit();
+                return true;
+            }
+        });
+
+    }
+
+    @Override
+    public void showLose() {
+        //credit to https://android--code.blogspot.com/2016/01/android-popup-window-example.html
+
+        // Initialize a new instance of LayoutInflater service
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        // Inflate the custom layout/view
+        final View view = inflater.inflate(R.layout.lose, null);
+
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+
+        // Initialize a new instance of popup window
+        loseWindow = new PopupWindow(
+                view,
+                width,
+                height,
+                focusable
+        );
+
+        //credit to https://stackoverflow.com/questions/9247792/how-to-make-animation-for-popup-window-in-android
+        loseWindow.setAnimationStyle(R.style.AnimationPopup);
+
+        //credit to https://stackoverflow.com/questions/24935455/dont-dismiss-popupwindow-when-clicking-outside-only-when-the-close-button-is-c
+        loseWindow.setOutsideTouchable(false);
+        // Set an elevation value for popup window
+        // Call requires API level 21
+        if (Build.VERSION.SDK_INT >= 21) {
+            loseWindow.setElevation(5.0f);
+        }
+
+        // Finally, show the popup window at the center location of root relative layout
+        //credit to https://www.codota.com/android/methods/android.widget.PopupWindow/showAtLocation
+        //and https://stackoverflow.com/questions/15862052/get-the-measures-of-popup-window
+        int[] coords = new int[2];
+
+
+        gamePanel.getLocationInWindow(coords);
+
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+        int mContainerPositionX = coords[0] + screenX / 2 - view.getMeasuredWidth() / 2;
+        int mContainerPositionY = coords[1] + screenY / 2 - view.getMeasuredHeight() / 2;
+        loseWindow.showAtLocation(gamePanel, 0, mContainerPositionX, mContainerPositionY);
+
+        // credit to https://www.youtube.com/watch?v=wxqgtEewdfo
+        //this will close the popup window when the screen is pressed
+//        view.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(final View view, final MotionEvent motionEvent) {
+//                loseWindow.dismiss();
+//                return true;
+//            }
+//        });
+        Button restart = (Button) view.findViewById(R.id.restart);
+        Button quit = (Button) view.findViewById(R.id.quit);
+
+        restart.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View view, final MotionEvent motionEvent) {
+                presenter.pressedRestart();
+                return true;
+            }
+        });
+
+        quit.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View view, final MotionEvent motionEvent) {
+                presenter.pressedQuit();
+                return true;
+            }
+        });
+
+    }
+
+
+    @Override
+    public void dismissWindows() {
+        if (winWindow != null)
+            winWindow.dismiss();
+        if (loseWindow != null)
+            loseWindow.dismiss();
+    }
+
+    @Override
+    public void quit() {
+        //we're done here
+        finish();
     }
 
 

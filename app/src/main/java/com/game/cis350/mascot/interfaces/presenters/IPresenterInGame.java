@@ -19,6 +19,11 @@ public interface IPresenterInGame {
     void pressedRestart();
 
     /**
+     * This method handles the behavior when the quit button is selected.
+     */
+    void pressedQuit();
+
+    /**
      * This method processes the user input.
      * @param event determines what kind of input occurred
      */
@@ -33,6 +38,7 @@ public interface IPresenterInGame {
      * This method handles cleanup when the presenter is paused or destroyed.
      */
     void onPause();
+
 
     /**
      * This method returns the image list that the view will display.

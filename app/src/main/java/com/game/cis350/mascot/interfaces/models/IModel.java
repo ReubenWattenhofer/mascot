@@ -24,6 +24,12 @@ public interface IModel {
     ArrayList<Collidable> getBusses();
 
     /**
+     * Gets an arrayList of boats.
+     * @return arrayList of boats
+     */
+    ArrayList<Collidable> getBoats();
+
+    /**
      * Gets the grid of background sprites.
      * @return grid of background sprites
      */

@@ -5,13 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.game.cis350.mascot.models.Animations;
+import com.game.cis350.mascot.models.Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * This class holds presenter information that should persist for the whole game.
- * @author Reuben 10/15/2017
+ * @author Reuben, Ariel 11/19/2017
  */
 
 public abstract class PresenterInfo {
@@ -22,11 +23,6 @@ public abstract class PresenterInfo {
      * credit https://stackoverflow.com/questions/29061292/c-sharp-mvc-how-to-save-image-to-my-model
      */
     private static HashMap<String, Bitmap> images;
-
-    /**
-     * Step number for mascot.
-     */
-    public static final int STEPS = 6;
 
     /**
      * This initializes the variables.
@@ -40,12 +36,33 @@ public abstract class PresenterInfo {
         for (String s : Animations.PLAYER) {
             filePaths.add(s);
         }
-        //get the file paths for the busses
+        //get the file paths for the right moving busses
         for (String s : Animations.BUS) {
             filePaths.add(s);
         }
+
+        //get the file paths for the left moving busses
+        for (String s : Animations.BUS_LEFT) {
+            filePaths.add(s);
+        }
+
+        //get the file paths for the right moving boats
+        for (String s : Animations.BOAT) {
+            filePaths.add(s);
+        }
+
+        //get the file paths for the left moving boats
+        for (String s : Animations.BOAT_LEFT) {
+            filePaths.add(s);
+        }
+
         //get the file paths for the grass
         for (String s : Animations.GRASS) {
+            filePaths.add(s);
+        }
+
+        //get the file paths for the water
+        for (String s : Animations.WATER) {
             filePaths.add(s);
         }
 
@@ -54,7 +71,7 @@ public abstract class PresenterInfo {
         for (String s: filePaths) {
             try {
                 Bitmap temp = BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier(s, "drawable", "com.game.cis350.mascot"));
-                temp = Bitmap.createScaledBitmap(temp, (((int) temp.getWidth() / STEPS) * STEPS), (((int) temp.getHeight() / STEPS) * STEPS), false);
+                temp = Bitmap.createScaledBitmap(temp, (((int) temp.getWidth() / Model.STEPS) * Model.STEPS), (((int) temp.getHeight() / Model.STEPS) * Model.STEPS), false);
 
                 images.put(s, temp);
             } catch (Exception e) {
