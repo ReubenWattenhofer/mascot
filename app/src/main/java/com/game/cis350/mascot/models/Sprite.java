@@ -1,6 +1,7 @@
 package com.game.cis350.mascot.models;
 
 import com.game.cis350.mascot.interfaces.models.IDrawable;
+import com.game.cis350.mascot.interfaces.models.ICollidable;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -17,6 +18,10 @@ public class Sprite implements IDrawable {
      * Stores the list of sprites to loop through.
      */
     private String[] animation;
+    /**
+     * Collision type of the object.
+     */
+    private CollideTypes collideType;
 
     /**
      * This is the frame of the animation that the sprite is currently on.
@@ -111,4 +116,13 @@ public class Sprite implements IDrawable {
         return Objects.hash(animation, frame, maxFrame, x, y);
     }
 
+    @Override
+    public void setCollideType(final CollideTypes collideType) {
+        this.collideType = collideType;
+    }
+
+    @Override
+    public CollideTypes getCollideType() {
+        return collideType;
+    }
 }
