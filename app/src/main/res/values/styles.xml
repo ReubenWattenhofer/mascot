@@ -19,8 +19,8 @@
 
     <!-- https://stackoverflow.com/questions/33522470/how-to-show-animated-popup-in-android -->
     <style name="AnimationPopup">
-        <item name="@android:windowEnterAnimation">@anim/popup_in</item>
-        <item name="@android:windowExitAnimation">@anim/popup_out</item>
+        <item name="android:windowEnterAnimation">@anim/popup_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_out</item>
     </style>
 
 

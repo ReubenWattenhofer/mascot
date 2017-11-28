@@ -55,15 +55,15 @@ public class Collidable extends Sprite implements IDrawable,
         return false;
     }
 
-    @Override
-    public void setCollideType(final CollideTypes collideType) {
-        this.collideType = collideType;
-    }
+    //@Override
+    //public void setCollideType(final CollideTypes collideType) {
+      //  this.collideType = collideType;
+    //}
 
-    @Override
-    public CollideTypes getCollideType() {
-        return collideType;
-    }
+    //@Override
+    //public CollideTypes getCollideType() {
+     //   return collideType;
+    //}
 
     @Override
     public void setDirection(final Direction direction) {

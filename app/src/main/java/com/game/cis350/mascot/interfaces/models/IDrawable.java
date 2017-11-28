@@ -1,5 +1,7 @@
 package com.game.cis350.mascot.interfaces.models;
 
+import com.game.cis350.mascot.models.CollideTypes;
+
 /**
  * This interface provides guaranteed functionality for Draw objects.
  * @author Reuben 9/20/2017.
@@ -55,4 +57,7 @@ public interface IDrawable {
      */
     int getY();
 
+    void setCollideType(CollideTypes collideType);
+
+    CollideTypes getCollideType();
 }
