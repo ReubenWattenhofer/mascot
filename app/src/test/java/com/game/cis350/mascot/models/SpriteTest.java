@@ -13,9 +13,11 @@ import static org.junit.Assert.*;
  * This is a JUnit test of the class Sprite
  * @author Filipe 01/11/2017.
  */
-
-// TODO: Add documentation before methods
 public class SpriteTest {
+
+    /**
+     * Tests the method testHashCode()
+     */
     @Test
     public void testHashCode() throws Exception {
         Sprite sprite = new Sprite(Animations.BUS, 0, 0);
@@ -28,6 +30,9 @@ public class SpriteTest {
 
     }
 
+    /**
+     * Tests the method incrementFrame()
+     */
     @Test
     public void incrementFrame() throws Exception {
         String[] animation = Animations.BUS;
@@ -43,6 +48,9 @@ public class SpriteTest {
         assertEquals(expected, frame, delta);
     }
 
+    /**
+     * Tests the method setFrames()
+     */
     @Test
     public void setFrames() throws Exception {
         String[] animation = Animations.BUS;
@@ -54,6 +62,9 @@ public class SpriteTest {
 
     }
 
+    /**
+     * Tests the method setX()
+     */
     @Test
     public void setX() throws Exception {
         int x = 5;
@@ -67,6 +78,9 @@ public class SpriteTest {
 
     }
 
+    /**
+     * Tests the method setY()
+     */
     @Test
     public void setY() throws Exception {
         int y = 6;
@@ -80,6 +94,9 @@ public class SpriteTest {
 
     }
 
+    /**
+     * Tests the method equals()
+     */
     @Test
     public void equals() throws Exception {
 
