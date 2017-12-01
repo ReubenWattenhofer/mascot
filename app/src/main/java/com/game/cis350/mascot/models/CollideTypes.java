@@ -5,5 +5,5 @@ package com.game.cis350.mascot.models;
  * @author Reuben 10/8/2017
  */
 
-public enum CollideTypes { platform, crushes, getsCrushed
+public enum CollideTypes { platform, crushes, getsCrushed, win
 }
