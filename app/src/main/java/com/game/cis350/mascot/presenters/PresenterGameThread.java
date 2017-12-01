@@ -213,7 +213,6 @@ class PresenterGameThread extends Thread {
                         break;
                 }
 
-                onBoat = true;
                 //update the screen view bounds since the player moved
                 update();
             }
@@ -368,7 +367,7 @@ class PresenterGameThread extends Thread {
 
                     //since they're in a grid, they should all be spaced evenly, so we know exactly where they are; this is for performance
 //                        t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + (j * tileSize), yOffset - (i * tileSize));
-                    t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + j * tileSize, yOffset + i * tileSize); // original
+                    t = new Image(images.get(back[i][j].getCurrentFrame()), xOffset + j * tileSize, yOffset + i * tileSize);
                     layer1.add(t);
 
 
@@ -376,18 +375,18 @@ class PresenterGameThread extends Thread {
                     if(i*tileSize == player.getY() && j*tileSize <= player.getX() && player.getX() <= j*tileSize + tileSize){
 
                         // Check if player drowns
-//                        if(back[i][j].getCollideType() == CollideTypes.crushes && !onBoat){
-//
-//                            // Send lose message
-//                            messageType = 0;
-//                        }
+                        if(back[i][j].getCollideType() == CollideTypes.crushes && !onBoat && player.getStepCounter() <= 0){
+
+                            // Send lose message
+                            messageType = 0;
+                        }
 
                         // Check if player wins
-//                        if(back[i][j].getCollideType() == CollideTypes.win){
-//
-//                            // Send win message
-//                            messageType = 1;
-//                        }
+                        if(back[i][j].getCollideType() == CollideTypes.win){
+
+                            // Send win message
+                            messageType = 1;
+                        }
                     }
                 }
             }

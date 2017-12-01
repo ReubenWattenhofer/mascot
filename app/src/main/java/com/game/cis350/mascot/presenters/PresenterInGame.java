@@ -269,7 +269,8 @@ public class PresenterInGame implements IPresenterInGame {
 
         checkPosition();
 
-        if (player.getStepCounter() <= 0) {
+        // Don't move player if in the middle of a step or going out of bounds
+        if (player.getStepCounter() <= 0 && player.getY() > 0) {
             player.setDirection(Direction.up);
             player.setStepCounter(player.getSteps());
         }
@@ -282,7 +283,9 @@ public class PresenterInGame implements IPresenterInGame {
         checkPosition();
 
         Collidable player = model.getMainPlayer();
-        if (player.getStepCounter() <= 0) {
+
+        // Don't move player if in the middle of a step or going out of bounds
+        if (player.getStepCounter() <= 0 && player.getY() < tileSize * (model.getHeight()-1)) {
             player.setDirection(Direction.down);
             player.setStepCounter(player.getSteps());
         }
@@ -294,7 +297,11 @@ public class PresenterInGame implements IPresenterInGame {
     private void pressedLeft() {
 
         Collidable player = model.getMainPlayer();
-        if (player.getStepCounter() <= 0) {
+
+        //player.getX() < 0 || player.getX() >= tileSize * (model.getWidth())
+
+        // Don't move player if in the middle of a step or going out of bounds
+        if (player.getStepCounter() <= 0 && player.getX() > 0) {
             player.setDirection(Direction.left);
             player.setStepCounter(player.getSteps());
         }
@@ -306,11 +313,12 @@ public class PresenterInGame implements IPresenterInGame {
     private void pressedright() {
 
         Collidable player = model.getMainPlayer();
-        if (player.getStepCounter() <= 0) {
+
+        // Don't move player if in the middle of a step or going out of bounds
+        if (player.getStepCounter() <= 0 && player.getX() < tileSize * (model.getWidth()-1)) {
             player.setDirection(Direction.right);
             player.setStepCounter(player.getSteps());
         }
-
     }
 
     /**

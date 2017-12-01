@@ -139,7 +139,7 @@ public class Model implements IModel {
         for (int i = 0; i < height / 2; i++) {
             for (int j = 0; j < width; j++) {
                 background[i][j] = new Sprite(Animations.WATER, j, i);
-                //background[i][j].setCollideType(CollideTypes.crushes);
+                background[i][j].setCollideType(CollideTypes.crushes);
             }
         }
 
