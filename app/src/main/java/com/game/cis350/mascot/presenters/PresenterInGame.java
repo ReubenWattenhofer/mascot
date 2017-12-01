@@ -8,7 +8,9 @@ import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.os.Handler;
+import android.widget.Switch;
 
+import com.game.cis350.mascot.OnSwipeListener;
 import com.game.cis350.mascot.interfaces.IImage;
 import com.game.cis350.mascot.interfaces.models.ICollidable;
 import com.game.cis350.mascot.interfaces.models.IDrawable;
@@ -220,7 +222,7 @@ public class PresenterInGame implements IPresenterInGame {
                     if (x <= view.getScreenWidth() / 2) {
                         pressedLeft();
                     } else if (x > view.getScreenWidth() / 2) {
-                        pressedright();
+                        pressedRight();
                     }
                 } else {
                     if (y <= view.getScreenHeight() / 2) {
@@ -234,6 +236,27 @@ public class PresenterInGame implements IPresenterInGame {
 
         previous = event;
     }
+
+    @Override
+    public void swipedLeft() {
+        pressedLeft();
+    }
+
+    @Override
+    public void swipedRight() {
+        pressedRight();
+    }
+
+    @Override
+    public void swipedUp() {
+        pressedUp();
+    }
+
+    @Override
+    public void swipedDown() {
+        pressedDown();
+    }
+
 
     @Override
     public void onResume() {
@@ -270,7 +293,7 @@ public class PresenterInGame implements IPresenterInGame {
         checkPosition();
 
         // Don't move player if in the middle of a step or going out of bounds
-        if (player.getStepCounter() <= 0 && player.getY() > 0) {
+        if (player.getStepCounter() <= 0 && player.getY() > tileSize * model.getTopBoundary()) {
             player.setDirection(Direction.up);
             player.setStepCounter(player.getSteps());
         }
@@ -285,7 +308,7 @@ public class PresenterInGame implements IPresenterInGame {
         Collidable player = model.getMainPlayer();
 
         // Don't move player if in the middle of a step or going out of bounds
-        if (player.getStepCounter() <= 0 && player.getY() < tileSize * (model.getHeight()-1)) {
+        if (player.getStepCounter() <= 0 && player.getY() < tileSize * (model.getBottomBoundary() - 1)) {
             player.setDirection(Direction.down);
             player.setStepCounter(player.getSteps());
         }
@@ -301,7 +324,7 @@ public class PresenterInGame implements IPresenterInGame {
         //player.getX() < 0 || player.getX() >= tileSize * (model.getWidth())
 
         // Don't move player if in the middle of a step or going out of bounds
-        if (player.getStepCounter() <= 0 && player.getX() > 0) {
+        if (player.getStepCounter() <= 0 && player.getX()  > tileSize * model.getLeftBoundary()) {
             player.setDirection(Direction.left);
             player.setStepCounter(player.getSteps());
         }
@@ -310,12 +333,12 @@ public class PresenterInGame implements IPresenterInGame {
     /**
      * This method handles the behavior when "right" is pressed.
      */
-    private void pressedright() {
+    private void pressedRight() {
 
         Collidable player = model.getMainPlayer();
 
         // Don't move player if in the middle of a step or going out of bounds
-        if (player.getStepCounter() <= 0 && player.getX() < tileSize * (model.getWidth()-1)) {
+        if (player.getStepCounter() <= 0 && player.getX() < tileSize * (model.getRightBoundary() - 1)) {
             player.setDirection(Direction.right);
             player.setStepCounter(player.getSteps());
         }
@@ -344,7 +367,7 @@ public class PresenterInGame implements IPresenterInGame {
         Collidable player = model.getMainPlayer();
 
         // Check if player is lined up with tile
-        if(player.getX() % tileSize != 0) {
+        if (player.getX() % tileSize != 0) {
             if (player.getX() % tileSize < tileSize / 2)
                 player.setX((player.getX() / tileSize) * (tileSize));
             else

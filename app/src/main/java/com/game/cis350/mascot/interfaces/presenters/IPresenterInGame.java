@@ -2,6 +2,7 @@ package com.game.cis350.mascot.interfaces.presenters;
 
 import android.view.MotionEvent;
 
+import com.game.cis350.mascot.OnSwipeListener;
 import com.game.cis350.mascot.interfaces.IImage;
 
 import java.util.ArrayList;
@@ -28,6 +29,26 @@ public interface IPresenterInGame {
      * @param event determines what kind of input occurred
      */
     void pressedScreen(MotionEvent event);
+
+    /**
+     * Processes left swipe.
+     */
+    void swipedLeft();
+
+    /**
+     * Processor right swipe.
+     */
+    void swipedRight();
+
+    /**
+     * Processor up swipe.
+     */
+    void swipedUp();
+
+    /**
+     * Processor down swipe.
+     */
+    void swipedDown();
 
     /**
      * This method handles startup when the presenter is created or unpaused.

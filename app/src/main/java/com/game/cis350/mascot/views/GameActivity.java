@@ -21,7 +21,10 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
+import com.game.cis350.mascot.OnSwipeListener;
+import com.game.cis350.mascot.OnSwipeTouchListener;
 import com.game.cis350.mascot.R;
 import com.game.cis350.mascot.interfaces.presenters.IPresenterInGame;
 import com.game.cis350.mascot.interfaces.views.IViewGame;
@@ -127,15 +130,43 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
                 screenY = gamePanel.getHeight();
 
                 //add touch listener to game panel
-                gamePanel.setOnTouchListener(new View.OnTouchListener() {
+//                gamePanel.setOnTouchListener(new View.OnTouchListener() {
+//                    @Override
+//                    public boolean onTouch(final View view, final MotionEvent motionEvent) {
+////                Toast.makeText(getApplicationContext(), "Touch event received.",
+////                        Toast.LENGTH_SHORT).show();
+//
+//                        presenter.pressedScreen(motionEvent);
+//                        return true;
+//                    }
+//                });
+                //credit to https://stackoverflow.com/questions/4139288/android-how-to-handle-right-to-left-swipe-gestures
+                gamePanel.setOnTouchListener(new OnSwipeTouchListener(thisActivity) {
                     @Override
-                    public boolean onTouch(final View view, final MotionEvent motionEvent) {
-//                Toast.makeText(getApplicationContext(), "Touch event received.",
-//                        Toast.LENGTH_SHORT).show();
-
-                        presenter.pressedScreen(motionEvent);
-                        return true;
+                    public void onSwipeTop() {
+//                        Toast.makeText(thisActivity, "top", Toast.LENGTH_SHORT).show();
+                        presenter.swipedUp();
                     }
+                    @Override
+                    public void onSwipeRight() {
+//                        Toast.makeText(thisActivity, "right", Toast.LENGTH_SHORT).show();
+                        presenter.swipedRight();
+                    }
+                    @Override
+                    public void onSwipeLeft() {
+//                        Toast.makeText(thisActivity, "left", Toast.LENGTH_SHORT).show();
+                        presenter.swipedLeft();
+                    }
+                    @Override
+                    public void onSwipeBottom() {
+//                        Toast.makeText(thisActivity, "bottom", Toast.LENGTH_SHORT).show();
+                        presenter.swipedDown();
+                    }
+                    @Override
+                    public void down(final MotionEvent e) {
+//                        presenter.pressedScreen(e);
+                    }
+
                 });
 
                 //create presenter

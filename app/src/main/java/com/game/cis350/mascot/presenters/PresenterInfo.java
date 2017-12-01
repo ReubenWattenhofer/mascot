@@ -71,6 +71,7 @@ public abstract class PresenterInfo {
         for (String s: filePaths) {
             try {
                 Bitmap temp = BitmapFactory.decodeResource(context.getResources(), context.getResources().getIdentifier(s, "drawable", "com.game.cis350.mascot"));
+                //scale the bitmaps so that they're a multiple of the player's "steps", to prevent misalignment when the player moves
                 temp = Bitmap.createScaledBitmap(temp, (((int) temp.getWidth() / Model.STEPS) * Model.STEPS), (((int) temp.getHeight() / Model.STEPS) * Model.STEPS), false);
 
                 images.put(s, temp);

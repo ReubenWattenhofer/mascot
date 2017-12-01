@@ -42,6 +42,11 @@ public class Model implements IModel {
     private int width, height;
 
     /**
+     * Boundary width and height of the map in tiles; gameplay occurs within boundaries.
+     */
+    private int bWidth, bHeight, left, right, top, bottom;
+
+    /**
      * Constructor for the model.
      */
     //TODO: pass in a filepath to the model so it can create a map from non-hardcoded data (low priority)
@@ -51,19 +56,28 @@ public class Model implements IModel {
         Note: the top-left corner of the map is [0][0], the top-right corner is [0][width-1], and
         the bottom-right corner is [height-1][width-1]
          */
-        width = 10;
-        height = 10;
+        width = 30;
+        height = 30;
 
-        player = new Collidable(Animations.PLAYER, width / 2, height - 1);
+        bWidth = 10;
+        bHeight = 10;
+
+        left = (width - bWidth) / 2;
+        right = (width + bWidth) / 2;
+        top = (height - bHeight) / 2;
+        bottom = (height + bHeight) / 2;
+
+        //start the player in the bottom middle of the playable map
+        player = new Collidable(Animations.PLAYER, width / 2,  height - bHeight - 1);
         player.setSteps(STEPS);
 
         busses = new ArrayList<>();
 
         // Horizontal starting position of bus in tiles
-        int columnBus = 2;
+        int columnBus = left + 2;
 
         // Vertical position of bus in tiles
-        int rowBus = 8; //offset by one more than target row since row starts at 0
+        int rowBus = top + 8; //offset by one more than target row since row starts at 0
 
         Collidable c = new Collidable(Animations.BUS, columnBus, rowBus);
         c.setDirection(Direction.right);
@@ -71,10 +85,10 @@ public class Model implements IModel {
         busses.add(c);
 
         // Horzontal starting position of bus in tiles
-        columnBus = 1;
+        columnBus = left + 1;
 
         // Vertical position of bus in tiles
-        rowBus = 7; //offset by one more than target row since row starts at 0
+        rowBus = top + 7; //offset by one more than target row since row starts at 0
 
         c = new Collidable(Animations.BUS_LEFT, columnBus, rowBus);
         c.setDirection(Direction.left);
@@ -92,10 +106,10 @@ public class Model implements IModel {
         boats = new ArrayList<>();
 
         // Horzontal starting position of boat in tiles
-        int columnBoat = 2;
+        int columnBoat = left + 2;
 
         // Vertical position of boats in tiles
-        int rowBoat = 4;
+        int rowBoat = top + 4;
 
         // Add right moving boats
         Collidable currentBoat = new Collidable(Animations.BOAT, columnBoat, rowBoat);
@@ -104,10 +118,10 @@ public class Model implements IModel {
         boats.add(currentBoat);
 
         // Horzontal starting position of boat in tiles
-        columnBoat = 9;
+        columnBoat = left + 9;
 
         // Vertical position of boats in tiles
-        rowBoat = 3;
+        rowBoat = top + 3;
 
         // Add right moving boats
         currentBoat = new Collidable(Animations.BOAT, columnBoat, rowBoat);
@@ -116,10 +130,10 @@ public class Model implements IModel {
         boats.add(currentBoat);
 
         // Horzontal starting position of boat in tiles
-        columnBoat = 9;
+        columnBoat = left + 9;
 
         // Vertical position of boats in tiles
-        rowBoat = 2;
+        rowBoat = top + 2;
 
         // Add left moving boats
         currentBoat = new Collidable(Animations.BOAT_LEFT, columnBoat, rowBoat);
@@ -180,5 +194,25 @@ public class Model implements IModel {
     @Override
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public int getLeftBoundary() {
+        return left;
+    }
+
+    @Override
+    public int getRightBoundary() {
+        return right;
+    }
+
+    @Override
+    public int getTopBoundary() {
+        return top;
+    }
+
+    @Override
+    public int getBottomBoundary() {
+        return bottom;
     }
 }

@@ -19,10 +19,28 @@ public interface ICollidable {
      */
     boolean collideWith(Collidable other);
 
-    //TODO: write javadocs
+    /**
+     * Sets the collide type of the object.
+     * @param collideType collide type
+     */
     void setCollideType(CollideTypes collideType);
+
+    /**
+     * Gets the collide type of the object.
+     * @return collide type
+     */
     CollideTypes getCollideType();
+
+    /**
+     * Sets the direction of the object's movement.
+     * @param direction direction of object
+     */
     void setDirection(Direction direction);
+
+    /**
+     * Gets the direction of the object's movement.
+     * @return direction of movement
+     */
     Direction getDirection();
 
     /**

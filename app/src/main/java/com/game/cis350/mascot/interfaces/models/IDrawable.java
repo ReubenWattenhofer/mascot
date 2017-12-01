@@ -57,7 +57,15 @@ public interface IDrawable {
      */
     int getY();
 
+    /**
+     * Sets the collide type of the object.
+     * @param collideType collide type
+     */
     void setCollideType(CollideTypes collideType);
 
+    /**
+     * Gets the collide type of the object.
+     * @return collide type
+     */
     CollideTypes getCollideType();
 }

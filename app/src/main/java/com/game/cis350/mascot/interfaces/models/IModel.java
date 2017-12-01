@@ -46,4 +46,28 @@ public interface IModel {
      * @return height of map in tiles
      */
     int getHeight();
+
+    /**
+     * Returns the left boundary of the map in tiles.
+     * @return left boundary
+     */
+    int getLeftBoundary();
+
+    /**
+     * Returns the right boundary of the map in tiles.
+     * @return right boundary
+     */
+    int getRightBoundary();
+
+    /**
+     * Returns the top boundary of the map in tiles.
+     * @return top boundary
+     */
+    int getTopBoundary();
+
+    /**
+     * Returns the bottom boundary of the map in tiles.
+     * @return bottom boundary
+     */
+    int getBottomBoundary();
 }

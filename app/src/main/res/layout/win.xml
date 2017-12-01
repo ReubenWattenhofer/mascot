@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/popup_background"
+    android:background="@drawable/popup_background3"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:background="@drawable/selector_button"
             android:text="Restart"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/quit"
@@ -39,7 +39,7 @@
             android:layout_weight="1"
             android:background="@drawable/selector_button"
             android:text="Quit"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
 </LinearLayout>
