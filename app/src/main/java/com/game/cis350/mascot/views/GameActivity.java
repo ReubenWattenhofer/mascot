@@ -80,6 +80,10 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
      */
     private Context mContext;
 
+    /**
+     * Decides which type of input to receive.
+     */
+    private boolean tapToMove;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -88,12 +92,17 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
 
         thisActivity = this;
 
+        //read move setting from bundle
+        //credit to https://stackoverflow.com/questions/5265913/how-to-use-putextra-and-getextra-for-string-data
+        Bundle extras = getIntent().getExtras();
+        tapToMove = extras.getBoolean("moveType");
+
         //lock the screen to portrait mode
         //credit https://stackoverflow.com/questions/2366706/how-to-lock-orientation-during-runtime
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
 
         //set the toolbar as the activity's app bar
         //credit to https://developer.android.com/training/appbar/setting-up.html#add-toolbar
@@ -144,27 +153,32 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
                 gamePanel.setOnTouchListener(new OnSwipeTouchListener(thisActivity) {
                     @Override
                     public void onSwipeTop() {
+                        if (!tapToMove)
+                            presenter.swipedUp();
 //                        Toast.makeText(thisActivity, "top", Toast.LENGTH_SHORT).show();
-                        presenter.swipedUp();
                     }
                     @Override
                     public void onSwipeRight() {
+                        if (!tapToMove)
+                            presenter.swipedRight();
 //                        Toast.makeText(thisActivity, "right", Toast.LENGTH_SHORT).show();
-                        presenter.swipedRight();
                     }
                     @Override
                     public void onSwipeLeft() {
+                        if (!tapToMove)
+                            presenter.swipedLeft();
 //                        Toast.makeText(thisActivity, "left", Toast.LENGTH_SHORT).show();
-                        presenter.swipedLeft();
                     }
                     @Override
                     public void onSwipeBottom() {
+                        if (!tapToMove)
+                            presenter.swipedDown();
 //                        Toast.makeText(thisActivity, "bottom", Toast.LENGTH_SHORT).show();
-                        presenter.swipedDown();
                     }
                     @Override
                     public void down(final MotionEvent e) {
-//                        presenter.pressedScreen(e);
+                        if (tapToMove)
+                            presenter.pressedScreen(e);
                     }
 
                 });

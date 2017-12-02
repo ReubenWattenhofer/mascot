@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.game.cis350.mascot.views.MainActivity">
     <item
+        android:id="@+id/action_settings"
+        android:title="Settings" />
+    <item
         android:id="@+id/action_credits"
         android:title="Credits" />
 </menu>

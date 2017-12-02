@@ -42,9 +42,14 @@ public class MainActivity extends AppCompatActivity implements IViewMain {
     private Context mContext;
 
     /**
-     * Credits popup window.
+     * Popup windows.
      */
-    private PopupWindow creditsWindow;
+    private PopupWindow creditsWindow, settingsWindow;
+
+    /**
+     * Style button in settings popup window.
+     */
+    private Button styleButton;
 
     /**
      * Layout of toolbar, used to anchor popup window.
@@ -118,9 +123,14 @@ public class MainActivity extends AppCompatActivity implements IViewMain {
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_credits:
-                // User chose the "Credits" item, show the app credits
+                // User chose the "Credits" item, relay to presenter
 
                 presenter.pressedCredits();
+                return true;
+
+            case R.id.action_settings:
+                // User chose the "Settings" item, relay to presenter
+                presenter.pressedSettings();
                 return true;
 
             default:
@@ -134,12 +144,16 @@ public class MainActivity extends AppCompatActivity implements IViewMain {
 
 
     @Override
-    public void startGame() {
+    public void startGame(final boolean moveType) {
         //credit to https://developer.android.com/training/basics/firstapp/starting-activity.html
         //create the intent and fire it up
         Intent intent = new Intent(this, GameActivity.class);
+        //food for thought
+        intent.putExtra("moveType", moveType);
+
         startActivity(intent);
     }
+
 
     @Override
     public void showCredits() {
@@ -197,6 +211,98 @@ public class MainActivity extends AppCompatActivity implements IViewMain {
                 return true;
             }
         });
+    }
+
+    @Override
+    public void showSettings(final String s) {
+        //credit to https://android--code.blogspot.com/2016/01/android-popup-window-example.html
+
+        // Initialize a new instance of LayoutInflater service
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        // Inflate the custom layout/view
+        final View view = inflater.inflate(R.layout.settings, null);
+
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = false; // lets taps outside the popup also dismiss it
+
+        // Initialize a new instance of popup window
+        settingsWindow = new PopupWindow(
+                view,
+                width,
+                height,
+                focusable
+        );
+
+        //credit to https://stackoverflow.com/questions/9247792/how-to-make-animation-for-popup-window-in-android
+        settingsWindow.setAnimationStyle(R.style.AnimationPopup);
+
+        settingsWindow.setOutsideTouchable(false);
+        settingsWindow.setFocusable(true);
+        settingsWindow.setTouchable(true);
+
+
+        // Set an elevation value for popup window
+        // Call requires API level 21
+        if (Build.VERSION.SDK_INT >= 21) {
+            settingsWindow.setElevation(5.0f);
+        }
+
+        // Finally, show the popup window at the center location of root relative layout
+        //credit to https://www.codota.com/android/methods/android.widget.PopupWindow/showAtLocation
+        //and https://stackoverflow.com/questions/15862052/get-the-measures-of-popup-window
+        int[] coords = new int[2];
+
+
+        mainLayout.getLocationInWindow(coords);
+
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+        int mContainerPositionX = coords[0] + mainLayout.getWidth() / 2 - view.getMeasuredWidth() / 2;
+        int mContainerPositionY = coords[1] + screen.getHeight() / 2 - view.getMeasuredHeight() / 2;
+        settingsWindow.showAtLocation(mainLayout, 0, mContainerPositionX, mContainerPositionY);
+        //credit to https://stackoverflow.com/questions/24935455/dont-dismiss-popupwindow-when-clicking-outside-only-when-the-close-button-is-c
+
+        // credit to https://www.youtube.com/watch?v=wxqgtEewdfo
+        //this will close the popup window when the screen is pressed
+//        view.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(final View view, final MotionEvent motionEvent) {
+//                winWindow.dismiss();
+//                return true;
+//            }
+//        });
+        Button back = (Button) view.findViewById(R.id.back);
+        styleButton = (Button) view.findViewById(R.id.style);
+        //set the text of the button to reflect the current settings
+        styleButton.setText(s);
+
+        styleButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View view, final MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    presenter.pressedStyleButton();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        back.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View view, final MotionEvent motionEvent) {
+                settingsWindow.dismiss();
+                return true;
+            }
+        });
+
+    }
+
+    @Override
+    public void changeText(final String s) {
+        styleButton.setText(s);
     }
 
     @Override

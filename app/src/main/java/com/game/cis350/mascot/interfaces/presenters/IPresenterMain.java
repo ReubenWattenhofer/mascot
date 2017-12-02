@@ -17,6 +17,16 @@ public interface IPresenterMain {
     void pressedCredits();
 
     /**
+     * Handles behavior when Settings is pressed.
+     */
+    void pressedSettings();
+
+    /**
+     * Handles behavior when style button in settings is pressed.
+     */
+    void pressedStyleButton();
+
+    /**
      * This method handles the behavior when Close Credits is pressed.
      */
     void pressedLeaveCredits();

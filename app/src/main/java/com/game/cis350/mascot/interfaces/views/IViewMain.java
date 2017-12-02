@@ -8,13 +8,26 @@ package com.game.cis350.mascot.interfaces.views;
 public interface IViewMain {
     /**
      * This method starts the game View.
+     * @param moveType how movement input will be accepted
      */
-    void startGame();
+    void startGame(boolean moveType);
 
     /**
      * This method displays the credits.
      */
     void showCredits();
+
+    /**
+     * Displays the settings.
+     * @param s string to set button text to
+     */
+    void showSettings(String s);
+
+    /**
+     * Changes the setting's button text to reflect current setting.
+     * @param s string to change button text to
+     */
+    void changeText(String s);
 
     /**
      * This method closes the credits.
