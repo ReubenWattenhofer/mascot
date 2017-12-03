@@ -39,6 +39,11 @@ public final class Animations {
     public static final String[] GRASS = new String[] {"grass"};
 
     /**
+     *  Animations for the bush tiles.
+     */
+    public static final String[] BUSH = new String[] {"bush"};
+
+    /**
      *  Animations for the water tiles.
      */
     public static final String[] WATER = new String[] {"water"};
