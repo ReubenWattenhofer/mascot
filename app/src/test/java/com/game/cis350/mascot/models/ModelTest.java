@@ -18,7 +18,9 @@ import static org.junit.Assert.*;
 public class ModelTest {
 
     /*
-     * Tests the method getMainPlayer()
+     * The function getMainPlayer() from the Model class returns a Collidable object
+     * that has the attributes of a characteristic player.
+     * this method evaluates the getMainPlayer()
      */
     @Test
     public void getMainPlayer() throws Exception {
@@ -29,7 +31,10 @@ public class ModelTest {
     }
 
     /*
-     * Tests the method getBusses()
+     * The function getBusses() from the Model class returns an Arraylist of Collidable objects.
+     * The said Arraylist is comprised of busses that have a set of distinct and particular
+     * characteristics.
+     * This method evaluates getBusses()
      */
     @Test
     public void getBusses() throws Exception {
@@ -51,7 +56,10 @@ public class ModelTest {
     }
 
     /*
-     * Tests the method getBoats()
+     * The function getBoats() from the Model class returns an Arraylist of Collidable objects.
+     * The said Arraylist is comprised of boats that have a set of distinct and particular
+     * characteristics.
+     * This method evaluates getBusses()
      */
     @Test
     public void getBoats() throws Exception {
@@ -77,7 +85,11 @@ public class ModelTest {
     }
 
     /*
-     * Tests the method getBackground()
+     * The function getBackground() from the Model class returns a 2-Dimensions Array of datatype
+     * IDrawable.
+     * The said 2-D Array is comprised of background spaces that will be filled with either grass
+     * or water.
+     * This method evaluates getBackground()
      */
     @Test
     public void getBackground() throws Exception {
@@ -104,7 +116,8 @@ public class ModelTest {
     }
 
     /*
-     * Tests the method getWidth()
+     * The function getWidth() from the Model class returns the width of the map.
+     * This method evaluates getWidth()
      */
     @Test
     public void getWidth() throws Exception {
@@ -115,7 +128,8 @@ public class ModelTest {
     }
 
     /*
-     * Tests the method getHeight()
+     * The function getHeight() from the Model class returns the height of the map.
+     * This method evaluates getHeight()
      */
     @Test
     public void getHeight() throws Exception {
@@ -126,8 +140,9 @@ public class ModelTest {
     }
 
     /*
-    * Tests the method getMainPlayer()
-    */
+     * The function getLeftBoundary() from the Model class returns the left boundary of the map.
+     * This method evaluates getLeftBoundary()
+     */
     @Test
     public void getLeftBoundary() throws Exception {
         int expected = 10;
@@ -137,7 +152,8 @@ public class ModelTest {
     }
 
     /*
-     * Tests the method getMainPlayer()
+     * The function getRightBoundary() from the Model class returns the right boundary of the map.
+     * This method evaluates getRightBoundary()
      */
     @Test
     public void getRightBoundary() throws Exception {
@@ -148,7 +164,8 @@ public class ModelTest {
     }
 
     /*
-     * Tests the method getMainPlayer()
+     * The function getTopBoundary() from the Model class returns the top boundary of the map.
+     * This method evaluates getTopBoundary()
      */
     @Test
     public void getTopBoundary() throws Exception {
@@ -159,7 +176,8 @@ public class ModelTest {
     }
 
     /*
-     * Tests the method getMainPlayer()
+     * The function getBottomBoundary() from the Model class returns the bottom boundary of the map.
+     * This method evaluates getBottomBoundary()
      */
     @Test
     public void getBottomBoundary() throws Exception {
