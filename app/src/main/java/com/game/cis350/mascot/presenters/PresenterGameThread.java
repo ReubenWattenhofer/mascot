@@ -330,7 +330,7 @@ class PresenterGameThread extends Thread {
                         case left:
 
                             // Check if boat is out of bounds
-                            if (currentBoat.getX() > 0 - (tileSize * 3)) {
+                            if (currentBoat.getX() > tileSize * (model.getLeftBoundary() - 3)) {
 
                                 currentBoat.setX(currentBoat.getX() - currentBoat.getSpeed());
                             } else {
@@ -343,7 +343,7 @@ class PresenterGameThread extends Thread {
                         case right:
 
                             // Check if boat is out of bounds
-                            if (currentBoat.getX() < tileSize * model.getWidth()) {
+                            if (currentBoat.getX() < tileSize * (model.getRightBoundary() - 1)) {
 
                                 currentBoat.setX(currentBoat.getX() + currentBoat.getSpeed());
                             } else {
@@ -396,7 +396,7 @@ class PresenterGameThread extends Thread {
             }
 
             // Check if player is out of bounds
-            if (player.getX() < tileSize * model.getLeftBoundary() || player.getX() >= tileSize * (model.getRightBoundary())) {
+            if (player.getX() < tileSize * model.getLeftBoundary() || player.getX() > tileSize * (model.getRightBoundary() - 1)) {
                 // Send lose message
                 messageType = 0;
             }

@@ -24,7 +24,7 @@ public class ModelTest {
      */
     @Test
     public void getMainPlayer() throws Exception {
-        Collidable expected = new Collidable(Animations.PLAYER, 15, 19);
+        Collidable expected = new Collidable(Animations.PLAYER, 15, 24);
         expected.setSteps(STEPS);
         Model model = new Model();
 
@@ -40,15 +40,20 @@ public class ModelTest {
     @Test
     public void getBusses() throws Exception {
         ArrayList<Collidable> expected = new ArrayList<>();
-        Collidable bus1 = new Collidable(Animations.BUS, 12, 18);
+        Collidable bus1 = new Collidable(Animations.BUS, 12, 19);
         bus1.setDirection(Direction.right);
         bus1.setSteps(STEPS);
         expected.add(bus1);
 
-        Collidable bus2 = new Collidable(Animations.BUS_LEFT, 11, 17);
-        bus2.setDirection(Direction.left);
+        Collidable bus2 = new Collidable(Animations.BUS, 19, 22);
+        bus2.setDirection(Direction.right);
         bus2.setSteps(STEPS);
         expected.add(bus2);
+
+        Collidable bus3 = new Collidable(Animations.BUS_LEFT, 11, 21);
+        bus3.setDirection(Direction.left);
+        bus3.setSteps(STEPS);
+        expected.add(bus3);
 
         Model model = new Model();
 
@@ -65,12 +70,12 @@ public class ModelTest {
     @Test
     public void getBoats() throws Exception {
         ArrayList<Collidable> expected = new ArrayList<>();
-        Collidable boat1 = new Collidable(Animations.BOAT, 12, 14);
+        Collidable boat1 = new Collidable(Animations.BOAT, 11, 11);
         boat1.setDirection(Direction.right);
         boat1.setSteps(STEPS);
         expected.add(boat1);
 
-        Collidable boat2 = new Collidable(Animations.BOAT, 19, 13);
+        Collidable boat2 = new Collidable(Animations.BOAT, 16, 11);
         boat2.setDirection(Direction.right);
         boat2.setSteps(STEPS);
         expected.add(boat2);
@@ -79,6 +84,21 @@ public class ModelTest {
         boat3.setDirection(Direction.left);
         boat3.setSteps(STEPS);
         expected.add(boat3);
+
+        Collidable boat4 = new Collidable(Animations.BOAT_LEFT, 10, 12);
+        boat4.setDirection(Direction.left);
+        boat4.setSteps(STEPS);
+        expected.add(boat4);
+
+        Collidable boat5 = new Collidable(Animations.BOAT_LEFT, 12, 13);
+        boat5.setDirection(Direction.left);
+        boat5.setSteps(STEPS);
+        expected.add(boat5);
+
+        Collidable boat6 = new Collidable(Animations.BOAT_LEFT, 19, 13);
+        boat6.setDirection(Direction.left);
+        boat6.setSteps(STEPS);
+        expected.add(boat6);
 
         Model model = new Model();
 
@@ -96,6 +116,8 @@ public class ModelTest {
     public void getBackground() throws Exception {
         int width = 30;
         int height = 30;
+        int bWidth = 10;
+        int bHeight = 20;
         IDrawable[][] expected = new IDrawable[width][height];
 
         Model model = new Model();
@@ -111,6 +133,55 @@ public class ModelTest {
             for (int j = 0; j < width; j++) {
                 expected[i][j] = new Sprite(Animations.GRASS, j, i);
             }
+        }
+
+
+        // Fill background with bushes for border
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                expected[i][j] = new Sprite(Animations.BUSH, j, i);
+            }
+        }
+
+        // Add in parts for grass
+        for (int i = (height - bHeight) / 2; i < ((height - bHeight) / 2) + bHeight; i++) {
+            for (int j = (width - bWidth) / 2; j < ((width - bWidth) / 2) + bWidth; j++) {
+                expected[i][j].setFrames(Animations.GRASS);
+            }
+        }
+
+        for (int i = (height - bHeight) / 2; i < ((height - bHeight) / 2) + bHeight; i++) {
+
+            // Add parts for road top
+            if (i == 18 || i == 21) {
+                for (int j = 0; j < width; j++) {
+                    expected[i][j].setFrames(Animations.ROAD_TOP);
+                }
+            }
+
+            // Add parts for road bottom
+            if (i == 19 || i == 22) {
+                for (int j = 0; j < width; j++) {
+                    expected[i][j].setFrames(Animations.ROAD_BOTTOM);
+                }
+            }
+
+            // Add parts for water
+            if (i == 11 || i == 12 || i == 13) {
+                for (int j = 0; j < width; j++) {
+                    expected[i][j].setFrames(Animations.WATER);
+                    expected[i][j].setCollideType(CollideTypes.crushes);
+                }
+            }
+
+            // Add parts for win
+            if (i == 5) {
+                for (int j = (width - bWidth) / 2; j < ((width - bWidth) / 2) + bWidth; j++) {
+                    expected[i][j].setFrames(Animations.WIN);
+                    expected[i][j].setCollideType(CollideTypes.win);
+                }
+            }
+
         }
 
         assertEquals(expected, model.getBackground());
@@ -170,7 +241,7 @@ public class ModelTest {
      */
     @Test
     public void getTopBoundary() throws Exception {
-        int expected = 10;
+        int expected = 5;
         Model model = new Model();
 
         assertEquals(expected, model.getTopBoundary());
@@ -182,7 +253,7 @@ public class ModelTest {
      */
     @Test
     public void getBottomBoundary() throws Exception {
-        int expected = 20;
+        int expected = 25;
         Model model = new Model();
 
         assertEquals(expected, model.getBottomBoundary());

@@ -60,7 +60,7 @@ public class Model implements IModel {
         height = 30;
 
         bWidth = 10;
-        bHeight = 10;
+        bHeight = 20;
 
         left = (width - bWidth) / 2;
         right = (width + bWidth) / 2;
@@ -68,16 +68,16 @@ public class Model implements IModel {
         bottom = (height + bHeight) / 2;
 
         //start the player in the bottom middle of the playable map
-        player = new Collidable(Animations.PLAYER, width / 2,  height - bHeight - 1);
+        player = new Collidable(Animations.PLAYER, width / 2,  (height - bHeight) / 2 + bHeight - 1);
         player.setSteps(STEPS);
 
         busses = new ArrayList<>();
 
         // Horizontal starting position of bus in tiles
-        int columnBus = left + 2;
+        int columnBus = 12;
 
         // Vertical position of bus in tiles
-        int rowBus = top + 8; //offset by one more than target row since row starts at 0
+        int rowBus = 19; //offset by one more than target row since row starts at 0
 
         Collidable c = new Collidable(Animations.BUS, columnBus, rowBus);
         c.setDirection(Direction.right);
@@ -85,31 +85,34 @@ public class Model implements IModel {
         busses.add(c);
 
         // Horizontal starting position of bus in tiles
-        columnBus = left + 1;
+        columnBus = 19;
 
         // Vertical position of bus in tiles
-        rowBus = top + 7; //offset by one more than target row since row starts at 0
+        rowBus = 22; //offset by one more than target row since row starts at 0
+
+        c = new Collidable(Animations.BUS, columnBus, rowBus);
+        c.setDirection(Direction.right);
+        c.setSteps(STEPS);
+        busses.add(c);
+
+        // Horizontal starting position of bus in tiles
+        columnBus = 11;
+
+        // Vertical position of bus in tiles
+        rowBus = 21; //offset by one more than target row since row starts at 0
 
         c = new Collidable(Animations.BUS_LEFT, columnBus, rowBus);
         c.setDirection(Direction.left);
         c.setSteps(STEPS);
         busses.add(c);
 
-        // Add right moving busses
-//        for (int i = 0; i < 1; i++) {
-//            Collidable c = new Collidable(Animations.BUS, (startingPositionBus) + (widthApartBus * i), rowBus);
-//            c.setDirection(Direction.right);
-//            c.setSteps(STEPS);
-//            busses.add(c);
-//        }
-
         boats = new ArrayList<>();
 
         // Horizontal starting position of boat in tiles
-        int columnBoat = left + 2;
+        int columnBoat = 11;
 
         // Vertical position of boats in tiles
-        int rowBoat = top + 4;
+        int rowBoat = 11;
 
         // Add right moving boats
         Collidable currentBoat = new Collidable(Animations.BOAT, columnBoat, rowBoat);
@@ -118,10 +121,10 @@ public class Model implements IModel {
         boats.add(currentBoat);
 
         // Horizontal starting position of boat in tiles
-        columnBoat = left + 9;
+        columnBoat = 16;
 
         // Vertical position of boats in tiles
-        rowBoat = top + 3;
+        rowBoat = 11;
 
         // Add right moving boats
         currentBoat = new Collidable(Animations.BOAT, columnBoat, rowBoat);
@@ -130,10 +133,34 @@ public class Model implements IModel {
         boats.add(currentBoat);
 
         // Horizontal starting position of boat in tiles
-        columnBoat = left + 9;
+        columnBoat = 19;
 
         // Vertical position of boats in tiles
-        rowBoat = top + 2;
+        rowBoat = 12;
+
+        // Add right moving boats
+        currentBoat = new Collidable(Animations.BOAT_LEFT, columnBoat, rowBoat);
+        currentBoat.setDirection(Direction.left);
+        currentBoat.setSteps(STEPS);
+        boats.add(currentBoat);
+
+        // Horizontal starting position of boat in tiles
+        columnBoat = 10;
+
+        // Vertical position of boats in tiles
+        rowBoat = 12;
+
+        // Add right moving boats
+        currentBoat = new Collidable(Animations.BOAT_LEFT, columnBoat, rowBoat);
+        currentBoat.setDirection(Direction.left);
+        currentBoat.setSteps(STEPS);
+        boats.add(currentBoat);
+
+        // Horizontal starting position of boat in tiles
+        columnBoat = 12;
+
+        // Vertical position of boats in tiles
+        rowBoat = 13;
 
         // Add left moving boats
         currentBoat = new Collidable(Animations.BOAT_LEFT, columnBoat, rowBoat);
@@ -141,27 +168,66 @@ public class Model implements IModel {
         currentBoat.setSteps(STEPS);
         boats.add(currentBoat);
 
-//        for (int i = 0; i < 1; i++) {
-//            Collidable currentBoat = new Collidable(Animations.BOAT, (startingPositionBoat) + (widthApartBoat * i), rowBoat);
-//            currentBoat.setDirection(Direction.right);
-//            currentBoat.setSteps(STEPS);
-//            boats.add(currentBoat);
-//        }
+        // Horizontal starting position of boat in tiles
+        columnBoat = 19;
 
-        //add background tiles for water
+        // Vertical position of boats in tiles
+        rowBoat = 13;
+
+        // Add left moving boats
+        currentBoat = new Collidable(Animations.BOAT_LEFT, columnBoat, rowBoat);
+        currentBoat.setDirection(Direction.left);
+        currentBoat.setSteps(STEPS);
+        boats.add(currentBoat);
+
         background = new IDrawable[width][height];
-        for (int i = 0; i < height / 2; i++) {
+
+        // Fill background with bushes for border
+        for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                background[i][j] = new Sprite(Animations.WATER, j, i);
-                background[i][j].setCollideType(CollideTypes.crushes);
+                background[i][j] = new Sprite(Animations.BUSH, j, i);
             }
         }
 
-        //add background tiles for grass
-        for (int i = height / 2; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                background[i][j] = new Sprite(Animations.GRASS, j, i);
+        // Add in parts for grass
+        for (int i = (height - bHeight) / 2; i < ((height - bHeight) / 2) + bHeight; i++) {
+            for (int j = (width - bWidth) / 2; j < ((width - bWidth) / 2) + bWidth; j++) {
+                background[i][j].setFrames(Animations.GRASS);
             }
+        }
+
+        for (int i = (height - bHeight) / 2; i < ((height - bHeight) / 2) + bHeight; i++) {
+
+            // Add parts for road top
+            if (i == 18 || i == 21) {
+                for (int j = 0; j < width; j++) {
+                    background[i][j].setFrames(Animations.ROAD_TOP);
+                }
+            }
+
+            // Add parts for road bottom
+            if (i == 19 || i == 22) {
+                for (int j = 0; j < width; j++) {
+                    background[i][j].setFrames(Animations.ROAD_BOTTOM);
+                }
+            }
+
+            // Add parts for water
+            if (i == 11 || i == 12 || i == 13) {
+                for (int j = 0; j < width; j++) {
+                    background[i][j].setFrames(Animations.WATER);
+                    background[i][j].setCollideType(CollideTypes.crushes);
+                }
+            }
+
+            // Add parts for win
+            if (i == 5) {
+                for (int j = (width - bWidth) / 2; j < ((width - bWidth) / 2) + bWidth; j++) {
+                    background[i][j].setFrames(Animations.WIN);
+                    background[i][j].setCollideType(CollideTypes.win);
+                }
+            }
+
         }
 
     }

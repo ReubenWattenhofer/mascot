@@ -146,7 +146,7 @@ public class PresenterInGame implements IPresenterInGame {
         ArrayList<Collidable> busses = model.getBusses();
 
         // Set speeds of busses
-        int[] busSpeeds = {tileSize / 20, tileSize / 20};
+        int[] busSpeeds = {tileSize / 20, tileSize / 20, tileSize / 20};
 
         for (int i = 0; i < busses.size(); i++) {
             Collidable bus = busses.get(i);
@@ -161,7 +161,7 @@ public class PresenterInGame implements IPresenterInGame {
         ArrayList<Collidable> boats = model.getBoats();
 
         // Set speeds of boats
-        int[] boatSpeeds = {0, tileSize / 50, tileSize / 30};
+        int[] boatSpeeds = {0, 0, tileSize / 30, tileSize / 30, tileSize / 20, tileSize / 20};
 
         for (int i = 0; i < boats.size(); i++) {
             Collidable boat = boats.get(i);

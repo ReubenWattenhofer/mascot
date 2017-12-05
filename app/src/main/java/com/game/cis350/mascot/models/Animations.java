@@ -49,6 +49,21 @@ public final class Animations {
     public static final String[] WATER = new String[] {"water"};
 
     /**
+     *  Animations for the bottom road tiles.
+     */
+    public static final String[] ROAD_BOTTOM = new String[] {"road_bottom"};
+
+    /**
+     *  Animations for the top road tiles.
+     */
+    public static final String[] ROAD_TOP = new String[] {"road_top"};
+
+    /**
+     *  Animations for the win tiles.
+     */
+    public static final String[] WIN = new String[] {"win"};
+
+    /**
      * This prevents the constructor from being accessed.
      */
     private Animations() { }

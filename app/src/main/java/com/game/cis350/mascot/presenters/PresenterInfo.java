@@ -71,6 +71,21 @@ public abstract class PresenterInfo {
             filePaths.add(s);
         }
 
+        //get the file paths for the top road
+        for (String s : Animations.ROAD_TOP) {
+            filePaths.add(s);
+        }
+
+        //get the file paths for the bottom road
+        for (String s : Animations.ROAD_BOTTOM) {
+            filePaths.add(s);
+        }
+
+        //get the file paths for the win tile
+        for (String s : Animations.WIN) {
+            filePaths.add(s);
+        }
+
         //create the bitmaps and store them in the hashmap
         //credit https://stackoverflow.com/questions/25034782/dynamically-choosing-drawable
         for (String s: filePaths) {
