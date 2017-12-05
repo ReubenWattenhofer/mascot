@@ -84,7 +84,7 @@ public class Model implements IModel {
         c.setSteps(STEPS);
         busses.add(c);
 
-        // Horzontal starting position of bus in tiles
+        // Horizontal starting position of bus in tiles
         columnBus = left + 1;
 
         // Vertical position of bus in tiles
@@ -105,7 +105,7 @@ public class Model implements IModel {
 
         boats = new ArrayList<>();
 
-        // Horzontal starting position of boat in tiles
+        // Horizontal starting position of boat in tiles
         int columnBoat = left + 2;
 
         // Vertical position of boats in tiles
@@ -117,7 +117,7 @@ public class Model implements IModel {
         currentBoat.setSteps(STEPS);
         boats.add(currentBoat);
 
-        // Horzontal starting position of boat in tiles
+        // Horizontal starting position of boat in tiles
         columnBoat = left + 9;
 
         // Vertical position of boats in tiles
@@ -129,7 +129,7 @@ public class Model implements IModel {
         currentBoat.setSteps(STEPS);
         boats.add(currentBoat);
 
-        // Horzontal starting position of boat in tiles
+        // Horizontal starting position of boat in tiles
         columnBoat = left + 9;
 
         // Vertical position of boats in tiles

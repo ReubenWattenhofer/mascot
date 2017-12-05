@@ -61,6 +61,11 @@ public abstract class PresenterInfo {
             filePaths.add(s);
         }
 
+        //get the file paths for the bush
+        for (String s : Animations.BUSH) {
+            filePaths.add(s);
+        }
+
         //get the file paths for the water
         for (String s : Animations.WATER) {
             filePaths.add(s);
