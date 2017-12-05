@@ -39,9 +39,10 @@ public class PanelDraw {
      * This is the constructor for the thread.
      * @param surfaceHolder handler for the SurfaceView's canvas
      * @param layers reference to the presenter's background image list
+     * @throws Exception if incorrect array size is passed
      */
 
-    public PanelDraw(final SurfaceHolder surfaceHolder, final ArrayList<IImage>[] layers) {
+    public PanelDraw(final SurfaceHolder surfaceHolder, final ArrayList<IImage>[] layers) throws Exception {
         this.surfaceHolder = surfaceHolder;
 
         paint = new Paint();
@@ -54,7 +55,8 @@ public class PanelDraw {
             layer2 = this.layers[1];
             layer3 = this.layers[2];
         } catch (Exception e) {
-            //TODO: exception if we weren't passed a three element array
+            e.printStackTrace();
+            throw e;
         }
 
     }
@@ -79,8 +81,8 @@ public class PanelDraw {
                 synchronized (surfaceHolder) {
 
                     // Draw the background color
-                    //TODO: change this to black
-                    c.drawColor(Color.argb(255, 100, 0, 0));
+//                    c.drawColor(Color.argb(255, 100, 0, 0));
+                    c.drawColor(Color.argb(255, 0, 0, 0));
                     // Choose the brush color for drawing
                     paint.setColor(Color.argb(255, 255, 255, 255));
 
@@ -102,7 +104,7 @@ public class PanelDraw {
                 }
 
             } catch (Exception e) {
-                //TODO: do something with exception (null canvas usually)
+                e.printStackTrace();
             } finally {
                 if (c != null) {
                     // do this in a finally so that if an exception is thrown

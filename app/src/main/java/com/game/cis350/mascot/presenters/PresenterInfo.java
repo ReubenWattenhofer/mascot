@@ -81,7 +81,7 @@ public abstract class PresenterInfo {
 
                 images.put(s, temp);
             } catch (Exception e) {
-                //TODO: do something here
+                e.printStackTrace();
             }
 
         }

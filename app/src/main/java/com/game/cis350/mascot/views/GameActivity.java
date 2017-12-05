@@ -1,6 +1,5 @@
 package com.game.cis350.mascot.views;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
@@ -13,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -21,9 +19,8 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
+//import android.widget.Toast;
 
-import com.game.cis350.mascot.OnSwipeListener;
 import com.game.cis350.mascot.OnSwipeTouchListener;
 import com.game.cis350.mascot.R;
 import com.game.cis350.mascot.interfaces.presenters.IPresenterInGame;
@@ -153,32 +150,37 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
                 gamePanel.setOnTouchListener(new OnSwipeTouchListener(thisActivity) {
                     @Override
                     public void onSwipeTop() {
-                        if (!tapToMove)
+                        if (!tapToMove) {
                             presenter.swipedUp();
+                        }
 //                        Toast.makeText(thisActivity, "top", Toast.LENGTH_SHORT).show();
                     }
                     @Override
                     public void onSwipeRight() {
-                        if (!tapToMove)
+                        if (!tapToMove) {
                             presenter.swipedRight();
+                        }
 //                        Toast.makeText(thisActivity, "right", Toast.LENGTH_SHORT).show();
                     }
                     @Override
                     public void onSwipeLeft() {
-                        if (!tapToMove)
+                        if (!tapToMove) {
                             presenter.swipedLeft();
+                        }
 //                        Toast.makeText(thisActivity, "left", Toast.LENGTH_SHORT).show();
                     }
                     @Override
                     public void onSwipeBottom() {
-                        if (!tapToMove)
+                        if (!tapToMove) {
                             presenter.swipedDown();
+                        }
 //                        Toast.makeText(thisActivity, "bottom", Toast.LENGTH_SHORT).show();
                     }
                     @Override
                     public void down(final MotionEvent e) {
-                        if (tapToMove)
+                        if (tapToMove) {
                             presenter.pressedScreen(e);
+                        }
                     }
 
                 });
@@ -424,10 +426,12 @@ public class GameActivity extends AppCompatActivity implements IViewGame {
 
     @Override
     public void dismissWindows() {
-        if (winWindow != null)
+        if (winWindow != null) {
             winWindow.dismiss();
-        if (loseWindow != null)
+        }
+        if (loseWindow != null) {
             loseWindow.dismiss();
+        }
     }
 
     @Override
