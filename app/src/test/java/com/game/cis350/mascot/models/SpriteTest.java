@@ -94,16 +94,11 @@ public class SpriteTest {
     @Test
     public void incrementFrame() throws Exception {
         String[] animation = Animations.BUS;
-        int frame = 0;
-        int maxFrame = animation.length;
-        int expected = 1;
-        double delta = 0.1;
+        Sprite sprite = new Sprite(animation, 4, 3);
+        sprite.incrementFrame();
+        int expected = sprite.maxFrame; // = 0
 
-        while(frame < maxFrame) {
-            frame++;
-        }
-
-        assertEquals(expected, frame, delta);
+        assertEquals(expected, sprite.frame);
     }
 
     /**

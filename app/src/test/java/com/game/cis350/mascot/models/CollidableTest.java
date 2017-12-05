@@ -46,8 +46,6 @@ public class CollidableTest {
         assertEquals(expected, collidable.getStepCounter());
     }
 
-    // TODO: Ask colleagues is it worth deleting test method setStepCounter() because I'm testing setStepCounter() and getStepCounter() in decrementStepCounter() test method
-
     /**
      * Tests the method decrementStepCounter()
      */

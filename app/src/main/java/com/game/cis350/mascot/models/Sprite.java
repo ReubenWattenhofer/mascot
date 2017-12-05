@@ -56,9 +56,7 @@ public class Sprite implements IDrawable {
     }
 
     @Override
-    public String getCurrentFrame() {
-        return animation[frame];
-    }
+    public String getCurrentFrame() {return animation[frame];}
 
     @Override
     public String[] getFrames() {return animation.clone();}

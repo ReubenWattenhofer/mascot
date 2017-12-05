@@ -25,6 +25,7 @@ public class ModelTest {
     @Test
     public void getMainPlayer() throws Exception {
         Collidable expected = new Collidable(Animations.PLAYER, 15, 19);
+        expected.setSteps(STEPS);
         Model model = new Model();
 
         assertEquals(expected, model.getMainPlayer());
