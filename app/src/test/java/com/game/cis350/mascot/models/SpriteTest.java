@@ -15,6 +15,64 @@ import static org.junit.Assert.*;
  */
 public class SpriteTest {
 
+    @Test
+    public void getCurrentFrame() throws Exception {
+        Sprite sprite = new Sprite(Animations.BUS_LEFT, 2, 5);
+        Sprite test = new Sprite(Animations.BUS_LEFT, 4, 4);
+        String expected = sprite.getCurrentFrame();
+
+        assertEquals(expected, test.getCurrentFrame());
+    }
+
+    @Test
+    public void getFrames() throws Exception {
+        String[] expectedClone = Animations.BOAT;
+        Sprite test = new Sprite(Animations.BUS, 5, 5);
+        test.setFrames(Animations.BOAT);
+
+        assertEquals(expectedClone, test.getFrames());
+    }
+
+    @Test
+    public void getX() throws Exception {
+        int expected = 3;
+        String[] animation = Animations.BUS;
+        Sprite sprite = new Sprite(animation, 1, 1);
+        sprite.setX(3);
+
+        assertEquals(expected, sprite.getX());
+    }
+
+    @Test
+    public void getY() throws Exception {
+        int expected = 4;
+        String[] animation = Animations.BUS;
+        Sprite sprite = new Sprite(animation, 1, 1);
+        sprite.setY(4);
+
+        assertEquals(expected, sprite.getY());
+    }
+
+    @Test
+    public void setCollideType() throws Exception {
+        CollideTypes expected = CollideTypes.crushes;
+        Sprite sprite = new Sprite(Animations.BUS_LEFT, 3, 4);
+
+        sprite.setCollideType(CollideTypes.crushes);
+
+        assertEquals(expected, sprite.getCollideType());
+    }
+
+    @Test
+    public void getCollideType() throws Exception {
+        CollideTypes expected = CollideTypes.getsCrushed;
+        Sprite sprite = new Sprite(Animations.PLAYER, 10, 11);
+
+        sprite.setCollideType(CollideTypes.getsCrushed);
+
+        assertEquals(expected, sprite.getCollideType());
+    }
+
     /**
      * Tests the method testHashCode()
      */
@@ -53,12 +111,11 @@ public class SpriteTest {
      */
     @Test
     public void setFrames() throws Exception {
-        String[] animation = Animations.BUS;
-        String[] expectedClone = Animations.BUS;
+        String[] expectedClone = Animations.BUS_LEFT;
         Sprite test = new Sprite(Animations.BUS, 5, 5);
-        test.setFrames(expectedClone);
+        test.setFrames(Animations.BUS_LEFT);
 
-        assertEquals(expectedClone, animation);
+        assertEquals(expectedClone, test.getFrames());
 
     }
 
