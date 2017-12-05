@@ -2,7 +2,6 @@ package com.game.cis350.mascot.interfaces.presenters;
 
 import android.view.MotionEvent;
 
-import com.game.cis350.mascot.OnSwipeListener;
 import com.game.cis350.mascot.interfaces.IImage;
 
 import java.util.ArrayList;

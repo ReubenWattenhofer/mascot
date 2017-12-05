@@ -8,11 +8,8 @@ import android.os.Message;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.os.Handler;
-import android.widget.Switch;
 
-import com.game.cis350.mascot.OnSwipeListener;
 import com.game.cis350.mascot.interfaces.IImage;
-import com.game.cis350.mascot.interfaces.models.ICollidable;
 import com.game.cis350.mascot.interfaces.models.IDrawable;
 import com.game.cis350.mascot.interfaces.models.IModel;
 import com.game.cis350.mascot.interfaces.presenters.IPresenterInGame;
@@ -76,12 +73,7 @@ public class PresenterInGame implements IPresenterInGame {
     private ArrayList<IImage>[] layers;
 
     /**
-     * Holds the previous motion event.
-     */
-    private MotionEvent previous;
-
-    /**
-     * Handler for allowing thread to communicate with UI
+     * Handler for allowing thread to communicate with UI.
      */
     private Handler mHandler;
 
@@ -95,14 +87,12 @@ public class PresenterInGame implements IPresenterInGame {
         context = (Context) v; //this is Android specific
         this.holder = holder;
 
-        previous = null;
-
         // Create handler so PresenterGameThread can work with view
         // https://developer.android.com/training/multiple-threads/communicate-ui.html
         mHandler = new Handler(Looper.getMainLooper()) {
             @Override
-            public void handleMessage(Message message) {
-                switch(message.what){
+            public void handleMessage(final Message message) {
+                switch (message.what) {
                     case 1:
                         win();
                         break;
@@ -134,7 +124,6 @@ public class PresenterInGame implements IPresenterInGame {
         player.setX(player.getX() * tileSize);
         player.setY(player.getY() * tileSize);
 //        model.getMainPlayer().setY((model.getHeight() - 1) * tileSize); //view.getScreenHeight() / 2 - 13);
-        //TODO: set the model animations here rather than in the model constructor?
 
         //create the hashmap
         images = PresenterInfo.getImages(); // new HashMap<String, Bitmap>();
@@ -234,7 +223,7 @@ public class PresenterInGame implements IPresenterInGame {
 //            }
         }
 
-        previous = event;
+//        previous = event;
     }
 
     @Override
@@ -261,7 +250,11 @@ public class PresenterInGame implements IPresenterInGame {
     @Override
     public void onResume() {
         //start the game thread
-        gameThread = new PresenterGameThread(model, images, layers, holder, view.getScreenWidth(), view.getScreenHeight(), tileSize, mHandler);
+        try {
+            gameThread = new PresenterGameThread(model, images, layers, holder, view.getScreenWidth(), view.getScreenHeight(), tileSize, mHandler);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         gameThread.setRunning(true);
         gameThread.start();
     }
@@ -347,7 +340,7 @@ public class PresenterInGame implements IPresenterInGame {
     /**
      * This method handles the UI behavior when the player wins.
      */
-    private void win(){
+    private void win() {
         gameThread.setRunning(false);
         view.showWin();
     }
@@ -355,7 +348,7 @@ public class PresenterInGame implements IPresenterInGame {
     /**
      * This method handles the UI behavior when the player loses.
      */
-    private void lose(){
+    private void lose() {
         gameThread.setRunning(false);
         view.showLose();
     }
@@ -363,15 +356,16 @@ public class PresenterInGame implements IPresenterInGame {
     /**
      * This method helps align the player's horizontal position to being on a tile when stepping off of a boat.
      */
-    private void checkPosition(){
+    private void checkPosition() {
         Collidable player = model.getMainPlayer();
 
         // Check if player is lined up with tile
         if (player.getX() % tileSize != 0) {
-            if (player.getX() % tileSize < tileSize / 2)
+            if (player.getX() % tileSize < tileSize / 2) {
                 player.setX((player.getX() / tileSize) * (tileSize));
-            else
+            } else {
                 player.setX(tileSize + ((player.getX() / tileSize) * (tileSize)));
+            }
         }
     }
 }

@@ -66,10 +66,11 @@ class PanelThread extends Thread {
      * This is the constructor for the thread.
      * @param surfaceHolder handler for the SurfaceView's canvas
      * @param layers reference to the presenter's background image list
+     * @throws Exception if insufficiently sized array is passed
      */
 //    PanelThread(final SurfaceHolder surfaceHolder, final HashMap<Object, IImage> layer1,
 //                final ArrayList<IImage> layer2, final ArrayList<IImage> layer3) { //}, final SurfaceView panel) {
-    PanelThread(final SurfaceHolder surfaceHolder, final ArrayList<IImage>[] layers) {
+    PanelThread(final SurfaceHolder surfaceHolder, final ArrayList<IImage>[] layers) throws Exception {
         this.surfaceHolder = surfaceHolder;
 //        drawingPanel = panel;
 
@@ -85,7 +86,8 @@ class PanelThread extends Thread {
             layer2 = this.layers[1];
             layer3 = this.layers[2];
         } catch (Exception e) {
-            //TODO: exception if we weren't passed a three element array
+            e.printStackTrace();
+            throw e;
         }
 //        screenX = 0;
 //        screenY = 0;
@@ -129,8 +131,7 @@ class PanelThread extends Thread {
 //                    synchronized (layers) {
 
                         // Draw the background color
-                        //TODO: change this to black
-                        c.drawColor(Color.argb(255, 100, 0, 0));
+                        c.drawColor(Color.argb(255, 0, 0, 0));
                         // Choose the brush color for drawing
                         paint.setColor(Color.argb(255, 255, 255, 255));
 

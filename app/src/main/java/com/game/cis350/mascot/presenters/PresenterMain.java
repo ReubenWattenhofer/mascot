@@ -43,8 +43,9 @@ public class PresenterMain implements IPresenterMain {
     public void pressedSettings() {
         //set style button text to reflect current setting
         String s = "Tap to\nmove";
-        if (!tapToMove)
+        if (!tapToMove) {
             s = "Swipe to\nmove";
+        }
 
         view.showSettings(s);
     }
@@ -55,8 +56,9 @@ public class PresenterMain implements IPresenterMain {
         tapToMove = !tapToMove;
         //set style button text to reflect current setting
         String s = "Tap to\nmove";
-        if (!tapToMove)
+        if (!tapToMove) {
             s = "Swipe to\nmove";
+        }
 
         view.changeText(s);
 

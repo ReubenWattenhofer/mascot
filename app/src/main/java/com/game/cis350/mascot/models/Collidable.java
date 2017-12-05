@@ -3,6 +3,8 @@ package com.game.cis350.mascot.models;
 import com.game.cis350.mascot.interfaces.models.ICollidable;
 import com.game.cis350.mascot.interfaces.models.IDrawable;
 
+import java.util.Objects;
+
 /**
  * This class is the basic class for objects that handle collision and movement.
  * @author Reuben 9/20/2017
@@ -14,7 +16,8 @@ public class Collidable extends Sprite implements IDrawable,
     /**
      * Collision type of the object.
      */
-    private CollideTypes collideType;
+//    private CollideTypes collideType;
+
     /**
      * Direction of the object's movement.
      */
@@ -111,5 +114,28 @@ public class Collidable extends Sprite implements IDrawable,
         return stepCounter;
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Sprite)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+
+        Collidable collidable = (Collidable) o;
+        return  direction == collidable.direction
+                && stepCounter == collidable.stepCounter
+                && steps == collidable.steps
+                && speed == collidable.speed;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(animation, frame, maxFrame, x, y, direction, stepCounter, stepCounter, steps);
+    }
 
 }

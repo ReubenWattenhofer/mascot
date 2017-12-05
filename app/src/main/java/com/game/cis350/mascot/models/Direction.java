@@ -5,6 +5,4 @@ package com.game.cis350.mascot.models;
  * @author Filipe 11/03/2017
  */
 
-public enum Direction {
-    up, down, left, right
-}
+public enum Direction { up, down, left, right }

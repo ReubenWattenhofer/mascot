@@ -31,7 +31,7 @@ public final class Animations {
     /**
      *  Animations for left moving boats.
      */
-    public static final String[] BOAT_LEFT = new String[] {"boat_left"};
+    public static final String[] BOAT_LEFT  = new String[] {"boat_left"};
 
     /**
      *  Animations for the grass tiles.

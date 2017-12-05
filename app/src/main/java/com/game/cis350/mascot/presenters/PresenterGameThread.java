@@ -6,13 +6,11 @@ import android.view.SurfaceHolder;
 import android.os.Handler;
 
 import com.game.cis350.mascot.interfaces.models.IDrawable;
-import com.game.cis350.mascot.interfaces.views.IViewGame;
 import com.game.cis350.mascot.models.Collidable;
 import com.game.cis350.mascot.interfaces.models.IModel;
 import com.game.cis350.mascot.Image;
 import com.game.cis350.mascot.interfaces.IImage;
 import com.game.cis350.mascot.models.CollideTypes;
-import com.game.cis350.mascot.models.Direction;
 import com.game.cis350.mascot.views.PanelDraw;
 //import com.game.cis350.mascot.views.DrawingPanel;
 import java.util.ArrayList;
@@ -84,12 +82,12 @@ class PresenterGameThread extends Thread {
     private int top, bottom, left, right;
 
     /**
-     * Handler for allowing thread to communicate with UI
+     * Handler for allowing thread to communicate with UI.
      */
     private Handler mHandler;
 
     /**
-     * Determine if player is on boat
+     * Determine if player is on boat.
      */
     private boolean onBoat;
 
@@ -102,11 +100,17 @@ class PresenterGameThread extends Thread {
      * @param sW screen width of device
      * @param sH screen height of device
      * @param tileSize tilesize
+     * @param h handler to surface
+     * @throws Exception if layers is improperly sized
      **/
       PresenterGameThread(final IModel m, final HashMap<String, Bitmap> images, final ArrayList<IImage>[] layers,
-                          final SurfaceHolder holder, final int sW, final int sH, final int tileSize, Handler h) {
+                          final SurfaceHolder holder, final int sW, final int sH, final int tileSize, final Handler h) throws Exception {
 
-          panel = new PanelDraw(holder, layers);
+          try {
+              panel = new PanelDraw(holder, layers);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
 
           model = m;
 
@@ -134,7 +138,7 @@ class PresenterGameThread extends Thread {
               layer2 = this.layers[1];
               layer3 = this.layers[2];
           } catch (Exception e) {
-              //TODO: exception if we weren't passed a three element array
+              throw e;
           }
 
           //initialize top down left right variables
@@ -175,13 +179,13 @@ class PresenterGameThread extends Thread {
         }
     }
 
+
     @Override
     public void run() {
 
         while (run) {     //When setRunning(false) occurs, run is
                           //set to false and loop ends, stopping thread
 
-            //TODO: PUT AUTOMATED GAME LOGIC HERE
             //update bus/boat movement, animate all sprites in the game (or figure out which sprites
             //are in the player's view and only update those, but that's an optimization for later)
 
@@ -239,9 +243,9 @@ class PresenterGameThread extends Thread {
             for (Collidable currentBus : model.getBusses()) {
 
                 // Check if player is hit by bus
-                if(player.getX() + tileSize*0.7 > currentBus.getX()
-                        && player.getX() <= currentBus.getX() + (tileSize*2)
-                        && currentBus.getY() == player.getY()){
+                if (player.getX() + tileSize * 0.7 > currentBus.getX()
+                        && player.getX() <= currentBus.getX() + (tileSize * 2)
+                        && currentBus.getY() == player.getY()) {
 
                     // Send lose message
                     messageType = 0;
@@ -259,11 +263,11 @@ class PresenterGameThread extends Thread {
                         case left:
 
                             // Check if bus is out of bounds
-                            if(currentBus.getX() > 0 - (tileSize * 3)) {
+                            if (currentBus.getX() > 0 - (tileSize * 3)) {
 
                                 // Move bus based on speed
                                 currentBus.setX(currentBus.getX() - currentBus.getSpeed());
-                            }else {
+                            } else {
 
                                 // Move bus to left side if it has reached the right bounds
                                 currentBus.setX(tileSize * model.getWidth());
@@ -274,11 +278,11 @@ class PresenterGameThread extends Thread {
                         case right:
 
                             // Check if bus is out of bounds
-                            if(currentBus.getX() < tileSize * model.getWidth()) {
+                            if (currentBus.getX() < tileSize * model.getWidth()) {
 
                                 // Move bus based on speed
                                 currentBus.setX(currentBus.getX() + currentBus.getSpeed());
-                            }else {
+                            } else {
 
                                 // Move bus to left side if it has reached the right bounds
                                 currentBus.setX(0 - (tileSize * 3));
@@ -326,10 +330,10 @@ class PresenterGameThread extends Thread {
                         case left:
 
                             // Check if boat is out of bounds
-                            if(currentBoat.getX() > 0 - (tileSize * 3)) {
+                            if (currentBoat.getX() > 0 - (tileSize * 3)) {
 
                                 currentBoat.setX(currentBoat.getX() - currentBoat.getSpeed());
-                            }else {
+                            } else {
                                 // Move boat to left side if it has reached the right bounds
                                 currentBoat.setX(tileSize * model.getWidth());
                             }
@@ -339,10 +343,10 @@ class PresenterGameThread extends Thread {
                         case right:
 
                             // Check if boat is out of bounds
-                            if(currentBoat.getX() < tileSize * model.getWidth()) {
+                            if (currentBoat.getX() < tileSize * model.getWidth()) {
 
                                 currentBoat.setX(currentBoat.getX() + currentBoat.getSpeed());
-                            }else {
+                            } else {
                                 // Move boat to left side if it has reached the right bounds
                                 currentBoat.setX(0 - (tileSize * 3));
                             }
@@ -372,17 +376,17 @@ class PresenterGameThread extends Thread {
 
 
                     // Check if player is on background tile
-                    if(i*tileSize == player.getY() && j*tileSize <= player.getX() && player.getX() <= j*tileSize + tileSize){
+                    if (i * tileSize == player.getY() && j * tileSize <= player.getX() && player.getX() <= j * tileSize + tileSize) {
 
                         // Check if player drowns
-                        if(back[i][j].getCollideType() == CollideTypes.crushes && !onBoat && player.getStepCounter() <= 0){
+                        if (back[i][j].getCollideType() == CollideTypes.crushes && !onBoat && player.getStepCounter() <= 0) {
 
                             // Send lose message
                             messageType = 0;
                         }
 
                         // Check if player wins
-                        if(back[i][j].getCollideType() == CollideTypes.win){
+                        if (back[i][j].getCollideType() == CollideTypes.win) {
 
                             // Send win message
                             messageType = 1;
@@ -392,9 +396,10 @@ class PresenterGameThread extends Thread {
             }
 
             // Check if player is out of bounds
-            if(player.getX() < 0 || player.getX() >= tileSize * (model.getWidth()) )
+            if (player.getX() < tileSize * model.getLeftBoundary() || player.getX() >= tileSize * (model.getRightBoundary())) {
                 // Send lose message
                 messageType = 0;
+            }
 
             //put the player in layer3
             Image j = new Image(images.get(model.getMainPlayer().getCurrentFrame()), xCenter, yCenter);
@@ -403,7 +408,7 @@ class PresenterGameThread extends Thread {
 //            }
 
             // Send message if win or lose
-            if(messageType == 1 || messageType == 0) {
+            if (messageType == 1 || messageType == 0) {
                 Message completeMessage = mHandler.obtainMessage(messageType);
                 completeMessage.sendToTarget();
             }
